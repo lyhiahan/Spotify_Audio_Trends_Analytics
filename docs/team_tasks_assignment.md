@@ -21,7 +21,7 @@ Bảng phân công bám sát chính xác từng tiêu chí trong **Rubric đánh
 
 | Phần theo Rubric | Điểm | Tiêu chí chi tiết theo Barem | Thành viên phụ trách | Nhiệm vụ cụ thể cần hoàn thành |
 | :--- | :---: | :--- | :---: | :--- |
-| **1. Xử lý Dữ liệu & EDA** | **1.5đ** | • **Calculated fields:** Tạo trường dữ liệu tính toán mới có ý nghĩa.<br>• **EDA tĩnh:** Dùng Matplotlib/Seaborn vẽ ít nhất 3 - 5 biểu đồ tĩnh phân tích phân phối. | **Đinh Quốc Anh** | • Làm sạch 5 tập dữ liệu gốc, khử trùng lặp, xử lý missing values.<br>• Tạo các cột mới: `is_trending` (0/1), `mood_category`, `stream_share_country`,...<br>• Xây dựng pipeline JOIN 5 bảng trong `src/data_loader.py` và `01_preprocess.ipynb`.<br>• Vẽ $\ge 5$ biểu đồ EDA tĩnh (Heatmap, Distribution, Boxplot) trong `02_eda.ipynb`. |
+| **1. Thu thập & Tiền xử lý dữ liệu** | **2.5đ** | • **Xác định bài toán & Dataset (0.5đ):** Mục tiêu rõ ràng, dữ liệu $\ge$ 5,000 dòng, $\ge$ 3 bảng, nêu rõ nguồn & Data Dictionary.<br>• **Làm sạch dữ liệu (0.5đ):** Code Python xử lý triệt để Missing values, Outliers, chuẩn hóa ngày tháng/chuỗi.<br>• **Biến đổi dữ liệu (0.75đ):** Join/Merge các bảng chính xác, tạo trường tính toán mới (**Calculated fields**).<br>• **Khám phá dữ liệu EDA (0.75đ):** Dùng Matplotlib/Seaborn vẽ ít nhất 3 - 5 biểu đồ tĩnh phân tích phân phối trước khi đưa lên Dashboard. | **Đinh Quốc Anh** | • Xác định mục tiêu bài toán, xây dựng từ điển dữ liệu (`docs/data_dictionary.md`).<br>• Làm sạch triệt để 5 tập dữ liệu (>300,000 dòng, đạt chuẩn $\ge 5,000$ dòng và $\ge 3$ bảng).<br>• Tạo các cột mới: `is_trending` (0/1), `mood_category`, `stream_share_country`,...<br>• Xây dựng pipeline JOIN 5 bảng trong `src/data_loader.py` và `01_preprocess.ipynb`.<br>• Vẽ $\ge 5$ biểu đồ EDA tĩnh (Heatmap, Distribution, Boxplot) trong `02_eda.ipynb`. |
 | **2. Thiết kế Dashboard (Trọng tâm)** | **3.5đ** | • **Giao diện & UI/UX (0.5đ):** Layout hợp lý, màu sắc hài hòa, Legend rõ ràng.<br>• **Đa dạng biểu đồ (1.0đ):** Sử dụng $\ge 8$ loại biểu đồ khác nhau (Bar, Line, Pie, Scatter, Heatmap, Treemap, Radar, Boxplot...).<br>• **Bản đồ không gian (0.5đ):** Ít nhất 1 biểu đồ dạng Geographic Map.<br>• **Tính tương tác (1.5đ):** Bộ lọc đa cấp (Filters), Drill-down, Tooltip khi hover, Cross-filtering. | **Lý Gia Hân** | • Thiết kế giao diện Dashboard Streamlit nhiều trang khoa học, thẩm mỹ.<br>• Xây dựng đầy đủ 8 loại biểu đồ Plotly tương tác chuẩn xác theo loại biến.<br>• Tích hợp **Choropleth Map** thế giới thể hiện phân bổ streams và chỉ số âm thanh (sử dụng mã ISO-3 từ `country_codes.csv`).<br>• Thiết lập bộ lọc liên hoàn nhiều cấp (Vùng $\rightarrow$ Quốc gia $\rightarrow$ Thể loại $\rightarrow$ Thời gian), hover tooltip hiển thị thông tin sâu. |
 | **3. Phân tích Insight & Dự báo** | **2.0đ** | • **Khai phá Insight (1.0đ):** Rút ra câu chuyện dữ liệu (Storytelling), phân tích nguyên nhân và xu hướng.<br>• **Mô hình Dự báo (0.5đ):** Áp dụng đúng thuật toán Hồi quy tuyến tính hoặc Logistic.<br>• **Trực quan Dự báo (0.5đ):** Tích hợp kết quả dự báo lên biểu đồ trực quan trong Dashboard. | **Lý Gia Hân** *(Insight & Story)*<br>+<br>**Đỗ Thanh Thành Tài** *(Mô hình & Trực quan ML)* | • **Lý Gia Hân:** Xây dựng trang Data Storytelling khai thác các insight sâu (Nghịch lý cảm xúc theo GDP, sự chuyển biến gu âm nhạc 2021-2022).<br>• **Đỗ Thanh Thành Tài:**<br>  - Xây dựng mô hình Logistic Regression dự báo xác suất bài hát lọt Top Trending trong `03_model.ipynb` và đóng gói model.<br>  - Tích hợp công cụ tương tác dự báo (Interactive Simulator) kèm biểu đồ đo xác suất (Gauge chart / Trendline) trực tiếp trên Dashboard. |
 | **4. Báo cáo & Demo ứng dụng** | **2.0đ** | • **Báo cáo khoa học (1.0đ):** Cấu trúc chuẩn, sơ đồ Pipeline hệ thống, trích dẫn IEEE, giải thích logic chọn biểu đồ, minh họa code.<br>• **Ứng dụng Demo (1.0đ):** Dashboard chạy mượt mà, kịch bản lôi cuốn, đóng vai Data Analyst thuyết trình với sếp/khách hàng. | **Đỗ Thanh Thành Tài** *(Lead)*<br>+<br>**Cả nhóm cùng hỗ trợ** | • **Đỗ Thanh Thành Tài:**<br>  - Viết kịch bản và thực hiện quay **Video Demo** chất lượng cao (đóng vai Data Analyst trình bày báo cáo chuyên nghiệp).<br>  - Tổng hợp báo cáo nghiên cứu hoàn chỉnh, bổ sung trích dẫn chuẩn IEEE và giải thích logic trực quan.<br>• **Đinh Quốc Anh & Lý Gia Hân:** Cung cấp sơ đồ pipeline, hình ảnh biểu đồ và giải thích kỹ thuật tương ứng. |
@@ -72,3 +72,33 @@ Bảng phân công bám sát chính xác từng tiêu chí trong **Rubric đánh
 - [ ] Xây dựng kịch bản thuyết trình và quay **Video Demo hoàn chỉnh**:
   - Đóng vai Data Analyst trình bày báo cáo trực quan trước ban lãnh đạo/khách hàng.
   - Trình diễn mượt mà các thao tác lọc dữ liệu, drill-down và chạy thử nghiệm mô hình dự báo.
+
+---
+
+## IV. CẤU TRÚC BÁO CÁO CUỐI KỲ BẮT BUỘC (7 MỤC CHUẨN KHOA HỌC)
+
+Theo yêu cầu chuẩn học thuật trong Rubric, tài liệu báo cáo của nhóm (`docs/final_report.docx`) bắt buộc tuân theo cấu trúc 7 phần sau:
+
+1. **Mục 1: Xác định bài toán & Dataset**
+   - Trình bày rõ bối cảnh, lý do chọn đề tài và mục tiêu phân tích.
+   - Giới thiệu các tập dữ liệu sử dụng ($\ge 5,000$ dòng, $\ge 3$ bảng - đồ án dùng 5 bảng với $>300,000$ dòng).
+   - Đính kèm đường dẫn và trích lục Từ điển dữ liệu chi tiết (`docs/data_dictionary.md`).
+2. **Mục 2: Làm sạch dữ liệu (Data Cleaning & Code)**
+   - Mô tả thuật toán và minh họa code Python xử lý triệt để Missing values, Outliers.
+   - Chuẩn hóa định dạng ngày tháng (`week`), chuỗi ký tự (`track_name`, `country`).
+3. **Mục 3: Biến đổi dữ liệu (Feature Engineering & Join Code)**
+   - Sơ đồ hệ thống và giải thích thuật toán Join/Merge 5 bảng dữ liệu chính xác.
+   - Định nghĩa và công thức của các trường dữ liệu tính toán mới có ý nghĩa (**Calculated fields**): `is_trending`, `mood_category`, `stream_share_country`,...
+4. **Mục 4: Khám phá dữ liệu (EDA - Exploratory Data Analysis)**
+   - Trình bày ít nhất 3 - 5 biểu đồ tĩnh (Seaborn/Matplotlib) phân tích phân phối dữ liệu trước khi đưa lên Dashboard.
+   - Rút ra nhận định thống kê ban đầu về các đặc trưng âm học và xu hướng nghe nhạc.
+5. **Mục 5: Mô hình dự báo (Predictive Modeling)**
+   - Mô tả thuật toán Hồi quy tuyến tính (Linear) hoặc Hồi quy Logistic (Logistic Regression).
+   - Diễn giải kết quả đánh giá mô hình: Accuracy, Precision, Recall, ROC-AUC, Feature Coefficients.
+   - Giải thích cách tích hợp kết quả mô hình thành công cụ trực quan hóa tương tác trên Dashboard.
+6. **Mục 6: Hướng dẫn cài đặt / sử dụng & Link Video Demo**
+   - Hướng dẫn các bước cài đặt môi trường (`requirements.txt`) và lệnh chạy Dashboard (`streamlit run dashboard/app.py`).
+   - **Bắt buộc có Link Video Demo tóm tắt (YouTube / Google Drive)** ghi lại quá trình vận hành trực tiếp.
+7. **Mục 7: Kết luận & Tài liệu tham khảo**
+   - Đúc kết các insight cốt lõi và giá trị ứng dụng thực tiễn của đề tài.
+   - Danh mục tài liệu tham khảo được trích dẫn theo đúng chuẩn **IEEE**.
