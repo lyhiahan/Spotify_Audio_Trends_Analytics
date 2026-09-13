@@ -1,58 +1,74 @@
 # BẢNG PHÂN CHIA NHIỆM VỤ THÀNH VIÊN (PROJECT CUỐI KỲ)
-**Môn học:** Tương tác Dữ liệu (Data Interaction / Interactive Visualization)  
-**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh và dự đoán xu hướng bài hát thịnh hành trên Spotify
+**Môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
+**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh & dự đoán xu hướng bài hát thịnh hành trên Spotify  
+**Quy mô nhóm:** 03 thành viên
 
 ---
 
-## I. Ma trận Ánh xạ Nhiệm vụ theo Barem Chấm điểm (10 Điểm)
+## I. THÔNG TIN THÀNH VIÊN VÀ VAI TRÒ CHÍNH
 
-| Mục theo Barem | Trọng số & Yêu cầu | Nhiệm vụ kỹ thuật cần hoàn thành | Phân công vai trò |
-| :--- | :--- | :--- | :--- |
-| **1. Giới thiệu đề tài & Mô tả dữ liệu** | 0.5 - 1.0 điểm | Viết bối cảnh, lý do chọn đề tài, mục tiêu phân tích.<br>Lập Data Dictionary đầy đủ 5 bảng (`docs/data_dictionary.md`). | Leader / Data Analyst |
-| **2. Tiền xử lý & Khám phá dữ liệu (EDA)** | 2.0 - 2.5 điểm | • Viết code làm sạch, xử lý Missing/Outlier, trích xuất ID.<br>• Viết thuật toán JOIN 5 bảng dữ liệu.<br>• Phân tích EDA phân phối đơn biến, đa biến, ma trận tương quan các chỉ số âm học (`valence`, `danceability`, `energy`...). | Data Engineer / Data Analyst |
-| **3. Thiết kế Dashboard Tương tác** | 2.5 - 3.0 điểm | • Xây dựng Web App tương tác (Streamlit / Plotly Dash).<br>• Thiết kế luồng tương tác đa chiều (Dropdown bộ lọc theo Quốc gia/Năm, Slider độ dài, Checkbox thể loại, Hover tooltip).<br>• Phân trang logic (Tổng quan $\rightarrow$ Âm học $\rightarrow$ Kinh tế $\rightarrow$ Dự báo). | Frontend / Visualization Specialist |
-| **4. Khai phá Insight & Storytelling** | 1.5 - 2.0 điểm | • Đúc kết ít nhất 3-5 insight sâu sắc (ví dụ: Sự chuyển dịch xu hướng âm nhạc trong mùa dịch 2021-2022; Tương quan GDP và dòng nhạc thịnh hành; Nghệ sĩ huyền thoại vs hiện đại).<br>• Xây dựng kịch bản "Kể chuyện bằng dữ liệu" (Storytelling). | Business Analyst / Data Storyteller |
-| **5. Mô hình dự báo (ML Modeling)** | 1.5 điểm | • Xây dựng mô hình Hồi quy tuyến tính (Dự đoán `streams` / `popularity`) hoặc Hồi quy Logistic (Dự đoán xác suất lọt Top Trend 1/0).<br>• Đánh giá mô hình ($R^2$, RMSE, Accuracy, ROC-AUC, Confusion Matrix).<br>• Tích hợp form dự báo tương tác vào Dashboard. | ML Engineer / Data Scientist |
-| **6. Cài đặt & Video Demo** | 0.5 điểm | • Đóng gói mã nguồn, viết `README.md`, `requirements.txt`.<br>• Quay video demo luồng tương tác (kèm link backup YouTube/Google Drive). | All / Technical Lead |
-| **7. Báo cáo & Tài liệu tham khảo** | 0.5 điểm | Soạn báo cáo Word/PDF hoàn chỉnh theo cấu trúc 7 mục, chuẩn bị Slide thuyết trình. | Leader & Thư ký nhóm |
+| STT | Họ và tên | Vai trò chính | Trọng tâm phụ trách |
+| :---: | :--- | :--- | :--- |
+| **1** | **Đinh Quốc Anh** | **Data Engineer & Data Analyst** | Xử lý số liệu, Tiền xử lý đa nguồn (Join 5 bảng), Calculated fields & Phân tích EDA tĩnh |
+| **2** | **Lý Gia Hân** | **Visualization Specialist & Dashboard Dev** | Trực quan hóa dữ liệu, Thiết kế Dashboard tương tác (Streamlit/Plotly), Bản đồ địa lý & Storytelling |
+| **3** | **Đỗ Thanh Thành Tài** | **ML Engineer & Demo / Reporting Lead** | Huấn luyện mô hình dự báo (Linear/Logistic), Trực quan hóa ML trên Dashboard, Quay Video Demo & Báo cáo |
 
 ---
 
-## II. Gợi ý Phân công theo Quy mô Nhóm
+## II. MA TRẬN ÁNH XẠ NHIỆM VỤ THEO BAREM CHẤM ĐIỂM (10 ĐIỂM)
 
-### Phương án A: Nhóm 4 thành viên (Khuyên dùng)
-* **Thành viên 1 (Trưởng nhóm - Data Pipeline & Project Manager):**
-  * Quản lý tiến độ Git, cấu trúc repo.
-  * Phụ trách Mục 1 (Mô tả bài toán, Data Dictionary) & Mục 2 (Làm sạch, chuẩn hóa, Join 5 bảng dữ liệu).
-  * Viết notebook `01_preprocess.ipynb`.
+Bảng phân công bám sát chính xác từng tiêu chí trong **Rubric đánh giá Đồ án Cuối kỳ**:
 
-* **Thành viên 2 (Data Analyst & EDA Specialist):**
-  * Phụ trách Mục 2 (EDA chuyên sâu) & Mục 4 (Khai phá Insight & Storytelling).
-  * Vẽ biểu đồ tương quan nhiệt (Correlation Matrix), phân tích xu hướng âm thanh theo thời gian và quốc gia.
-  * Viết notebook `02_eda.ipynb` và nội dung trang Kể chuyện dữ liệu.
-
-* **Thành viên 3 (Visualization & Dashboard Developer):**
-  * Phụ trách Mục 3 (Thiết kế Dashboard tương tác bằng Streamlit/Plotly).
-  * Xây dựng giao diện đa trang (`dashboard/app.py`, các trang phân tích âm thanh, bản đồ thế giới choropleth map).
-  * Đảm bảo tính tương tác cao: filter thời gian, cross-filtering, tooltip, responsive layout.
-
-* **Thành viên 4 (Machine Learning & Documentation/Demo):**
-  * Phụ trách Mục 5 (Huấn luyện mô hình Linear/Logistic Regression, đánh giá metrics trong notebook `03_model.ipynb`).
-  * Tích hợp model vào Dashboard (tab Dự báo tương tác) và tổng hợp kịch bản trong `04_story.ipynb`.
-  * Phụ trách Mục 6 & 7: Viết tài liệu hướng dẫn cài đặt, quay video demo, tổng hợp slide thuyết trình.
+| Phần theo Rubric | Điểm | Tiêu chí chi tiết theo Barem | Thành viên phụ trách | Nhiệm vụ cụ thể cần hoàn thành |
+| :--- | :---: | :--- | :---: | :--- |
+| **1. Xử lý Dữ liệu & EDA** | **1.5đ** | • **Calculated fields:** Tạo trường dữ liệu tính toán mới có ý nghĩa.<br>• **EDA tĩnh:** Dùng Matplotlib/Seaborn vẽ ít nhất 3 - 5 biểu đồ tĩnh phân tích phân phối. | **Đinh Quốc Anh** | • Làm sạch 5 tập dữ liệu gốc, khử trùng lặp, xử lý missing values.<br>• Tạo các cột mới: `is_trending` (0/1), `mood_category`, `stream_share_country`,...<br>• Xây dựng pipeline JOIN 5 bảng trong `src/data_loader.py` và `01_preprocess.ipynb`.<br>• Vẽ $\ge 5$ biểu đồ EDA tĩnh (Heatmap, Distribution, Boxplot) trong `02_eda.ipynb`. |
+| **2. Thiết kế Dashboard (Trọng tâm)** | **3.5đ** | • **Giao diện & UI/UX (0.5đ):** Layout hợp lý, màu sắc hài hòa, Legend rõ ràng.<br>• **Đa dạng biểu đồ (1.0đ):** Sử dụng $\ge 8$ loại biểu đồ khác nhau (Bar, Line, Pie, Scatter, Heatmap, Treemap, Radar, Boxplot...).<br>• **Bản đồ không gian (0.5đ):** Ít nhất 1 biểu đồ dạng Geographic Map.<br>• **Tính tương tác (1.5đ):** Bộ lọc đa cấp (Filters), Drill-down, Tooltip khi hover, Cross-filtering. | **Lý Gia Hân** | • Thiết kế giao diện Dashboard Streamlit nhiều trang khoa học, thẩm mỹ.<br>• Xây dựng đầy đủ 8 loại biểu đồ Plotly tương tác chuẩn xác theo loại biến.<br>• Tích hợp **Choropleth Map** thế giới thể hiện phân bổ streams và chỉ số âm thanh (sử dụng mã ISO-3 từ `country_codes.csv`).<br>• Thiết lập bộ lọc liên hoàn nhiều cấp (Vùng $\rightarrow$ Quốc gia $\rightarrow$ Thể loại $\rightarrow$ Thời gian), hover tooltip hiển thị thông tin sâu. |
+| **3. Phân tích Insight & Dự báo** | **2.0đ** | • **Khai phá Insight (1.0đ):** Rút ra câu chuyện dữ liệu (Storytelling), phân tích nguyên nhân và xu hướng.<br>• **Mô hình Dự báo (0.5đ):** Áp dụng đúng thuật toán Hồi quy tuyến tính hoặc Logistic.<br>• **Trực quan Dự báo (0.5đ):** Tích hợp kết quả dự báo lên biểu đồ trực quan trong Dashboard. | **Lý Gia Hân** *(Insight & Story)*<br>+<br>**Đỗ Thanh Thành Tài** *(Mô hình & Trực quan ML)* | • **Lý Gia Hân:** Xây dựng trang Data Storytelling khai thác các insight sâu (Nghịch lý cảm xúc theo GDP, sự chuyển biến gu âm nhạc 2021-2022).<br>• **Đỗ Thanh Thành Tài:**<br>  - Xây dựng mô hình Logistic Regression dự báo xác suất bài hát lọt Top Trending trong `03_model.ipynb` và đóng gói model.<br>  - Tích hợp công cụ tương tác dự báo (Interactive Simulator) kèm biểu đồ đo xác suất (Gauge chart / Trendline) trực tiếp trên Dashboard. |
+| **4. Báo cáo & Demo ứng dụng** | **2.0đ** | • **Báo cáo khoa học (1.0đ):** Cấu trúc chuẩn, sơ đồ Pipeline hệ thống, trích dẫn IEEE, giải thích logic chọn biểu đồ, minh họa code.<br>• **Ứng dụng Demo (1.0đ):** Dashboard chạy mượt mà, kịch bản lôi cuốn, đóng vai Data Analyst thuyết trình với sếp/khách hàng. | **Đỗ Thanh Thành Tài** *(Lead)*<br>+<br>**Cả nhóm cùng hỗ trợ** | • **Đỗ Thanh Thành Tài:**<br>  - Viết kịch bản và thực hiện quay **Video Demo** chất lượng cao (đóng vai Data Analyst trình bày báo cáo chuyên nghiệp).<br>  - Tổng hợp báo cáo nghiên cứu hoàn chỉnh, bổ sung trích dẫn chuẩn IEEE và giải thích logic trực quan.<br>• **Đinh Quốc Anh & Lý Gia Hân:** Cung cấp sơ đồ pipeline, hình ảnh biểu đồ và giải thích kỹ thuật tương ứng. |
 
 ---
 
-### Phương án B: Nhóm 3 thành viên
-* **Thành viên 1:** Mục 1, Mục 2 (Data Preprocessing, Join & Pipeline).
-* **Thành viên 2:** Mục 3 (Dashboard Tương tác) & Mục 5 (Tích hợp Model ML).
-* **Thành viên 3:** Mục 2 (EDA), Mục 4 (Insight & Storytelling), Mục 6 & 7 (Video demo, Báo cáo & Slide).
+## III. CHECKLIST CÔNG VIỆC CHI TIẾT THEO TỪNG THÀNH VIÊN
 
----
+### 1. Đinh Quốc Anh (Phụ trách: Xử lý số liệu & EDA)
+- [ ] Kiểm tra, rà soát missing value và kiểu dữ liệu của cả 5 file dữ liệu trong thư mục `data/raw/`.
+- [ ] Chuẩn hóa `track_id`, liên kết mã quốc gia ISO-3 và nạp dữ liệu GDP theo từng năm.
+- [ ] Tạo các trường tính toán mới (**Calculated fields**):
+  - `is_trending`: Đánh dấu bài hát thuộc nhóm hit bảng xếp hạng (1) hay nhóm nhạc thông thường (0).
+  - `mood_category`: Phân loại nhóm cảm xúc bài hát dựa trên ngưỡng `energy` và `valence`.
+  - `stream_share_country`: Tỷ trọng đóng góp lượt nghe theo từng quốc gia.
+- [ ] Hoàn thiện Notebook `notebooks/01_preprocess.ipynb` và module `src/data_loader.py`.
+- [ ] Hoàn thiện Notebook `notebooks/02_eda.ipynb` với ít nhất **5 biểu đồ tĩnh** chuẩn mực (Matplotlib/Seaborn):
+  - Biểu đồ phân phối đa biến các Audio Features.
+  - Biểu đồ nhiệt (Heatmap) ma trận tương quan giữa âm học và lượt nghe.
+  - Boxplot so sánh đặc trưng âm thanh giữa các thể loại/nhóm thu nhập.
+- [ ] Vẽ sơ đồ luồng dữ liệu (Data Pipeline Architecture) phục vụ Báo cáo cuối kỳ.
 
-### Phương án C: Nhóm 5 thành viên
-* **Thành viên 1 (Leader):** Kiến trúc hệ thống, Mục 1, Pipeline Join & Chuẩn hóa dữ liệu.
-* **Thành viên 2:** Phân tích EDA, Trực quan hóa đặc trưng âm học & thị trường.
-* **Thành viên 3:** Lập trình Dashboard Streamlit (Giao diện chính, Bộ lọc động, Biểu đồ Plotly).
-* **Thành viên 4:** Huấn luyện mô hình ML (Linear/Logistic Regression), Feature Importance.
-* **Thành viên 5:** Viết nội dung Storytelling (Mục 4), Video Demo & Báo cáo tổng kết (Mục 6, 7).
+### 2. Lý Gia Hân (Phụ trách: Trực quan hóa & Dashboard Tương tác)
+- [ ] Thiết kế cấu trúc giao diện Dashboard đa trang trên Streamlit (`dashboard/app.py` và các trang trong `dashboard/pages/`).
+- [ ] Đảm bảo tiêu chuẩn UI/UX: Giao diện hiện đại, tone màu đồng bộ, bố cục chia cột khoa học, nhãn/chú thích (Legend) rõ ràng.
+- [ ] Xây dựng đủ **8 loại biểu đồ Plotly tương tác khác nhau**:
+  1. *Choropleth Map:* Bản đồ nhiệt toàn cầu thể hiện lượt stream/đặc trưng âm học theo quốc gia.
+  2. *Scatter Plot:* Tương quan giữa GDP và Lượt stream/Năng lượng âm thanh (kèm đường xu hướng).
+  3. *Bar Chart (Đứng/Ngang):* Top bài hát, Top nghệ sĩ trụ hạng lâu nhất.
+  4. *Line Chart:* Biến động đặc trưng âm nhạc theo chuỗi thời gian các tuần (2021 - 2022).
+  5. *Heatmap:* Bản đồ nhiệt tương quan tương tác giữa các thuộc tính âm thanh.
+  6. *Pie / Donut Chart:* Tỷ lệ thị phần nghe nhạc theo Nhóm thu nhập (`income_group`).
+  7. *Box Plot / Violin Plot:* So sánh phân phối độ vui vẻ (`valence`) giữa các khu vực địa lý.
+  8. *Radar Chart:* Biểu đồ mạng nhện so sánh Audio Profile của bài hát với chuẩn Top Trending.
+- [ ] Xây dựng tính năng tương tác chuyên sâu: Bộ lọc phân cấp liên hoàn (Cascading filter), Hover Tooltip chi tiết, tùy chọn nhóm chỉ số.
+- [ ] Xây dựng trang **Storytelling (Câu chuyện dữ liệu)**: Khắc họa góc nhìn sâu sắc về thói quen nghe nhạc và mối tương quan kinh tế - xã hội.
+
+### 3. Đỗ Thanh Thành Tài (Phụ trách: Mô hình dự báo, Video Demo & Báo cáo)
+- [ ] Chuẩn bị tập dữ liệu huấn luyện (Train/Test split 80/20, chuẩn hóa StandardScaler).
+- [ ] Huấn luyện mô hình **Hồi quy Logistic (Logistic Regression)** dự đoán khả năng bài hát lọt Top Trending (`is_trending`).
+- [ ] Đánh giá toàn diện mô hình: Accuracy, Precision, Recall, F1-score, ROC-AUC curve và ma trận nhầm lẫn (Confusion Matrix).
+- [ ] Trích xuất hệ số tác động (Feature Importance) xem đặc trưng âm học nào quyết định hit âm nhạc.
+- [ ] Đóng gói mô hình (`models/trend_predictor.pkl`) và xây dựng module `src/models.py`.
+- [ ] Lập trình trang **"Dự báo thịnh hành"** trên Dashboard: Tích hợp bảng điều khiển tương tác (nhập thông số âm thanh $\rightarrow$ hiển thị xác suất lọt Top Hit dạng Gauge Chart/Phân lớp rủi ro).
+- [ ] Soạn thảo Báo cáo khoa học hoàn chỉnh (`docs/final_report.docx`):
+  - Định dạng chuẩn bài báo khoa học, trích dẫn tài liệu chuẩn IEEE.
+  - Viết phần giải thích cơ sở logic lựa chọn biểu đồ và đoạn mã giả (pseudo-code) của pipeline.
+- [ ] Xây dựng kịch bản thuyết trình và quay **Video Demo hoàn chỉnh**:
+  - Đóng vai Data Analyst trình bày báo cáo trực quan trước ban lãnh đạo/khách hàng.
+  - Trình diễn mượt mà các thao tác lọc dữ liệu, drill-down và chạy thử nghiệm mô hình dự báo.

@@ -95,12 +95,11 @@ Sau khi chạy, mở trình duyệt tại địa chỉ: `http://localhost:8501`.
 
 Chi tiết bảng phân công và ma trận trách nhiệm được lưu tại: [`docs/team_tasks_assignment.md`](docs/team_tasks_assignment.md).
 
-| STT | Họ và tên | MSSV | Vai trò chính | Nhiệm vụ đảm nhiệm |
+| STT | Họ và tên | MSSV | Vai trò chính | Nhiệm vụ đảm nhiệm theo Barem |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | *Nguyễn Văn A* | *XXXXXXXX* | Leader / Data Engineer | Tiền xử lý dữ liệu, Join 5 bảng, Quản lý Repo Git |
-| 2 | *Trần Thị B* | *XXXXXXXX* | Data Analyst | Phân tích EDA, Trực quan hóa đặc trưng âm học |
-| 3 | *Lê Văn C* | *XXXXXXXX* | Frontend / Dashboard Dev | Xây dựng Dashboard tương tác Streamlit/Plotly |
-| 4 | *Phạm Thị D* | *XXXXXXXX* | ML & Documentation | Mô hình Hồi quy dự báo, Storytelling, Video Demo |
+| 1 | **Đinh Quốc Anh** | *[Điền MSSV]* | Data Engineer & Data Analyst | Tiền xử lý dữ liệu, Join 5 bảng, Calculated fields & Phân tích EDA tĩnh |
+| 2 | **Lý Gia Hân** | *[Điền MSSV]* | Visualization & Dashboard Dev | Thiết kế Dashboard tương tác Streamlit/Plotly, Bản đồ địa lý, Data Storytelling |
+| 3 | **Đỗ Thanh Thành Tài** | *[Điền MSSV]* | ML Engineer & Demo / Report Lead | Huấn luyện mô hình Hồi quy dự báo, Trực quan hóa ML, Báo cáo chuẩn IEEE & Quay Video Demo |
 
 ---
 
