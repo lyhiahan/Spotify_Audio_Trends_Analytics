@@ -74,8 +74,8 @@
 ---
 
 ## 5. Bảng `spotify-weekly-charts.csv`
-* **Nguồn:** Spotify Weekly Regional & Global Charts (~2020 - 2022).
-* **Số dòng:** ~1,788,000 | **Số cột:** 36
+* **Nguồn:** Spotify Weekly Regional & Global Charts (~2021 - 2022).
+* **Số dòng:** 314,727 (đã làm sạch & khử trùng lặp bản ghi hợp tác) | **Số cột:** 33 | **Dung lượng:** ~94.2 MB
 
 | Tên trường | Kiểu dữ liệu | Ý nghĩa / Diễn giải |
 | :--- | :--- | :--- |

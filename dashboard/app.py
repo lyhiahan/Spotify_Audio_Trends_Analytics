@@ -21,7 +21,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("Bài hát phân tích", "114,000+", "Audio features")
 with col2:
-    st.metric("Bản ghi tuần Charts", "1,700,000+", "Toàn cầu")
+    st.metric("Bản ghi tuần Charts", "314,000+", "Toàn cầu (Đã lọc)")
 with col3:
     st.metric("Quốc gia khảo sát", "70+", "Kèm số liệu GDP")
 with col4:

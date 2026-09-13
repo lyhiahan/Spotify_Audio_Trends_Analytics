@@ -1,0 +1,53 @@
+---
+title: "Phân tích Dữ liệu Spotify Weekly Charts"
+author: "LyGiaHan_24133016"
+date: "2026-09-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## 1. Đọc dữ liệu Spotify Weekly Charts
+
+Sử dụng thư viện `readr` (thuộc hệ sinh thái `tidyverse`) hoặc `data.table::fread` để đọc bộ dữ liệu `spotify-weekly-charts.csv`:
+
+```{r load-data}
+# Tải các thư viện cần thiết
+library(readr)
+library(dplyr)
+
+# Đường dẫn đến file dữ liệu CSV
+file_path <- "data/raw/spotify-weekly-charts.csv"
+
+# Đọc file CSV
+spotify_data <- read_csv(file_path)
+
+# Kiểm tra kích thước bộ dữ liệu (Số dòng x Số cột)
+dim(spotify_data)
+```
+
+Cách 2: Nếu muốn tốc độ đọc cực nhanh (tùy chọn với `data.table`):
+```{r load-data-fast, eval=FALSE}
+library(data.table)
+spotify_data <- fread("data/raw/spotify-weekly-charts.csv")
+```
+
+## 2. Cấu trúc và Xem trước Dữ liệu
+
+```{r inspect-data}
+# Xem cấu trúc chi tiết các cột và kiểu dữ liệu
+glimpse(spotify_data)
+
+# Hiển thị 6 dòng đầu tiên của bộ dữ liệu
+head(spotify_data)
+```
+
+## 3. Thống kê Sơ bộ (Summary Statistics)
+
+```{r summary-data}
+# Thống kê mô tả tổng quan các thuộc tính
+summary(spotify_data)
+```
+
