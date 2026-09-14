@@ -5,6 +5,7 @@
 # 1. Bỏ qua các file dữ liệu nặng (Đặc biệt tránh lỗi GitHub 100MB limit)
 data/raw/*.csv
 data/processed/*.csv
+!data/processed/merged_spotify_data.csv
 !data/sample/*.csv
 !**/.gitkeep
 
