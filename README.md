@@ -97,9 +97,9 @@ Chi tiết bảng phân công và ma trận trách nhiệm được lưu tại: 
 
 | STT | Họ và tên | MSSV | Vai trò chính | Nhiệm vụ đảm nhiệm theo Barem |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | **Đinh Quốc Anh** | *[Điền MSSV]* | Data Engineer & Data Analyst | Tiền xử lý dữ liệu, Join 5 bảng, Calculated fields & Phân tích EDA tĩnh |
-| 2 | **Lý Gia Hân** | *[Điền MSSV]* | Visualization & Dashboard Dev | Thiết kế Dashboard tương tác Streamlit/Plotly, Bản đồ địa lý, Data Storytelling |
-| 3 | **Đỗ Thanh Thành Tài** | *[Điền MSSV]* | ML Engineer & Demo / Report Lead | Huấn luyện mô hình Hồi quy dự báo, Trực quan hóa ML, Báo cáo chuẩn IEEE & Quay Video Demo |
+| 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | Tiền xử lý dữ liệu, Join 5 bảng, Calculated fields & Phân tích EDA tĩnh |
+| 2 | **Lý Gia Hân** | **24133016** | Visualization & Dashboard Dev | Thiết kế Dashboard tương tác Streamlit/Plotly, Bản đồ địa lý, Data Storytelling |
+| 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Demo / Report Lead | Huấn luyện mô hình Hồi quy dự báo, Trực quan hóa ML, Báo cáo chuẩn IEEE & Quay Video Demo |
 
 ---
 

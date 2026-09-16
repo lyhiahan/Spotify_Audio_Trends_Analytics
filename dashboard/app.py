@@ -40,3 +40,13 @@ Vui lòng sử dụng **Thanh điều hướng (Sidebar)** bên trái để truy
 """)
 
 st.sidebar.success("Chọn trang phân tích từ danh sách phía trên.")
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 👥 Thành viên nhóm")
+st.sidebar.markdown("""
+- **Đinh Quốc Anh** — `24133003`  
+  *(Data Engineer & Data Analyst)*
+- **Lý Gia Hân** — `24133016`  
+  *(Visualization & Dashboard Dev)*
+- **Đỗ Thanh Thành Tài** — `24133050`  
+  *(ML Engineer & Demo / Report Lead)*
+""")

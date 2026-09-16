@@ -7,11 +7,11 @@
 
 ## I. THÔNG TIN THÀNH VIÊN VÀ VAI TRÒ CHÍNH
 
-| STT | Họ và tên | Vai trò chính | Trọng tâm phụ trách |
-| :---: | :--- | :--- | :--- |
-| **1** | **Đinh Quốc Anh** | **Data Engineer & Data Analyst** | Xử lý số liệu, Tiền xử lý đa nguồn (Join 5 bảng), Calculated fields & Phân tích EDA tĩnh |
-| **2** | **Lý Gia Hân** | **Visualization Specialist & Dashboard Dev** | Trực quan hóa dữ liệu, Thiết kế Dashboard tương tác (Streamlit/Plotly), Bản đồ địa lý & Storytelling |
-| **3** | **Đỗ Thanh Thành Tài** | **ML Engineer & Demo / Reporting Lead** | Huấn luyện mô hình dự báo (Linear/Logistic), Trực quan hóa ML trên Dashboard, Quay Video Demo & Báo cáo |
+| STT | Họ và tên | MSSV | Vai trò chính | Trọng tâm phụ trách |
+| :---: | :--- | :---: | :--- | :--- |
+| **1** | **Đinh Quốc Anh** | **24133003** | **Data Engineer & Data Analyst** | Xử lý số liệu, Tiền xử lý đa nguồn (Join 5 bảng), Calculated fields & Phân tích EDA tĩnh |
+| **2** | **Lý Gia Hân** | **24133016** | **Visualization Specialist & Dashboard Dev** | Trực quan hóa dữ liệu, Thiết kế Dashboard tương tác (Streamlit/Plotly), Bản đồ địa lý & Storytelling |
+| **3** | **Đỗ Thanh Thành Tài** | **24133050** | **ML Engineer & Demo / Reporting Lead** | Huấn luyện mô hình dự báo (Linear/Logistic), Trực quan hóa ML trên Dashboard, Quay Video Demo & Báo cáo |
 
 ---
 
