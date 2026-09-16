@@ -19,7 +19,7 @@ library(readr)
 library(dplyr)
 
 # Đường dẫn đến file dữ liệu CSV
-file_path <- "data/raw/spotify-weekly-charts.csv"
+file_path <- "data/processed/merged_spotify_data.csv"
 
 # Đọc file CSV
 spotify_data <- read_csv(file_path)
@@ -31,7 +31,7 @@ dim(spotify_data)
 Cách 2: Nếu muốn tốc độ đọc cực nhanh (tùy chọn với `data.table`):
 ```{r load-data-fast, eval=FALSE}
 library(data.table)
-spotify_data <- fread("data/raw/spotify-weekly-charts.csv")
+spotify_data <- fread("data/processed/merged_spotify_data.csv")
 ```
 
 ## 2. Cấu trúc và Xem trước Dữ liệu
