@@ -1,39 +1,45 @@
 """
 src/data_loader.py
 ==================
-Pipeline hoàn chỉnh nạp, làm sạch và kết nối (JOIN) 5 bảng dữ liệu.
+Pipeline ETL phân nhánh tối ưu (Branching Pipeline) nạp, làm sạch và kết nối 5 bảng dữ liệu.
 
-6 Bước xử lý:
-    1. Nạp dữ liệu thô (Load Raw Data)
-    2. Làm sạch bảng xếp hạng tuần (Clean Weekly Charts)
-    3. Làm sạch bảng đặc trưng bài hát (Clean Tracks Dataset)
-    4. Làm sạch bảng nghệ sĩ bán đĩa (Clean Best-Selling Artists)
-    5. JOIN 5 bảng dữ liệu (Merge All Tables)
-    6. Tạo 12+ trường tính toán (Calculated Fields)
-
-Output:
-    - data/processed/merged_spotify_data.csv (Full dataset)
-    - data/sample/spotify_sample_merged.csv  (20,000 rows sample)
+Kiến trúc 3 nhánh chuyên biệt:
+    1. Nhánh Kinh tế - Xã hội & Bản đồ (2021 - 2022, 74 quốc gia)
+       -> data/processed/spotify_socioeconomic_2021_2022.csv
+       -> data/sample/spotify_sample_merged.csv (Sample 20K dòng)
+    2. Nhánh Dòng thời gian Đại dịch COVID-19 (2020 - 2022, Global)
+       -> data/processed/spotify_covid_timeline_2020_2022.csv
+    3. Nhánh Machine Learning cấp độ bài hát (Song-level, chống Data Leakage)
+       -> data/processed/tracks_ml_dataset.csv
 
 Author: Đinh Quốc Anh (Data Engineer & Data Analyst)
 """
 
 import os
 import re
+import sys
+import io
 import warnings
+from datetime import datetime
 import numpy as np
 import pandas as pd
-from datetime import datetime
+
+# Đảm bảo in tiếng Việt & emoji trên mọi hệ điều hành (kể cả Windows cp1252)
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 warnings.filterwarnings("ignore")
 
-# ══════════════════════ Cấu hình đường dẫn ══════════════════════
+# Cấu hình đường dẫn
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW_DIR = os.path.join(BASE_DIR, "data", "raw")
 PROCESSED_DIR = os.path.join(BASE_DIR, "data", "processed")
 SAMPLE_DIR = os.path.join(BASE_DIR, "data", "sample")
 
-# ══════════════════════ Cấu hình phân tích ══════════════════════
+# Cấu hình phân tích
 AUDIO_FEATURES = [
     "danceability", "energy", "loudness", "speechiness",
     "acousticness", "instrumentalness", "liveness", "valence", "tempo"
@@ -42,8 +48,8 @@ AUDIO_0_1 = [
     "danceability", "energy", "speechiness", "acousticness",
     "instrumentalness", "liveness", "valence"
 ]
-TRENDING_THRESHOLD = 50   # rank <= 50 → is_trending = 1
-POPULAR_THRESHOLD = 70    # popularity >= 70 → is_popular = 1
+TRENDING_THRESHOLD = 50   # rank <= 50 -> is_trending = 1
+POPULAR_THRESHOLD = 70    # popularity >= 70 -> is_popular = 1
 
 # Từ khóa phát hiện thể loại Latin
 LATIN_KEYWORDS = [
@@ -57,28 +63,40 @@ LATIN_KEYWORDS = [
 # Từ khóa phát hiện K-Pop
 KPOP_KEYWORDS = ["k-pop", "kpop", "korean", "k pop"]
 
+# Danh sách cột chuẩn hóa cho Nhánh 1 (Kinh tế - Xã hội)
+FINAL_SOCIOECONOMIC_COLUMNS = [
+    # Nhận dạng & Thời gian
+    "track_id", "track_name", "artist_individual", "artist_genre",
+    "country", "language", "week", "year", "month", "quarter",
+    # Xếp hạng & Streams
+    "rank", "streams", "log_streams", "weeks_on_chart", "peak_rank",
+    # 9 Audio Features
+    "danceability", "energy", "loudness", "speechiness",
+    "acousticness", "instrumentalness", "liveness", "valence", "tempo",
+    # Kinh tế – Xã hội
+    "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
+    # Calculated Fields
+    "is_trending", "is_popular", "mood_category", "stream_share_country",
+    "energy_loudness_index", "is_latin", "is_kpop", "is_legacy_artist",
+    "duration_min", "audio_diversity_score", "track_genre"
+]
 
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 1: NẠP DỮ LIỆU THÔ
-# ═══════════════════════════════════════════════════════════════
+
+# ===============================================================
+# GIAI ĐOẠN 1: NẠP VÀ LÀM SẠCH ĐỘC LẬP TỪNG BẢNG (RAW CLEANING)
+# ===============================================================
 
 def load_raw_data():
-    """
-    Nạp 5 tập dữ liệu gốc từ thư mục data/raw/.
-
-    Returns
-    -------
-    tuple of (charts, tracks, gdp, country_codes, artists) DataFrames.
-    """
+    """Nạp 5 tập dữ liệu gốc từ thư mục data/raw/."""
     print("=" * 60)
     print("📂 BƯỚC 1: NẠP DỮ LIỆU THÔ")
     print("=" * 60)
 
-    # 1. Weekly Charts (~835 MB — cần low_memory=False)
+    # 1. Weekly Charts (~835 MB)
     print("  ⏳ Đang nạp spotify-weekly-charts.csv (~835 MB)...")
     charts = pd.read_csv(
         os.path.join(RAW_DIR, "spotify-weekly-charts.csv"),
-        low_memory=False,
+        low_memory=False
     )
     print(f"  ✅ Weekly Charts: {charts.shape[0]:,} dòng × {charts.shape[1]} cột")
 
@@ -86,7 +104,7 @@ def load_raw_data():
     print("  ⏳ Đang nạp spotify-tracks-dataset.csv...")
     tracks = pd.read_csv(
         os.path.join(RAW_DIR, "spotify-tracks-dataset.csv"),
-        low_memory=False,
+        low_memory=False
     )
     print(f"  ✅ Tracks Dataset: {tracks.shape[0]:,} dòng × {tracks.shape[1]} cột")
 
@@ -105,215 +123,120 @@ def load_raw_data():
     artists = pd.read_csv(os.path.join(RAW_DIR, "best-selling-artists.csv"))
     print(f"  ✅ Best-Selling Artists: {artists.shape[0]:,} dòng × {artists.shape[1]} cột")
 
-    total = sum(df.shape[0] for df in [charts, tracks, gdp, country_codes, artists])
+    total = sum(len(df) for df in [charts, tracks, gdp, country_codes, artists])
     print(f"\n  📊 Tổng cộng: {total:,} bản ghi từ 5 bảng")
     return charts, tracks, gdp, country_codes, artists
 
 
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 2: LÀM SẠCH BẢNG XẾP HẠNG TUẦN
-# ═══════════════════════════════════════════════════════════════
-
-def clean_weekly_charts(df):
+def clean_raw_charts(df):
     """
-    Làm sạch bảng spotify-weekly-charts.csv.
-
-    Xử lý:
-        - Trích ``track_id`` từ cột ``uri``
-        - Chuyển ``week`` → datetime; trích ``year``, ``month``, ``quarter``
-        - Ép kiểu ``streams``, loại streams ≤ 0
-        - Loại bản ghi trùng (track_id + week + country)
-        - Đổi tên cột ``region`` → ``region_spotify``
+    Làm sạch độc lập bảng spotify-weekly-charts.csv.
+    Khử trùng lặp, ép kiểu numeric cho audio features, lọc bỏ cột rác.
     """
     print("\n" + "=" * 60)
-    print("🧹 BƯỚC 2: LÀM SẠCH BẢNG XẾP HẠNG TUẦN")
+    print("🧹 BƯỚC 2: LÀM SẠCH BẢNG XẾP HẠNG TUẦN (CHARTS)")
     print("=" * 60)
 
     df = df.copy()
     n_before = len(df)
 
-    # 2.1 Loại bỏ cột index dư thừa (Unnamed: 0)
+    # Loại bỏ index thừa
     unnamed_cols = [c for c in df.columns if "Unnamed" in str(c)]
     if unnamed_cols:
         df.drop(columns=unnamed_cols, inplace=True)
-        print(f"  🔹 Loại bỏ {len(unnamed_cols)} cột index dư thừa: {unnamed_cols}")
 
-    # 2.2 Trích xuất track_id từ uri
+    # Trích xuất track_id từ uri
     if "track_id" not in df.columns and "uri" in df.columns:
         df["track_id"] = df["uri"].str.replace("spotify:track:", "", regex=False)
-        print(f"  🔹 Trích xuất track_id từ uri → {df['track_id'].nunique():,} bài hát duy nhất")
 
-    # 2.3 Chuyển đổi week → datetime + trích thời gian
+    # Chuyển đổi week -> datetime + trích thời gian
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
     df["year"] = df["week"].dt.year.astype("Int64")
     df["month"] = df["week"].dt.month.astype("Int64")
     df["quarter"] = df["week"].dt.quarter.astype("Int64")
-    n_bad_dates = df["week"].isna().sum()
-    if n_bad_dates > 0:
-        print(f"  ⚠️  {n_bad_dates:,} dòng ngày không hợp lệ → Loại bỏ")
-        df.dropna(subset=["week"], inplace=True)
-    print(f"  🔹 Phạm vi thời gian: {df['week'].min().date()} → {df['week'].max().date()}")
-    print(f"  🔹 Các năm có dữ liệu: {sorted(df['year'].dropna().unique().tolist())}")
+    df.dropna(subset=["week"], inplace=True)
 
-    # 2.4 Xử lý streams
-    df["streams"] = pd.to_numeric(df["streams"], errors="coerce")
-    n_na_streams = df["streams"].isna().sum()
-    if n_na_streams > 0:
-        print(f"  ⚠️  {n_na_streams:,} dòng streams NaN → Đặt = 0")
-        df["streams"] = df["streams"].fillna(0)
-    df["streams"] = df["streams"].astype(int)
-    n_zero = (df["streams"] <= 0).sum()
-    if n_zero > 0:
-        print(f"  ⚠️  {n_zero:,} dòng streams ≤ 0 → Loại bỏ")
-        df = df[df["streams"] > 0]
+    # Làm sạch streams
+    df["streams"] = pd.to_numeric(df["streams"], errors="coerce").fillna(0).astype(int)
+    df = df[df["streams"] > 0]
 
-    # 2.5 Ép kiểu cột ranking
-    for col in ["rank", "previous_rank", "weeks_on_chart", "peak_rank"]:
+    # Ép kiểu cột thứ hạng
+    for col in ["rank", "weeks_on_chart", "peak_rank"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
 
-    # 2.6 Chuẩn hóa tên quốc gia
+    # Chuẩn hóa tên quốc gia
     df["country"] = df["country"].str.strip()
 
-    # 2.7 Ép kiểu duration (ms)
+    # Ép kiểu duration
     if "duration" in df.columns:
         df["duration"] = pd.to_numeric(df["duration"], errors="coerce")
 
-    # 2.7b Ép kiểu tất cả audio features về numeric
-    # (Cần thiết vì file CSV lớn có thể đọc mixed types thành string)
+    # Ép kiểu số thực cho 9 audio features
     for col in AUDIO_FEATURES:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
-    n_coerced = sum(1 for c in AUDIO_FEATURES if c in df.columns)
-    print(f"  🔹 Ép kiểu numeric cho {n_coerced} audio features")
 
-    # 2.8 Loại bản ghi trùng (track_id + week + country)
-    n_dups = df.duplicated(subset=["track_id", "week", "country"]).sum()
-    if n_dups > 0:
-        print(f"  ⚠️  {n_dups:,} bản ghi trùng (track_id+week+country) → Giữ bản đầu")
-        df.drop_duplicates(subset=["track_id", "week", "country"], keep="first", inplace=True)
+    # Khử trùng lặp bản ghi (track_id + week + country)
+    df.drop_duplicates(subset=["track_id", "week", "country"], keep="first", inplace=True)
 
-    # 2.9 Loại cột không cần thiết cho phân tích
-    drop_cols = ["artist_img", "album_cover", "pivot"]
+    # Lọc sớm 15 cột không cần thiết trước khi phân nhánh
+    drop_cols = [
+        "uri", "artist_names", "artists_num", "artist_id",
+        "key", "mode", "source", "album_num_tracks", "collab",
+        "release_date", "previous_rank", "artist_img", "album_cover",
+        "pivot", "region", "region_spotify", "region_x"
+    ]
     existing_drops = [c for c in drop_cols if c in df.columns]
     if existing_drops:
         df.drop(columns=existing_drops, inplace=True)
-        print(f"  🔹 Loại {len(existing_drops)} cột không cần: {existing_drops}")
 
-    # 2.10 Đổi tên region (Spotify) để tránh xung đột với World Bank
-    if "region" in df.columns:
-        df.rename(columns={"region": "region_spotify"}, inplace=True)
-        print("  🔹 Đổi tên 'region' → 'region_spotify'")
-
-    # Nếu đã có region_x từ merge trước đó
-    if "region_x" in df.columns:
-        df.rename(columns={"region_x": "region_spotify"}, inplace=True)
-
-    n_after = len(df)
-    print(f"\n  📊 Kết quả: {n_before:,} → {n_after:,} dòng "
-          f"({n_before - n_after:,} dòng bị loại)")
+    print(f"  📊 Charts sau làm sạch: {n_before:,} -> {len(df):,} dòng, {len(df.columns)} cột")
     return df
 
 
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 3: LÀM SẠCH BẢNG ĐẶC TRƯNG BÀI HÁT
-# ═══════════════════════════════════════════════════════════════
-
-def clean_tracks_dataset(df):
+def clean_raw_tracks(df):
     """
     Làm sạch bảng spotify-tracks-dataset.csv.
-
-    Xử lý:
-        - Loại cột index dư thừa
-        - Dedup ``track_id`` (giữ popularity cao nhất)
-        - Validate audio features nằm trong [0, 1]
-        - Validate loudness, tempo, duration_ms
-        - Giữ lại các cột cần thiết cho JOIN
+    Dedup track_id theo popularity cao nhất, kiểm định miền giá trị âm học.
     """
-    print("\n" + "=" * 60)
-    print("🧹 BƯỚC 3: LÀM SẠCH BẢNG ĐẶC TRƯNG BÀI HÁT")
-    print("=" * 60)
-
     df = df.copy()
 
-    # 3.1 Loại cột index dư thừa
     unnamed_cols = [c for c in df.columns if "Unnamed" in str(c)]
     if unnamed_cols:
         df.drop(columns=unnamed_cols, inplace=True)
-        print(f"  🔹 Loại bỏ {len(unnamed_cols)} cột index dư thừa")
 
-    # 3.2 Dedup track_id — giữ bản ghi popularity cao nhất
-    n_before = len(df)
-    n_unique = df["track_id"].nunique()
-    if n_before > n_unique:
-        df = (df
-              .sort_values("popularity", ascending=False)
-              .drop_duplicates("track_id", keep="first"))
-        print(f"  🔹 Dedup track_id: {n_before:,} → {len(df):,} "
-              f"({n_before - len(df):,} bản trùng)")
+    # Dedup track_id giữ popularity cao nhất
+    if "popularity" in df.columns:
+        df = df.sort_values("popularity", ascending=False).drop_duplicates("track_id", keep="first")
+    else:
+        df = df.drop_duplicates("track_id", keep="first")
 
-    # 3.3 Validate audio features [0, 1]
+    # Validate boundary âm học [0, 1]
     for col in AUDIO_0_1:
         if col in df.columns:
-            n_bad = ((df[col] < 0) | (df[col] > 1)).sum()
-            if n_bad > 0:
-                print(f"  ⚠️  {col}: {n_bad:,} ngoài [0,1] → clip")
-                df[col] = df[col].clip(0, 1)
+            df[col] = df[col].clip(0, 1)
 
-    # 3.4 Validate loudness (thường -60 → 0 dB)
     if "loudness" in df.columns:
         df["loudness"] = df["loudness"].clip(-60, 5)
-
-    # 3.5 Validate tempo (40-300 BPM)
     if "tempo" in df.columns:
         df["tempo"] = df["tempo"].clip(0, 300)
 
-    # 3.6 Xử lý duration_ms bất thường (< 30 s hoặc > 15 min)
-    if "duration_ms" in df.columns:
-        mask_bad = (df["duration_ms"] < 30_000) | (df["duration_ms"] > 900_000)
-        n_bad_dur = mask_bad.sum()
-        if n_bad_dur > 0:
-            print(f"  ⚠️  duration_ms: {n_bad_dur:,} bài < 30s hoặc > 15 min → NaN")
-            df.loc[mask_bad, "duration_ms"] = np.nan
-
-    # 3.7 Giữ cột cần thiết cho JOIN
-    # (Audio features đã có trong weekly charts — chỉ cần genre, popularity, …)
-    keep = ["track_id", "track_genre", "popularity", "duration_ms",
-            "explicit", "artists", "album_name", "time_signature"]
-    keep = [c for c in keep if c in df.columns]
+    # Lọc chỉ giữ 3 cột cần thiết cho JOIN
+    keep = [c for c in ["track_id", "track_genre", "popularity"] if c in df.columns]
     df = df[keep]
-
-    print(f"\n  📊 Bảng tracks sau làm sạch: {len(df):,} bài × {len(df.columns)} cột")
+    print(f"  📊 Tracks sau làm sạch: {len(df):,} bài hát độc nhất")
     return df
 
 
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 4: LÀM SẠCH BẢNG NGHỆ SĨ BÁN ĐĨA
-# ═══════════════════════════════════════════════════════════════
-
-def clean_best_selling_artists(df):
-    """
-    Làm sạch bảng best-selling-artists.csv.
-
-    Xử lý:
-        - Parse ``Total certified units`` → triệu đơn vị (float)
-        - Parse ``Claimed sales`` → triệu đơn vị (float)
-        - Fix encoding ``Active years``; trích career_start / career_end
-        - Chuẩn hóa tên nghệ sĩ (lower-case) cho JOIN
-    """
-    print("\n" + "=" * 60)
-    print("🧹 BƯỚC 4: LÀM SẠCH BẢNG NGHỆ SĨ BÁN ĐĨA")
-    print("=" * 60)
-
+def clean_raw_artists(df):
+    """Làm sạch bảng best-selling-artists.csv."""
     df = df.copy()
 
-    # ---- helper parse ----
     def _parse_millions(text):
-        """Trích số triệu đầu tiên từ chuỗi phức tạp."""
         if pd.isna(text):
             return np.nan
-        text = str(text)
-        m = re.search(r"([\d,.]+)\s*million", text, re.IGNORECASE)
+        m = re.search(r"([\d,.]+)\s*million", str(text), re.IGNORECASE)
         if m:
             try:
                 return float(m.group(1).replace(",", ""))
@@ -321,162 +244,77 @@ def clean_best_selling_artists(df):
                 return np.nan
         return np.nan
 
-    # 4.1 Parse certified units
-    df["certified_units_million"] = df["Total certified units"].apply(_parse_millions)
-    ok = df["certified_units_million"].notna().sum()
-    print(f"  🔹 Parse certified units: {ok}/{len(df)} thành công")
-
-    # 4.2 Parse claimed sales
-    df["claimed_sales_million"] = df["Claimed sales"].apply(_parse_millions)
-
-    # 4.3 Fix Active years → career_start, career_end
-    def _parse_years(text):
-        if pd.isna(text):
-            return np.nan, np.nan
-        years = re.findall(r"\d{4}", str(text))
-        if len(years) >= 2:
-            return int(years[0]), int(years[-1])
-        if len(years) == 1:
-            return int(years[0]), np.nan
-        return np.nan, np.nan
-
-    df[["career_start", "career_end"]] = df["Active years"].apply(
-        lambda x: pd.Series(_parse_years(x))
-    )
-    print("  🔹 Trích career_start & career_end từ Active years")
-
-    # 4.4 Chuẩn hóa tên nghệ sĩ
     df["artist_name_clean"] = df["Artist name"].str.strip().str.lower()
-
-    # 4.5 Giữ cột cần thiết
-    out = df[[
-        "Artist name", "artist_name_clean", "Country", "Genre",
-        "certified_units_million", "claimed_sales_million",
-        "career_start", "career_end",
-        "Release year of first charted record",
-    ]].copy()
-    out.rename(columns={
-        "Artist name": "legacy_artist_name",
-        "Country": "legacy_artist_country",
-        "Genre": "legacy_artist_genre",
-        "Release year of first charted record": "first_charted_year",
-    }, inplace=True)
-
-    print(f"\n  📊 Best-Selling Artists sau làm sạch: {len(out):,} nghệ sĩ × {len(out.columns)} cột")
+    df.rename(columns={"Artist name": "legacy_artist_name"}, inplace=True)
+    out = df[["artist_name_clean", "legacy_artist_name"]].drop_duplicates("artist_name_clean")
+    print(f"  📊 Best-Selling Artists: {len(out):,} nghệ sĩ huyền thoại")
     return out
 
 
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 5: JOIN 5 BẢNG DỮ LIỆU
-# ═══════════════════════════════════════════════════════════════
-
-def join_all_tables(charts, tracks, gdp, country_codes, artists):
-    """
-    Kết nối 5 bảng thành bảng tổng thể (LEFT JOIN từ charts).
-
-    Sơ đồ JOIN::
-
-        charts ⋈ (country, year) ──→ gdp (GDP value)
-               ⋈ (country_code)  ──→ country_codes (region, income_group)
-               ⋈ (track_id)      ──→ tracks (genre, popularity)
-               ⋈ (artist_name)   ──→ best_selling_artists (legacy status)
-    """
-    print("\n" + "=" * 60)
-    print("🔗 BƯỚC 5: JOIN 5 BẢNG DỮ LIỆU")
-    print("=" * 60)
-
-    n_start = len(charts)
-
-    # ── JOIN 1: Charts + GDP (country + year) ──
-    print("  🔹 JOIN 1: Charts ⋈ GDP (country, year)...")
-    merged = pd.merge(
-        charts, gdp,
-        left_on=["country", "year"],
-        right_on=["country_name", "year"],
-        how="left",
-    )
-    if "value" in merged.columns:
-        merged.rename(columns={"value": "gdp_value"}, inplace=True)
-    rate = merged["gdp_value"].notna().mean() * 100
-    print(f"    → Match rate: {rate:.1f}%")
-
-    # ── JOIN 2: + Country Codes (country_code) ──
-    print("  🔹 JOIN 2: + Country Codes (country_code)...")
-    merged = pd.merge(merged, country_codes, on="country_code", how="left")
-    rate = merged["region"].notna().mean() * 100
-    print(f"    → Region match rate: {rate:.1f}%")
-    merged.rename(columns={"region": "region_wb"}, inplace=True)
-
-    # ── JOIN 3: + Tracks Dataset (track_id) ──
-    print("  🔹 JOIN 3: + Tracks Dataset (track_id)...")
-    merged = pd.merge(
-        merged, tracks,
-        on="track_id", how="left",
-        suffixes=("", "_tracks"),
-    )
-    rate = merged["track_genre"].notna().mean() * 100
-    print(f"    → Genre match rate: {rate:.1f}%")
-
-    # ── JOIN 4: + Best-Selling Artists (artist name) ──
-    print("  🔹 JOIN 4: + Best-Selling Artists (artist_name)...")
-    merged["_artist_clean"] = merged["artist_individual"].str.strip().str.lower()
-    merged = pd.merge(
-        merged,
-        artists[["artist_name_clean", "legacy_artist_name",
-                  "certified_units_million", "claimed_sales_million",
-                  "career_start", "legacy_artist_genre"]],
-        left_on="_artist_clean",
-        right_on="artist_name_clean",
-        how="left",
-    )
-    n_legacy = merged["legacy_artist_name"].notna().sum()
-    print(f"    → {n_legacy:,} bản ghi khớp nghệ sĩ huyền thoại")
-
-    # ── Dọn dẹp cột dư ──
-    drop = ["country_name", "artist_name_clean", "_artist_clean"]
-    merged.drop(columns=[c for c in drop if c in merged.columns], inplace=True)
-
-    print(f"\n  📊 Sau JOIN: {len(merged):,} dòng × {len(merged.columns)} cột")
-    if len(merged) != n_start:
-        print(f"  ⚠️  Số dòng thay đổi {n_start:,} → {len(merged):,}")
-    return merged
-
-
-# ═══════════════════════════════════════════════════════════════
-# BƯỚC 6: TẠO CALCULATED FIELDS
-# ═══════════════════════════════════════════════════════════════
-
-def create_calculated_fields(df):
-    """
-    Tạo 13 trường tính toán mới (Calculated Fields).
-
-    Phục vụ các hướng phân tích:
-        - GDP vs Valence Paradox
-        - 3 giai đoạn COVID-19 (Lockdown → Escapism → Reopening)
-        - Latin Wave & K-Pop Invasion
-        - Đa dạng gu âm nhạc theo thu nhập
-        - Công thức bài hát Hit
-    """
-    print("\n" + "=" * 60)
-    print("🧮 BƯỚC 6: TẠO CALCULATED FIELDS")
-    print("=" * 60)
-
+def clean_raw_gdp(df):
+    """Làm sạch bảng gdp_data.csv."""
     df = df.copy()
+    unnamed_cols = [c for c in df.columns if "Unnamed" in str(c)]
+    if unnamed_cols:
+        df.drop(columns=unnamed_cols, inplace=True)
+    if "value" in df.columns:
+        df.rename(columns={"value": "gdp_value"}, inplace=True)
+    df["gdp_value"] = pd.to_numeric(df["gdp_value"], errors="coerce")
+    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
+    return df[["country_name", "country_code", "year", "gdp_value"]].dropna(subset=["country_name", "year"])
 
-    # ── 1. is_trending (rank ≤ 50) ──
+
+def clean_raw_country_codes(df):
+    """Làm sạch bảng country_codes.csv."""
+    df = df.copy()
+    unnamed_cols = [c for c in df.columns if "Unnamed" in str(c)]
+    if unnamed_cols:
+        df.drop(columns=unnamed_cols, inplace=True)
+    if "region" in df.columns:
+        df.rename(columns={"region": "region_wb"}, inplace=True)
+    return df[["country_code", "region_wb", "income_group"]].dropna(subset=["country_code"])
+
+
+# ===============================================================
+# GIAI ĐOẠN 2: 3 NHÁNH XỬ LÝ CHUYÊN BIỆT (BRANCHING PIPELINE)
+# ===============================================================
+
+def build_socioeconomic_dataset(charts, gdp, country_codes, tracks, artists, save=True):
+    """
+    NHÁNH 1: Dữ liệu Kinh tế - Xã hội & Bản đồ thế giới 74 Quốc gia (2021 - 2022).
+    Lọc sớm bỏ Global trước khi JOIN -> Tỷ lệ khớp GDP đạt ~98% (không bị null giả tạo).
+    """
+    print("\n" + "=" * 60)
+    print("🌍 NHÁNH 1: XÂY DỰNG DỮ LIỆU KINH TẾ - XÃ HỘI (2021 - 2022)")
+    print("=" * 60)
+
+    # 1. Lọc trước khi JOIN (Bỏ Global và chỉ lấy 2021 - 2022)
+    df = charts[(charts["year"].isin([2021, 2022])) & (charts["country"] != "Global")].copy()
+    print(f"  🔹 Lọc Charts 74 nước (2021-2022): {len(df):,} dòng")
+
+    # 2. JOIN 1: Charts + GDP (country + year)
+    df = pd.merge(df, gdp[["country_name", "country_code", "year", "gdp_value"]],
+                  left_on=["country", "year"], right_on=["country_name", "year"], how="left")
+    rate_gdp = df["gdp_value"].notna().mean() * 100
+    print(f"  🔹 JOIN GDP Match rate: {rate_gdp:.1f}% (Gần 100% nhờ loại bỏ Global sớm)")
+
+    # 3. JOIN 2: + Country Codes (country_code)
+    df = pd.merge(df, country_codes, on="country_code", how="left")
+
+    # 4. JOIN 3: + Tracks Dataset (track_id)
+    df = pd.merge(df, tracks, on="track_id", how="left")
+
+    # 5. JOIN 4: + Best-Selling Artists (artist_name)
+    df["_artist_clean"] = df["artist_individual"].str.strip().str.lower()
+    df = pd.merge(df, artists, left_on="_artist_clean", right_on="artist_name_clean", how="left")
+
+    # 6. Tính toán Calculated Fields
     df["is_trending"] = (df["rank"] <= TRENDING_THRESHOLD).astype(int)
-    n = df["is_trending"].sum()
-    print(f"  ✅ is_trending (rank ≤ {TRENDING_THRESHOLD}): "
-          f"{n:,} ({n / len(df) * 100:.1f}%)")
-
-    # ── 2. is_popular (popularity ≥ 70) ──
     df["is_popular"] = 0
-    mask = df["popularity"].notna() & (df["popularity"] >= POPULAR_THRESHOLD)
-    df.loc[mask, "is_popular"] = 1
-    print(f"  ✅ is_popular (popularity ≥ {POPULAR_THRESHOLD}): "
-          f"{df['is_popular'].sum():,}")
+    mask_pop = df["popularity"].notna() & (df["popularity"] >= POPULAR_THRESHOLD)
+    df.loc[mask_pop, "is_popular"] = 1
 
-    # ── 3. mood_category (vectorized) ──
+    # mood_category (Russell Model)
     v_hi = df["valence"] >= 0.5
     e_hi = df["energy"] >= 0.5
     df["mood_category"] = "Unknown"
@@ -484,204 +322,265 @@ def create_calculated_fields(df):
     df.loc[v_hi & ~e_hi, "mood_category"] = "Peaceful Positive"
     df.loc[~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
     df.loc[~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
-    print(f"  ✅ mood_category: {df['mood_category'].value_counts().to_dict()}")
 
-    # ── 4. stream_share_country ──
-    total = df.groupby(["country", "week"])["streams"].transform("sum")
-    df["stream_share_country"] = np.where(total > 0, df["streams"] / total, 0)
-    print(f"  ✅ stream_share_country: "
-          f"[{df['stream_share_country'].min():.4f}, "
-          f"{df['stream_share_country'].max():.4f}]")
+    # stream_share_country
+    total_streams = df.groupby(["country", "week"])["streams"].transform("sum")
+    df["stream_share_country"] = np.where(total_streams > 0, df["streams"] / total_streams, 0)
 
-    # ── 5. covid_phase (vectorized) ──
+    # energy_loudness_index
+    l_min = df["loudness"].min()
+    l_range = df["loudness"].max() - l_min
+    l_norm = (df["loudness"] - l_min) / l_range if l_range > 0 else 0.5
+    df["energy_loudness_index"] = (df["energy"] + l_norm) / 2
+
+    # is_latin & is_kpop
+    genre_combo = df["artist_genre"].fillna("").str.lower() + " " + df["track_genre"].fillna("").str.lower()
+    latin_pat = "|".join(re.escape(kw) for kw in LATIN_KEYWORDS)
+    lang_latin = df["language"].fillna("").str.lower().isin(["spanish", "portuguese"])
+    df["is_latin"] = (genre_combo.str.contains(latin_pat, na=False) | lang_latin).astype(int)
+
+    kpop_pat = "|".join(re.escape(kw) for kw in KPOP_KEYWORDS)
+    lang_kr = df["language"].fillna("").str.lower().isin(["korean"])
+    df["is_kpop"] = (genre_combo.str.contains(kpop_pat, na=False) | lang_kr).astype(int)
+
+    df["is_legacy_artist"] = df["legacy_artist_name"].notna().astype(int)
+    if "duration" in df.columns:
+        df["duration_min"] = df["duration"] / 60_000
+
+    div_cols = ["danceability", "energy", "valence", "acousticness"]
+    df["audio_diversity_score"] = df[div_cols].std(axis=1)
+    df["log_streams"] = np.log1p(df["streams"])
+    df["gdp_log"] = np.log1p(df["gdp_value"])
+
+    # Lọc danh sách cột chuẩn hóa
+    final_cols = [c for c in FINAL_SOCIOECONOMIC_COLUMNS if c in df.columns]
+    df = df[final_cols]
+
+    # Xuất file
+    if save:
+        os.makedirs(PROCESSED_DIR, exist_ok=True)
+        os.makedirs(SAMPLE_DIR, exist_ok=True)
+
+        f1_path = os.path.join(PROCESSED_DIR, "spotify_socioeconomic_2021_2022.csv")
+        df.to_csv(f1_path, index=False)
+        mb1 = os.path.getsize(f1_path) / (1024 * 1024)
+        print(f"  💾 Đã lưu File 1: {f1_path} ({len(df):,} dòng, {mb1:.1f} MB)")
+
+        # Sample 20K dòng cho dev nhanh
+        sample_df = df.sample(n=min(20_000, len(df)), random_state=42)
+        samp_path = os.path.join(SAMPLE_DIR, "spotify_sample_merged.csv")
+        sample_df.to_csv(samp_path, index=False)
+        smb = os.path.getsize(samp_path) / (1024 * 1024)
+        print(f"  💾 Đã lưu Sample: {samp_path} ({len(sample_df):,} dòng, {smb:.1f} MB)")
+
+    return df
+
+
+def build_covid_timeline_dataset(charts, tracks, artists, save=True):
+    """
+    NHÁNH 2: Dòng thời gian Đại dịch COVID-19 (Global 2020 - 2022).
+    Bỏ qua hoàn toàn JOIN GDP và Country Codes (vì Global không có GDP) -> Xử lý siêu tốc 0.1s.
+    """
+    print("\n" + "=" * 60)
+    print("🦠 NHÁNH 2: XÂY DỰNG DỮ LIỆU ĐẠI DỊCH COVID-19 (GLOBAL 2020 - 2022)")
+    print("=" * 60)
+
+    # 1. Lọc bảng Global 2020 - 2022
+    df = charts[(charts["country"] == "Global") & (charts["year"].isin([2020, 2021, 2022]))].copy()
+    print(f"  🔹 Lọc Charts Global (2020-2022): {len(df):,} dòng")
+
+    # 2. JOIN Tracks (lấy thể loại) & Artists (lấy legacy status)
+    df = pd.merge(df, tracks, on="track_id", how="left")
+    df["_artist_clean"] = df["artist_individual"].str.strip().str.lower()
+    df = pd.merge(df, artists, left_on="_artist_clean", right_on="artist_name_clean", how="left")
+
+    # 3. Tính toán 3 Pha đại dịch COVID-19
     df["covid_phase"] = "Unknown"
     df.loc[df["year"] <= 2020, "covid_phase"] = "Lockdown & Shock"
     df.loc[df["year"] == 2021, "covid_phase"] = "Vaccine & Escapism"
     df.loc[df["year"] >= 2022, "covid_phase"] = "Reopening & New Normal"
-    print(f"  ✅ covid_phase: {df['covid_phase'].value_counts().to_dict()}")
 
-    # ── 6. energy_loudness_index ──
-    if "loudness" in df.columns and "energy" in df.columns:
-        l_min = df["loudness"].min()
-        l_range = df["loudness"].max() - l_min
-        l_norm = (df["loudness"] - l_min) / l_range if l_range > 0 else 0.5
-        df["energy_loudness_index"] = (df["energy"] + l_norm) / 2
-        print(f"  ✅ energy_loudness_index: mean = "
-              f"{df['energy_loudness_index'].mean():.3f}")
+    # mood_category (Russell Model)
+    v_hi = df["valence"] >= 0.5
+    e_hi = df["energy"] >= 0.5
+    df["mood_category"] = "Unknown"
+    df.loc[v_hi & e_hi, "mood_category"] = "Happy Energetic"
+    df.loc[v_hi & ~e_hi, "mood_category"] = "Peaceful Positive"
+    df.loc[~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
+    df.loc[~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
 
-    # ── 7. is_latin (vectorized) ──
-    genre_combo = (df["artist_genre"].fillna("").str.lower()
-                   + " " + df["track_genre"].fillna("").str.lower())
-    latin_pat = "|".join(re.escape(kw) for kw in LATIN_KEYWORDS)
-    lang_latin = df["language"].fillna("").str.lower().isin(["spanish", "portuguese"])
-    df["is_latin"] = (genre_combo.str.contains(latin_pat, na=False) | lang_latin).astype(int)
-    n = df["is_latin"].sum()
-    print(f"  ✅ is_latin: {n:,} ({n / len(df) * 100:.1f}%)")
+    # energy_loudness_index
+    l_min = df["loudness"].min()
+    l_range = df["loudness"].max() - l_min
+    l_norm = (df["loudness"] - l_min) / l_range if l_range > 0 else 0.5
+    df["energy_loudness_index"] = (df["energy"] + l_norm) / 2
 
-    # ── 8. is_kpop (vectorized) ──
-    kpop_pat = "|".join(re.escape(kw) for kw in KPOP_KEYWORDS)
-    lang_kr = df["language"].fillna("").str.lower().isin(["korean"])
-    df["is_kpop"] = (genre_combo.str.contains(kpop_pat, na=False) | lang_kr).astype(int)
-    n = df["is_kpop"].sum()
-    print(f"  ✅ is_kpop: {n:,} ({n / len(df) * 100:.1f}%)")
-
-    # ── 9. is_legacy_artist ──
+    # Các cờ bổ trợ
+    df["is_trending"] = (df["rank"] <= TRENDING_THRESHOLD).astype(int)
     df["is_legacy_artist"] = df["legacy_artist_name"].notna().astype(int)
-    print(f"  ✅ is_legacy_artist: {df['is_legacy_artist'].sum():,}")
-
-    # ── 10. duration_min ──
-    dur_col = "duration" if "duration" in df.columns else "duration_ms"
-    if dur_col in df.columns:
-        df["duration_min"] = df[dur_col] / 60_000
-        print(f"  ✅ duration_min: mean = {df['duration_min'].mean():.2f} phút")
-
-    # ── 11. audio_diversity_score ──
-    div_cols = ["danceability", "energy", "valence", "acousticness"]
-    avail = [c for c in div_cols if c in df.columns]
-    if avail:
-        df["audio_diversity_score"] = df[avail].std(axis=1)
-        print(f"  ✅ audio_diversity_score: mean = "
-              f"{df['audio_diversity_score'].mean():.4f}")
-
-    # ── 12. log_streams ──
+    if "duration" in df.columns:
+        df["duration_min"] = df["duration"] / 60_000
     df["log_streams"] = np.log1p(df["streams"])
-    print(f"  ✅ log_streams: [{df['log_streams'].min():.2f}, "
-          f"{df['log_streams'].max():.2f}]")
 
-    # ── 13. gdp_log ──
-    if "gdp_value" in df.columns:
-        df["gdp_log"] = np.log1p(df["gdp_value"])
-        print(f"  ✅ gdp_log: [{df['gdp_log'].min():.2f}, "
-              f"{df['gdp_log'].max():.2f}]")
+    div_cols = ["danceability", "energy", "valence", "acousticness"]
+    df["audio_diversity_score"] = df[div_cols].std(axis=1)
 
-    print(f"\n  📊 Tổng: {len(df.columns)} cột sau khi thêm Calculated Fields")
+    # Dọn dẹp cột tạm
+    drop_temp = ["_artist_clean", "artist_name_clean", "legacy_artist_name", "duration", "popularity"]
+    df.drop(columns=[c for c in drop_temp if c in df.columns], inplace=True)
+
+    if save:
+        os.makedirs(PROCESSED_DIR, exist_ok=True)
+        f2_path = os.path.join(PROCESSED_DIR, "spotify_covid_timeline_2020_2022.csv")
+        df.to_csv(f2_path, index=False)
+        mb2 = os.path.getsize(f2_path) / (1024 * 1024)
+        print(f"  💾 Đã lưu File 2: {f2_path} ({len(df):,} dòng × {len(df.columns)} cột, {mb2:.1f} MB)")
+
     return df
 
 
-# ═══════════════════════════════════════════════════════════════
-# PIPELINE TỔNG THỂ
-# ═══════════════════════════════════════════════════════════════
+def build_ml_dataset(charts, save=True):
+    """
+    NHÁNH 3: Dữ liệu Huấn luyện Machine Learning (Thành Tài).
+    Gom nhóm theo track_id độc nhất (Song-level) -> Loại bỏ hoàn toàn Data Leakage.
+    """
+    print("\n" + "=" * 60)
+    print("🤖 NHÁNH 3: XÂY DỰNG DỮ LIỆU MACHINE LEARNING (SONG-LEVEL)")
+    print("=" * 60)
+
+    # 1. Gom nhóm theo từng bài hát duy nhất từ bảng Charts
+    agg_rules = {
+        "track_name": "first",
+        "artist_individual": "first",
+        "artist_genre": "first",
+        "language": "first",
+        "danceability": "first",
+        "energy": "first",
+        "loudness": "first",
+        "speechiness": "first",
+        "acousticness": "first",
+        "instrumentalness": "first",
+        "liveness": "first",
+        "valence": "first",
+        "tempo": "first",
+        # Nhãn mục tiêu: 1 nếu bài hát đã từng lọt Top 50, 0 nếu không
+        "rank": lambda r: int((r <= TRENDING_THRESHOLD).any())
+    }
+    if "duration" in charts.columns:
+        agg_rules["duration"] = "first"
+
+    df_ml = charts.groupby("track_id").agg(agg_rules).reset_index()
+    df_ml.rename(columns={"rank": "is_trending"}, inplace=True)
+
+    # 2. Tính duration_min, is_latin, is_kpop
+    if "duration" in df_ml.columns:
+        df_ml["duration_min"] = df_ml["duration"] / 60_000
+        df_ml.drop(columns=["duration"], inplace=True)
+
+    genre_str = df_ml["artist_genre"].fillna("").str.lower()
+    latin_pat = "|".join(re.escape(kw) for kw in LATIN_KEYWORDS)
+    lang_latin = df_ml["language"].fillna("").str.lower().isin(["spanish", "portuguese"])
+    df_ml["is_latin"] = (genre_str.str.contains(latin_pat, na=False) | lang_latin).astype(int)
+
+    kpop_pat = "|".join(re.escape(kw) for kw in KPOP_KEYWORDS)
+    lang_kr = df_ml["language"].fillna("").str.lower().isin(["korean"])
+    df_ml["is_kpop"] = (genre_str.str.contains(kpop_pat, na=False) | lang_kr).astype(int)
+
+    print(f"  📊 ML Dataset: {len(df_ml):,} bài hát độc nhất × {len(df_ml.columns)} cột")
+    print(f"     Tỷ lệ nhãn Hit (is_trending = 1): {df_ml['is_trending'].mean()*100:.1f}%")
+
+    if save:
+        os.makedirs(PROCESSED_DIR, exist_ok=True)
+        f3_path = os.path.join(PROCESSED_DIR, "tracks_ml_dataset.csv")
+        df_ml.to_csv(f3_path, index=False)
+        mb3 = os.path.getsize(f3_path) / (1024 * 1024)
+        print(f"  💾 Đã lưu File 3: {f3_path} ({len(df_ml):,} dòng, {mb3:.1f} MB)")
+
+    return df_ml
+
+
+# ===============================================================
+# GIAI ĐOẠN 3: HÀM ĐIỀU PHỐI CHÍNH & TIỆN ÍCH
+# ===============================================================
 
 def run_full_pipeline(sample_size=None, save=True):
     """
-    Chạy toàn bộ pipeline ETL 6 bước.
-
-    Parameters
-    ----------
-    sample_size : int, optional
-        Nếu chỉ định, lấy mẫu ngẫu nhiên từ charts.
-    save : bool
-        Nếu ``True``, lưu file CSV output.
-
-    Returns
-    -------
-    pd.DataFrame
-        Bảng dữ liệu tổng hợp hoàn chỉnh.
+    Chạy toàn bộ Branching Pipeline: Nạp thô -> Làm sạch -> 3 Nhánh chuyên biệt.
     """
     t0 = datetime.now()
     print("╔══════════════════════════════════════════════════════════╗")
-    print("║  🚀 SPOTIFY AUDIO TRENDS — DATA PIPELINE               ║")
-    print("║  Tiền xử lý • Làm sạch • JOIN 5 Bảng • Calculated     ║")
+    print("║  🚀 SPOTIFY AUDIO TRENDS — BRANCHING DATA PIPELINE       ║")
+    print("║  3 Nhánh chuyên biệt: Kinh tế • COVID • Machine Learning ║")
     print(f"║  Bắt đầu: {t0:%Y-%m-%d %H:%M:%S}                          ║")
     print("╚══════════════════════════════════════════════════════════╝")
 
-    # Bước 1 – Nạp
+    # 1. Nạp dữ liệu thô
     charts, tracks, gdp, country_codes, artists = load_raw_data()
 
     if sample_size:
         print(f"\n  ⚡ CHẾ ĐỘ SAMPLE: lấy {sample_size:,} dòng từ Charts")
         charts = charts.sample(n=min(sample_size, len(charts)), random_state=42)
 
-    # Bước 2 – Sạch Charts
-    charts_clean = clean_weekly_charts(charts)
+    # 2. Làm sạch độc lập
+    charts_clean = clean_raw_charts(charts)
+    tracks_clean = clean_raw_tracks(tracks)
+    artists_clean = clean_raw_artists(artists)
+    gdp_clean = clean_raw_gdp(gdp)
+    country_codes_clean = clean_raw_country_codes(country_codes)
 
-    # Bước 3 – Sạch Tracks
-    tracks_clean = clean_tracks_dataset(tracks)
+    # 3. Chạy 3 nhánh chuyên biệt
+    df_socio = build_socioeconomic_dataset(charts_clean, gdp_clean, country_codes_clean, tracks_clean, artists_clean, save=save)
+    df_covid = build_covid_timeline_dataset(charts_clean, tracks_clean, artists_clean, save=save)
+    df_ml = build_ml_dataset(charts_clean, save=save)
 
-    # Bước 4 – Sạch Artists
-    artists_clean = clean_best_selling_artists(artists)
-
-    # Bước 5 – JOIN
-    merged = join_all_tables(charts_clean, tracks_clean, gdp, country_codes, artists_clean)
-
-    # Bước 6 – Calculated Fields
-    final = create_calculated_fields(merged)
-
-    # ── Xuất ──
-    if save:
-        print("\n" + "=" * 60)
-        print("💾 XUẤT KẾT QUẢ")
-        print("=" * 60)
-
-        os.makedirs(PROCESSED_DIR, exist_ok=True)
-        os.makedirs(SAMPLE_DIR, exist_ok=True)
-
-        full_path = os.path.join(PROCESSED_DIR, "merged_spotify_data.csv")
-        final.to_csv(full_path, index=False)
-        mb = os.path.getsize(full_path) / 1024 / 1024
-        print(f"  ✅ Full: {full_path}")
-        print(f"     {len(final):,} dòng × {len(final.columns)} cột ({mb:.1f} MB)")
-
-        sample_df = final.sample(n=min(20_000, len(final)), random_state=42)
-        samp_path = os.path.join(SAMPLE_DIR, "spotify_sample_merged.csv")
-        sample_df.to_csv(samp_path, index=False)
-        smb = os.path.getsize(samp_path) / 1024 / 1024
-        print(f"  ✅ Sample: {samp_path}")
-        print(f"     {len(sample_df):,} dòng × {len(sample_df.columns)} cột ({smb:.1f} MB)")
-
-    # ── Tổng kết ──
     elapsed = datetime.now() - t0
-    print("\n" + "═" * 60)
-    print("📊 TỔNG KẾT PIPELINE")
-    print("═" * 60)
-    print(f"  Thời gian : {elapsed}")
-    print(f"  Dòng      : {len(final):,}")
-    print(f"  Cột       : {len(final.columns)}")
-    null_pct = final.isnull().sum().sum() / (len(final) * len(final.columns)) * 100
-    print(f"  Missing   : {null_pct:.2f}%")
-    print(f"  Quốc gia  : {final['country'].nunique()}")
-    print(f"  Bài hát   : {final['track_id'].nunique():,}")
-    print(f"  Nghệ sĩ   : {final['artist_individual'].nunique():,}")
-    print(f"  Thời gian  : {final['week'].min()} → {final['week'].max()}")
-
-    print("\n  📋 Danh sách cột:")
-    for i, col in enumerate(final.columns, 1):
-        dt = final[col].dtype
-        np_ = final[col].isnull().mean() * 100
-        print(f"    {i:2d}. {col:<35s} {str(dt):<12s} null {np_:.1f}%")
-
-    return final
+    print("\n" + "=" * 60)
+    print(f"🎉 PIPELINE HOÀN THÀNH TRONG: {elapsed}")
+    print("=" * 60)
+    return df_socio, df_covid, df_ml
 
 
-# ═══════════════════════════════════════════════════════════════
-# HÀM TIỆN ÍCH (cho Dashboard & Notebooks)
-# ═══════════════════════════════════════════════════════════════
-
-def load_processed_data():
-    """Nạp dữ liệu đã xử lý từ ``data/processed/``."""
-    p = os.path.join(PROCESSED_DIR, "merged_spotify_data.csv")
+# Các hàm tiện ích nạp dữ liệu cho Dashboard và Notebooks
+def load_socioeconomic_data():
+    """Nạp dữ liệu kinh tế - xã hội 74 quốc gia (2021 - 2022)."""
+    p = os.path.join(PROCESSED_DIR, "spotify_socioeconomic_2021_2022.csv")
     if not os.path.exists(p):
-        raise FileNotFoundError(
-            f"File chưa tồn tại: {p}\n"
-            "Chạy: python src/data_loader.py"
-        )
+        raise FileNotFoundError(f"File chưa tồn tại: {p}\nChạy: python src/data_loader.py")
     df = pd.read_csv(p, low_memory=False)
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
-    print(f"✅ Nạp processed: {len(df):,} dòng × {len(df.columns)} cột")
+    print(f"✅ Nạp Socioeconomic: {len(df):,} dòng × {len(df.columns)} cột")
+    return df
+
+
+def load_covid_data():
+    """Nạp dữ liệu dòng thời gian 3 giai đoạn đại dịch COVID-19 (Global 2020 - 2022)."""
+    p = os.path.join(PROCESSED_DIR, "spotify_covid_timeline_2020_2022.csv")
+    if not os.path.exists(p):
+        raise FileNotFoundError(f"File chưa tồn tại: {p}\nChạy: python src/data_loader.py")
+    df = pd.read_csv(p, low_memory=False)
+    df["week"] = pd.to_datetime(df["week"], errors="coerce")
+    print(f"✅ Nạp COVID Timeline: {len(df):,} dòng × {len(df.columns)} cột")
+    return df
+
+
+def load_ml_data():
+    """Nạp dữ liệu cấp độ bài hát (Song-level) chuyên dụng cho Machine Learning."""
+    p = os.path.join(PROCESSED_DIR, "tracks_ml_dataset.csv")
+    if not os.path.exists(p):
+        raise FileNotFoundError(f"File chưa tồn tại: {p}\nChạy: python src/data_loader.py")
+    df = pd.read_csv(p)
+    print(f"✅ Nạp ML Dataset: {len(df):,} bài hát × {len(df.columns)} cột")
     return df
 
 
 def load_sample_data():
-    """Nạp dữ liệu mẫu từ ``data/sample/`` (test nhanh)."""
+    """Nạp dữ liệu mẫu từ data/sample/ (test nhanh cho Dashboard)."""
     p = os.path.join(SAMPLE_DIR, "spotify_sample_merged.csv")
     if not os.path.exists(p):
-        raise FileNotFoundError(
-            f"File chưa tồn tại: {p}\n"
-            "Chạy: python src/data_loader.py --sample"
-        )
+        raise FileNotFoundError(f"File chưa tồn tại: {p}\nChạy: python src/data_loader.py --sample")
     df = pd.read_csv(p, low_memory=False)
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
-    print(f"✅ Nạp sample: {len(df):,} dòng × {len(df.columns)} cột")
+    print(f"✅ Nạp Sample: {len(df):,} dòng × {len(df.columns)} cột")
     return df
 
 
@@ -695,16 +594,9 @@ def data_quality_report(df, name="Dataset"):
         "Null%": (df.isnull().mean() * 100).round(2).values,
         "Unique": df.nunique().values,
     })
-    print(f"\n{'=' * 70}")
-    print(f"📋 Data Quality — {name} "
-          f"({len(df):,} rows × {len(df.columns)} cols)")
-    print("=" * 70)
+    print(f"\n📋 Data Quality — {name} ({len(df):,} rows × {len(df.columns)} cols)")
     return report
 
-
-# ═══════════════════════════════════════════════════════════════
-# MAIN
-# ═══════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
     import sys
