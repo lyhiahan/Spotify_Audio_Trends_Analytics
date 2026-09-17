@@ -42,6 +42,7 @@ glimpse(spotify_data)
 
 # Hiển thị 6 dòng đầu tiên của bộ dữ liệu
 head(spotify_data)
+View(spotify_data)
 ```
 
 ## 3. Thống kê Sơ bộ (Summary Statistics)

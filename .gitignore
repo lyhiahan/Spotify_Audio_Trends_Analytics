@@ -48,3 +48,8 @@ Thumbs.db
 # 6. Streamlit & Log files
 .streamlit/secrets.toml
 *.log
+
+# 7. R Temporary Files
+.RDataTmp
+.Rhistory
+

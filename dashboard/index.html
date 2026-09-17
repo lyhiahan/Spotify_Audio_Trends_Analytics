@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spotify Audio Trends Dashboard</title>
+  <!-- Tailwind CSS v3 with Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            spotify: {
+              green: '#1DB954',
+              hoverGreen: '#1ed760',
+              cardBg: '#092113',
+              cardBorder: 'rgba(29, 185, 84, 0.25)',
+              darkBg: '#0b0c0c',
+              chartBg: '#0f0f0f',
+              barFill: '#232726',
+              barBorder: '#2f3834'
+            }
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Custom Styles -->
+  <style>
+    html, body {
+      background-color: #0b0c0c;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0c0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232726;
+      border-radius: 2px;
+    }
+
+    @keyframes subtle-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+    .animate-radar-dot {
+      animation: subtle-pulse 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-screen max-h-screen bg-[#0b0c0c] text-white antialiased font-sans select-none overflow-hidden p-3 flex flex-col justify-between box-border">
+  <div class="h-full flex flex-col justify-between gap-3">
+    
+    <!-- Top Navigation Header -->
+    <header class="pb-1 z-20 shrink-0">
+      <nav class="flex flex-wrap items-center gap-2.5 text-xs md:text-sm font-medium" data-purpose="top-navigation">
+        <button class="flex items-center space-x-2 bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold px-4 py-1.5 rounded-full transition shadow-[0_0_15px_rgba(29,185,84,0.35)] ring-1 ring-[#1DB954]/50 cursor-pointer">
+          <span class="text-sm">🏠</span>
+          <span>Trang Chủ</span>
+        </button>
+        <button class="group relative flex items-center space-x-2 text-zinc-300 hover:text-white px-3.5 py-1.5 rounded-full hover:bg-zinc-800/80 transition border border-transparent hover:border-zinc-700 cursor-pointer">
+          <span>📊</span>
+          <span>Tổng Quan Thị Trường</span>
+        </button>
+        <button class="group relative flex items-center space-x-2 text-zinc-300 hover:text-white px-3.5 py-1.5 rounded-full hover:bg-zinc-800/80 transition border border-transparent hover:border-zinc-700 cursor-pointer">
+          <span>📈</span>
+          <span>Trực Quan Hóa Dữ Liệu</span>
+        </button>
+        <button class="group relative flex items-center space-x-2 text-zinc-300 hover:text-white px-3.5 py-1.5 rounded-full hover:bg-zinc-800/80 transition border border-transparent hover:border-zinc-700 cursor-pointer">
+          <span>🎧</span>
+          <span>Hồ Sơ Âm Thanh</span>
+        </button>
+        <button class="group relative flex items-center space-x-2 text-zinc-300 hover:text-white px-3.5 py-1.5 rounded-full hover:bg-zinc-800/80 transition border border-transparent hover:border-zinc-700 cursor-pointer">
+          <span>🌐</span>
+          <span>Mạng Lưới &amp; Dự Báo Hit</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- 1. HERO SECTION: PORTAL HEADER -->
+    <div class="relative rounded-2xl overflow-hidden border border-[#1db954]/30 shadow-[0_10px_35px_rgba(0,0,0,0.8)] bg-gradient-to-r from-[#05160c] via-[#092213] to-[#07150d] h-[200px] shrink-0 flex items-center justify-between px-6 md:px-8 py-4">
+      <div class="relative z-10 flex flex-col justify-center max-w-2xl pr-4 space-y-2.5">
+        
+        <!-- Header Tagline & Icon -->
+        <div class="flex items-center space-x-3">
+          <div class="p-2 rounded-full bg-black/60 ring-1 ring-[#1DB954]/60 shadow-[0_0_20px_rgba(29,185,84,0.45)] shrink-0">
+            <svg class="w-8 h-8 fill-[#1DB954] shrink-0 drop-shadow-[0_0_12px_rgba(29,185,84,0.8)]" viewBox="0 0 24 24">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.306c-.218.358-.684.472-1.042.254-2.855-1.745-6.449-2.14-10.682-1.172-.408.093-.816-.164-.91-.572-.093-.408.165-.816.573-.91 4.636-1.06 8.605-.615 11.808 1.348.357.218.471.684.253 1.042zm1.468-3.265c-.274.444-.86.584-1.304.31-3.268-2.008-8.25-2.59-12.114-1.417-.5.152-1.031-.133-1.183-.633-.151-.5.134-1.031.633-1.183 4.417-1.34 9.914-.687 13.658 1.616.444.274.584.86.31 1.304zm.126-3.41c-3.92-2.328-10.384-2.543-14.133-1.404-.6.182-1.236-.16-1.418-.76-.182-.601.16-1.237.76-1.419 4.312-1.309 11.446-1.061 15.962 1.62.54.321.716 1.026.395 1.566-.321.54-1.026.716-1.566.395z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-white drop-shadow-md leading-tight">Spotify Audio Trends Analytics</h1>
+            <span class="text-xs text-[#1DB954] font-bold tracking-wide uppercase">Hệ thống Phân tích Audio Features &amp; Dự báo Xu hướng Âm nhạc</span>
+          </div>
+        </div>
+
+        <!-- Research Description -->
+        <p class="text-xs text-zinc-300 font-normal leading-relaxed drop-shadow-sm max-w-xl">
+          Nghiên cứu bóc tách các đặc trưng âm thanh cốt lõi (<span class="text-white font-semibold">Danceability, Energy, Valence...</span>) từ <span class="text-white font-semibold">314,727 bản ghi BXH</span> trên 65 quốc gia, ứng dụng mô hình Machine Learning dự báo bài hát Hit.
+        </p>
+
+        <!-- KPI Quick Pills -->
+        <div class="flex items-center space-x-2 pt-0.5">
+          <div class="bg-black/50 border border-white/10 px-3 py-1 rounded-full text-[10px] font-medium text-zinc-300 flex items-center space-x-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#1DB954]"></span>
+            <span>2,242 Bài hát</span>
+          </div>
+          <div class="bg-black/50 border border-white/10 px-3 py-1 rounded-full text-[10px] font-medium text-zinc-300 flex items-center space-x-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#1DB954]"></span>
+            <span>314K+ Bản ghi</span>
+          </div>
+          <div class="bg-black/50 border border-white/10 px-3 py-1 rounded-full text-[10px] font-medium text-zinc-300 flex items-center space-x-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#1DB954]"></span>
+            <span>65 Quốc gia</span>
+          </div>
+          <div class="bg-black/50 border border-[#1DB954]/40 px-3 py-1 rounded-full text-[10px] font-semibold text-[#1DB954] flex items-center space-x-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>AUC 0.94 ML Model</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Real Album Covers Mosaic Grid Background -->
+      <div class="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-3/5 lg:w-1/2 pointer-events-none select-none overflow-hidden flex items-center justify-end">
+        <div class="grid grid-cols-6 gap-2 p-2 w-[460px] md:w-[520px] transform rotate-3 scale-105 opacity-75">
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Bad Bunny - Un Verano Sin Ti">
+            <img src="./assets/covers/bad_bunny_un_verano_sin_ti.jpg" class="w-full h-full object-cover" alt="Bad Bunny" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Olivia Rodrigo - SOUR">
+            <img src="./assets/covers/olivia_rodrigo_sour.jpg" class="w-full h-full object-cover" alt="Olivia Rodrigo" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Farruko - Pepas">
+            <img src="./assets/covers/farruko_pepas.jpg" class="w-full h-full object-cover" alt="Farruko" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Lil Nas X - Montero">
+            <img src="./assets/covers/lil_nas_x_industry_baby.jpg" class="w-full h-full object-cover" alt="Lil Nas X" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Adele - 30">
+            <img src="./assets/covers/adele_easy_on_me.jpg" class="w-full h-full object-cover" alt="Adele" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Dua Lipa - Future Nostalgia">
+            <img src="./assets/covers/dua_lipa_levitating.jpg" class="w-full h-full object-cover" alt="Dua Lipa" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Glass Animals - Dreamland">
+            <img src="./assets/covers/glass_animals_heat_waves.jpg" class="w-full h-full object-cover" alt="Glass Animals" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="The Weeknd - After Hours">
+            <img src="./assets/covers/the_weeknd_after_hours.jpg" class="w-full h-full object-cover" alt="The Weeknd" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Harry Styles - Harry's House">
+            <img src="./assets/covers/harry_styles_harrys_house.jpg" class="w-full h-full object-cover" alt="Harry Styles" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Taylor Swift - Midnights">
+            <img src="./assets/covers/taylor_swift_midnights.jpg" class="w-full h-full object-cover" alt="Taylor Swift" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Justin Bieber - Justice">
+            <img src="./assets/covers/justin_bieber_justice.jpg" class="w-full h-full object-cover" alt="Justin Bieber" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden shadow-lg border border-white/15 bg-zinc-900 group hover:scale-110 transition-transform duration-300 relative cursor-pointer" title="Doja Cat - Kiss Me More">
+            <img src="./assets/covers/doja_cat_kiss_me_more.jpg" class="w-full h-full object-cover" alt="Doja Cat" />
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#05160c] via-[#092213]/85 to-transparent pointer-events-none"></div>
+      </div>
+    </div>
+
+    <!-- 2. CORE FEATURE NAVIGATION BENTO GRID (4 PORTAL CARDS - THAY THẾ BIỂU ĐỒ) -->
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-3.5 h-[240px] shrink-0" data-purpose="feature-portals-grid">
+      
+      <!-- Portal 1: Market Overview -->
+      <div class="group relative rounded-2xl border border-zinc-800/90 bg-[#121413] hover:bg-[#161a18] hover:border-[#1DB954]/40 p-4 transition-all duration-300 flex flex-col justify-between shadow-lg cursor-pointer">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-[#1DB954]/15 border border-[#1DB954]/30 flex items-center justify-center text-lg">
+              📊
+            </div>
+            <div>
+              <h3 class="text-sm font-extrabold text-white group-hover:text-[#1DB954] transition-colors">Tổng Quan Thị Trường</h3>
+              <span class="text-[10px] text-zinc-400 font-medium">Market Streams &amp; Global Distribution</span>
+            </div>
+          </div>
+          <span class="text-[9px] bg-zinc-800 group-hover:bg-[#1DB954]/20 text-zinc-300 group-hover:text-[#1DB954] px-2 py-0.5 rounded-full font-semibold border border-transparent group-hover:border-[#1DB954]/30 transition">
+            314.7K Bản ghi
+          </span>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+          Theo dõi tổng lượt stream hàng tuần, biến động theo thời gian, phân bố nhóm thu nhập World Bank và bản đồ phân bố 65 quốc gia.
+        </p>
+
+        <div class="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+          <span class="text-[9px] text-zinc-500 font-medium">Cập nhật 2021 - 2022</span>
+          <div class="text-[11px] text-[#1DB954] font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+            <span>Khám phá ngay</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portal 2: Audio Profiling -->
+      <div class="group relative rounded-2xl border border-zinc-800/90 bg-[#121413] hover:bg-[#161a18] hover:border-[#1DB954]/40 p-4 transition-all duration-300 flex flex-col justify-between shadow-lg cursor-pointer">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-lg">
+              🎧
+            </div>
+            <div>
+              <h3 class="text-sm font-extrabold text-white group-hover:text-purple-400 transition-colors">Hồ Sơ Âm Thanh</h3>
+              <span class="text-[10px] text-zinc-400 font-medium">Audio Features &amp; Mood Analysis</span>
+            </div>
+          </div>
+          <span class="text-[9px] bg-zinc-800 group-hover:bg-purple-500/20 text-zinc-300 group-hover:text-purple-300 px-2 py-0.5 rounded-full font-semibold border border-transparent group-hover:border-purple-500/30 transition">
+            8 Audio Features
+          </span>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+          So sánh các chỉ số đặc trưng âm thanh cốt lõi (Danceability, Energy, Valence, Acousticness...) giữa bài hát Hit vs Non-Hit và phân loại Mood bài hát.
+        </p>
+
+        <div class="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+          <span class="text-[9px] text-zinc-500 font-medium">Spotify Web API Audio Features</span>
+          <div class="text-[11px] text-purple-400 font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+            <span>Xem hồ sơ âm thanh</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portal 3: Multi-Dimensional Visualizations -->
+      <div class="group relative rounded-2xl border border-zinc-800/90 bg-[#121413] hover:bg-[#161a18] hover:border-[#1DB954]/40 p-4 transition-all duration-300 flex flex-col justify-between shadow-lg cursor-pointer">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-lg">
+              📈
+            </div>
+            <div>
+              <h3 class="text-sm font-extrabold text-white group-hover:text-cyan-400 transition-colors">Trực Quan Hóa Dữ Liệu</h3>
+              <span class="text-[10px] text-zinc-400 font-medium">Interactive Scatter &amp; Radar Charts</span>
+            </div>
+          </div>
+          <span class="text-[9px] bg-zinc-800 group-hover:bg-cyan-500/20 text-zinc-300 group-hover:text-cyan-300 px-2 py-0.5 rounded-full font-semibold border border-transparent group-hover:border-cyan-500/30 transition">
+            Plotly Engine
+          </span>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+          Bộ công cụ biểu đồ tương tác đa chiều, phân tích tương quan hai chỉ số âm thanh và mô phỏng mạng nhện Radar đặc tính bài hát.
+        </p>
+
+        <div class="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+          <span class="text-[9px] text-zinc-500 font-medium">Tự do tùy chỉnh trục X / Y</span>
+          <div class="text-[11px] text-cyan-400 font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+            <span>Mở biểu đồ tương tác</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portal 4: ML Hit Prediction & Network -->
+      <div class="group relative rounded-2xl border border-zinc-800/90 bg-[#121413] hover:bg-[#161a18] hover:border-[#1DB954]/40 p-4 transition-all duration-300 flex flex-col justify-between shadow-lg cursor-pointer">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-lg">
+              🌐
+            </div>
+            <div>
+              <h3 class="text-sm font-extrabold text-white group-hover:text-amber-400 transition-colors">Mạng Lưới &amp; Dự Báo Hit</h3>
+              <span class="text-[10px] text-zinc-400 font-medium">Machine Learning &amp; Collaboration Graph</span>
+            </div>
+          </div>
+          <span class="text-[9px] bg-zinc-800 group-hover:bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-semibold border border-transparent group-hover:border-amber-500/30 transition">
+            Accuracy 94%
+          </span>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+          Mô hình Machine Learning (Logistic Regression + Random Forest) dự đoán khả năng thành Hit và mạng lưới kết nối hợp tác nghệ sĩ.
+        </p>
+
+        <div class="flex items-center justify-between pt-1 border-t border-zinc-800/60">
+          <span class="text-[9px] text-zinc-500 font-medium">Random Forest Classifier</span>
+          <div class="text-[11px] text-amber-400 font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+            <span>Trải nghiệm dự báo</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- 3. RESEARCH HIGHLIGHTS / INSIGHTS BANNER -->
+    <div class="relative rounded-2xl border border-[#1db954]/25 bg-gradient-to-r from-[#071a0f] via-[#0c2a1a] to-[#091f13] px-5 py-2.5 h-[75px] shrink-0 shadow-lg flex items-center justify-between">
+      <div class="flex items-center space-x-2 text-xs font-black text-[#1DB954] shrink-0 pr-3 border-r border-white/10 uppercase tracking-wider">
+        <span>💡</span>
+        <span>Phát hiện cốt lõi</span>
+      </div>
+      
+      <div class="grid grid-cols-3 gap-3 flex-1 pl-3 text-left">
+        <div class="flex flex-col justify-center">
+          <span class="text-[9px] font-bold text-slate-300">Yếu tố dẫn dắt lượt Stream</span>
+          <span class="text-[10px] text-white font-semibold truncate"><span class="text-[#1DB954]">Danceability (>0.68)</span> &amp; Energy có tương quan cao nhất</span>
+        </div>
+        <div class="flex flex-col justify-center border-l border-white/10 pl-3">
+          <span class="text-[9px] font-bold text-slate-300">Phân bố thị trường địa lý</span>
+          <span class="text-[10px] text-white font-semibold truncate">Các nước High Income đóng góp <span class="text-[#1DB954]">68.4%</span> lượt stream</span>
+        </div>
+        <div class="flex flex-col justify-center border-l border-white/10 pl-3">
+          <span class="text-[9px] font-bold text-slate-300">Độ chính xác dự báo ML</span>
+          <span class="text-[10px] text-emerald-400 font-semibold truncate">Random Forest đạt <span class="text-white font-bold">AUC 0.94</span> (10-fold CV)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
