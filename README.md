@@ -3,19 +3,19 @@
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
-> **Kiến trúc dữ liệu:** Phân nhánh tối ưu (Early Branching Pipeline Architecture — Version 3.0).
+> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 41 Cột & Các Tệp Sample Gọn nhẹ (Version 3.1).
 
 ---
 
 ## 📌 1. Giới thiệu Đề tài & Mục tiêu Nghiên cứu
 
-Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của một bản thu không chỉ phụ thuộc vào độ nhận diện của nghệ sĩ mà còn gắn liền mật thiết với **các đặc trưng âm thanh (Audio Features)** nội tại (như *danceability*, *energy*, *valence*, *tempo*, *acousticness*), cũng như **môi trường kinh tế - xã hội (quy mô GDP, cơ cấu dân số, phân tầng thu nhập World Bank)** của từng quốc gia.
+Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của một bản thu không chỉ phụ thuộc vào độ nhận diện của nghệ sĩ mà còn gắn liền mật thiết với **các đặc trưng âm thanh (Audio Features)** nội tại (như *danceability*, *energy*, *valence*, *tempo*, *acousticness*), cũng như **môi trường kinh tế - xã hội (quy mô GDP, phân tầng thu nhập World Bank)** của từng quốc gia.
 
 Đề tài giải quyết trọn vẹn 4 mục tiêu học thuật và ứng dụng thực tiễn:
-1. **Kiến trúc Pipeline Phân nhánh Tối ưu (Branching Pipeline):** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), phân bổ làm sạch và sinh ra **3 tập dữ liệu đầu ra chuyên biệt** phục vụ độc lập cho Phân tích Kinh tế - Xã hội, Dòng thời gian Đại dịch COVID-19 và Huấn luyện Machine Learning.
+1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **41 cột cốt lõi phục vụ Insight**, đi kèm các tệp Sample gọn nhẹ cho nhóm phát triển.
 2. **Khám phá Insight & Kể chuyện bằng Dữ liệu (Data Storytelling):** 
    * *Nghịch lý Cảm xúc (GDP vs Valence Paradox):* Liệu các nước đang phát triển (GDP trung bình/thấp) có chuộng âm nhạc sôi động và giàu năng lượng hơn để giải tỏa áp lực so với các nước phát triển?
-   * *3 Giai đoạn Đại dịch COVID-19 (Timeline Waves 2020 – 2022):* Đo lường sự chuyển biến tâm lý người nghe toàn cầu từ *Phong tỏa (Lockdown & Shock)* sang *Giải tỏa (Vaccine & Escapism)* và *Bình thường mới (Reopening & New Normal)*.
+   * *3 Giai đoạn Đại dịch COVID-19 (Timeline Waves 2020 – 2022):* Đo lường sự chuyển biến tâm lý người nghe toàn cầu qua các cột mốc: *Phong tỏa (Lockdown & Shock)*, *Giải tỏa (Vaccine & Escapism)* và *Bình thường mới (Reopening & New Normal)*.
    * *Làn sóng Dịch chuyển Âm nhạc Toàn cầu:* Sự bùng nổ của âm nhạc bản địa Latin (Bad Bunny) và K-Pop (BTS) từ các nước đang phát triển ra toàn thế giới.
 3. **Mô hình Học máy Dự báo Xu hướng (Machine Learning):** Áp dụng thuật toán **Hồi quy Logistic (Logistic Regression)** trên tập dữ liệu cấp độ bài hát (Song-level) độc nhất, **triệt tiêu 100% rủi ro rò rỉ dữ liệu (Data Leakage)** để dự báo xác suất một bài hát trở thành Top Hit (`is_trending`).
 4. **Hệ thống Dashboard Tương tác Đa chiều (Interactive Visual Analytics):** Xây dựng bảng điều khiển Streamlit gồm 5 trang chuyên sâu với các biểu đồ tương tác thời gian thực (Plotly Choropleth, Radar Chart, Russell Mood Map, Dynamic Scatter Plot).
@@ -26,7 +26,7 @@ Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của 
 
 ```text
 PROJECT/
-├── .gitignore                          # Cấu hình bỏ qua file >100MB, theo dõi file ML & COVID
+├── .gitignore                          # Cấu hình bỏ qua file nặng >100MB, theo dõi các file sample
 ├── requirements.txt                    # Danh sách thư viện Python cần cài đặt
 ├── README.md                           # Giới thiệu đồ án, hướng dẫn cài đặt và tổng kết
 │
@@ -36,25 +36,24 @@ PROJECT/
 │   │   ├── country_codes.csv           # 217 dòng × 3 cột (Mã ISO-3, vùng địa lý, nhóm thu nhập)
 │   │   ├── gdp_data.csv                # 13,365 dòng × 4 cột (Chuỗi thời gian GDP World Bank)
 │   │   ├── spotify-tracks-dataset.csv  # 114,000 dòng × 22 cột (Đặc trưng âm thanh & thể loại)
-│   │   └── spotify-weekly-charts.csv   # 1,788,000 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
+│   │   └── spotify-weekly-charts.csv   # 1,787,999 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
 │   │
-│   ├── processed/                      # 3 tập dữ liệu chuyên biệt sau Branching Pipeline
-│   │   ├── spotify_socioeconomic_2021_2022.csv # Dữ liệu 74 quốc gia (1,051,527 dòng × 40 cột, 378.4 MB)
-│   │   ├── spotify_covid_timeline_2020_2022.csv # Dữ liệu Global 3 pha đại dịch (26,598 dòng × 32 cột, 7.6 MB)
-│   │   └── tracks_ml_dataset.csv               # Dữ liệu Song-level cho ML (39,202 bài × 18 cột, 6.1 MB)
+│   ├── processed/                      # Tệp Master lớn sau khi xử lý & kết nối 5 bảng
+│   │   └── merged_spotify_data.csv     # Master Dataset (1,078,125 dòng × 41 cột, 407.4 MB)
 │   │
-│   └── sample/                         # Dữ liệu mẫu rút gọn phục vụ kiểm thử nhanh
-│       └── spotify_sample_merged.csv   # Sample 20,000 dòng chuẩn hóa (7.2 MB)
+│   └── sample/                         # Các tệp dữ liệu mẫu rút gọn cho nhóm làm việc
+│       ├── spotify_sample_merged.csv   # Sample 20,000 dòng × 41 cột (7.6 MB) cho Dashboard & EDA
+│       └── tracks_sample_ml.csv        # Song-level Sample (36,699 bài × 18 cột, 5.7 MB) cho Thành Tài
 │
 ├── notebooks/                          # Jupyter Notebooks nghiên cứu theo Barem đồ án
-│   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Branching Pipeline, 13 biến & EDA tĩnh
+│   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Master Pipeline, 13 biến & EDA tĩnh
 │   ├── 02_eda.ipynb                    # Phân tích khám phá dữ liệu (EDA) đa biến chuyên sâu
 │   ├── 03_model.ipynb                  # Huấn luyện mô hình Logistic Regression & trực quan hóa ML
 │   └── 04_story.ipynb                  # Khai thác Insight chuyên sâu & cốt truyện dữ liệu
 │
 ├── src/                                # Module mã nguồn dùng chung
 │   ├── __init__.py
-│   ├── data_loader.py                  # Pipeline ETL phân nhánh 3 nhánh & 4 hàm nạp dữ liệu
+│   ├── data_loader.py                  # Pipeline ETL Master Dataset & các hàm nạp dữ liệu tiện ích
 │   └── models.py                       # Xây dựng và kiểm định mô hình Machine Learning
 │
 ├── dashboard/                          # Ứng dụng Dashboard Tương tác (Streamlit & Plotly)
@@ -68,8 +67,8 @@ PROJECT/
 │   └── assets/                         # Hình ảnh minh họa và assets
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
-│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô & 3 bảng processed)
-│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu phân nhánh v3.0
+│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 41 cột & Sample)
+│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.1
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
 │   └── final_report.docx               # Báo cáo tổng kết đồ án theo cấu trúc chuẩn IEEE
 │
@@ -79,14 +78,13 @@ PROJECT/
 
 ---
 
-## ⚡ 3. Ba Nhánh Dữ liệu Mục tiêu (Specialized Datasets)
+## ⚡ 3. Các Tệp Dữ liệu Đầu ra (Output Datasets)
 
-| Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Thành viên sử dụng | Mục đích phân tích & Trực quan hóa |
+| Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
-| **`spotify_socioeconomic_2021_2022.csv`** | 1,051,527 × 40 | ~378.4 MB | **Lý Gia Hân** | • Bản đồ Choropleth 74 quốc gia.<br>• Nghịch lý GDP vs Valence.<br>• Phân tầng thu nhập World Bank.<br>• Đo lường thị phần làn sóng Latin & K-Pop. |
-| **`spotify_covid_timeline_2020_2022.csv`** | 26,598 × 32 | ~7.6 MB | **Lý Gia Hân** | • Phân tích chuỗi thời gian 3 pha đại dịch toàn cầu (`Lockdown & Shock`, `Vaccine & Escapism`, `Reopening & New Normal`). |
-| **`tracks_ml_dataset.csv`** | 39,202 × 18 | ~6.1 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát độc nhất (Song-level).<br>• Chống 100% Data Leakage cho mô hình Logistic Regression.<br>• Nhãn `is_trending` đạt tỷ lệ Hit 35.9%. |
-| **`spotify_sample_merged.csv`** | 20,000 × 40 | ~7.2 MB | **Nhóm phát triển** | • Bản mẫu rút gọn để dựng UI Dashboard và kiểm thử biểu đồ siêu tốc trong 0.2 giây. |
+| **`merged_spotify_data.csv`** | 1,078,125 × 41 | ~407.4 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 74 nước & COVID Timeline (`covid_phase`). |
+| **`spotify_sample_merged.csv`** | 20,000 × 41 | ~7.6 MB | **Lý Gia Hân** | • Bản mẫu đầy đủ 41 cột để dựng giao diện Streamlit Dashboard và kiểm thử biểu đồ Plotly trong 0.2 giây. |
+| **`tracks_sample_ml.csv`** | 36,699 × 18 | ~5.7 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống 100% Data Leakage cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
 
 ---
 
@@ -94,7 +92,7 @@ PROJECT/
 
 ### Bước 1: Clone kho lưu trữ về máy tính
 ```bash
-git clone <URL_REPO_GITHUB_CỦA_NHÓM>
+git clone https://github.com/lyhiahan/Spotify_Audio_Trends_Analytics.git
 cd Spotify_Audio_Trends_Analytics
 ```
 
@@ -115,7 +113,7 @@ pip install -r requirements.txt
 
 ### Bước 3: Thực thi Pipeline Tiền xử lý & Xuất dữ liệu
 ```bash
-# Chạy toàn bộ Branching Pipeline (tự động nạp, làm sạch và xuất cả 3 file processed):
+# Chạy toàn bộ Master Pipeline (tự động nạp thô, làm sạch và xuất Master Dataset + 2 Sample):
 python src/data_loader.py
 
 # (Tùy chọn) Chạy chế độ mẫu thử nhanh với 20,000 dòng:
@@ -132,24 +130,20 @@ Sau khi khởi chạy thành công, truy cập giao diện dashboard tại đị
 
 ## 💻 5. Sử dụng Module Nạp Dữ liệu trong Code Python
 
-Các thành viên có thể nạp trực tiếp dữ liệu vào Jupyter Notebooks hoặc Dashboard pages mà không cần viết lại mã nạp CSV:
+Các thành viên có thể nạp trực tiếp dữ liệu vào Jupyter Notebooks hoặc Dashboard pages bằng các hàm tiện ích:
 
 ```python
-# 1. Nạp dữ liệu Kinh tế - Xã hội 74 quốc gia:
-from src.data_loader import load_socioeconomic_data
-df_socio = load_socioeconomic_data()
+# 1. Nạp file Master lớn duy nhất (merged_spotify_data.csv):
+from src.data_loader import load_master_data
+df_master = load_master_data()  # hoặc load_master_data(nrows=50000)
 
-# 2. Nạp dữ liệu Dòng thời gian 3 pha COVID-19:
-from src.data_loader import load_covid_data
-df_covid = load_covid_data()
-
-# 3. Nạp dữ liệu Song-level cho Machine Learning:
-from src.data_loader import load_ml_data
-df_ml = load_ml_data()
-
-# 4. Nạp bản mẫu Sample 20,000 dòng:
+# 2. Nạp bản mẫu Sample 20,000 dòng (đầy đủ 41 cột cho Dashboard & EDA):
 from src.data_loader import load_sample_data
 df_sample = load_sample_data()
+
+# 3. Nạp tập dữ liệu Song-level cho Thành Tài huấn luyện Machine Learning:
+from src.data_loader import load_ml_sample
+df_ml = load_ml_sample()
 ```
 
 ---
@@ -160,15 +154,15 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 
 | STT | Họ và tên | MSSV | Vai trò chính | Nhiệm vụ đảm nhiệm theo Barem Đồ án |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Branching Pipeline (`src/data_loader.py`).<br>• Làm sạch và kết nối 5 bảng dữ liệu (>1.9M bản ghi).<br>• Xây dựng 13 Calculated Fields và viết `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh 8–10 biểu đồ chuyên sâu trong `notebooks/02_eda.ipynb`. |
+| 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Master Pipeline (`src/data_loader.py`).<br>• Làm sạch và kết nối 5 bảng dữ liệu (>1.9M bản ghi).<br>• Xây dựng 13 Calculated Fields và viết `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh 8–10 biểu đồ chuyên sâu trong `notebooks/02_eda.ipynb`. |
 | 2 | **Lý Gia Hân** | **24133016** | Visualization & Dashboard Dev | • Thiết kế toàn bộ giao diện tương tác Streamlit đa trang (`dashboard/`).<br>• Xây dựng Bản đồ tương tác thế giới Choropleth, Radar Chart và Russell Mood Map.<br>• Phân tích cốt truyện dữ liệu: Nghịch lý GDP vs Valence và 3 Pha COVID-19 trong `notebooks/04_story.ipynb`. |
 | 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Demo / Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu Song-level không rò rỉ (`notebooks/03_model.ipynb`).<br>• Xây dựng bộ công cụ tương tác dự báo trên Dashboard Trang 4.<br>• Soạn thảo Báo cáo tổng kết đồ án chuẩn IEEE (`docs/final_report.docx`) và quay Video Demo thuyết trình. |
 
 ---
 
 ## 📑 7. Tài liệu Tham khảo & Báo cáo Đi kèm
-* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, 3 bảng processed và công thức toán học của 13 Calculated Fields.
-* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, lý do chuyển đổi phân nhánh và báo cáo hiệu năng.
+* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 41 cột và công thức toán học của 13 Calculated Fields.
+* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 41 cột phục vụ Insight.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
 * 📹 **Link Video Demo (YouTube / Google Drive):** `[CẬP NHẬT LINK VIDEO TẠI ĐÂY]`
 * 📊 **Link Slide Thuyết trình:** `[CẬP NHẬT LINK CANVA/GOOGLE SLIDES TẠI ĐÂY]`

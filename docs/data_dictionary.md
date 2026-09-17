@@ -2,7 +2,7 @@
 **Dự án:** Nghiên cứu & Trực quan hóa Đặc trưng Âm thanh và Dự đoán Xu hướng Bài hát Thịnh hành trên Spotify  
 **Môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 **Tác giả:** Đinh Quốc Anh (Data Engineer & Data Analyst)  
-**Phiên bản:** 3.0 (Kiến trúc Phân nhánh Tối ưu — Branching Pipeline)  
+**Phiên bản:** 3.1 (Kiến trúc Master Dataset Hợp nhất 41 Cột & Các Tệp Sample)  
 
 ---
 
@@ -13,24 +13,23 @@
    * [1.3. Bảng `gdp_data.csv`](#13-bảng-gdp_datacsv)
    * [1.4. Bảng `spotify-tracks-dataset.csv`](#14-bảng-spotify-tracks-datasetcsv)
    * [1.5. Bảng `spotify-weekly-charts.csv`](#15-bảng-spotify-weekly-chartscsv)
-2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (BRANCHING PIPELINE OUTPUTS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-branching-pipeline-outputs)
-   * [2.1. File 1: `spotify_socioeconomic_2021_2022.csv` (Kinh tế – Xã hội 74 Quốc gia)](#21-file-1-spotify_socioeconomic_2021_2022csv-kinh-tế--xã-hội-74-quốc-gia)
-   * [2.2. File 2: `spotify_covid_timeline_2020_2022.csv` (Chuỗi thời gian Đại dịch COVID-19)](#22-file-2-spotify_covid_timeline_2020_2022csv-chuỗi-thời-gian-đại-dịch-covid-19)
-   * [2.3. File 3: `tracks_ml_dataset.csv` (Tập dữ liệu Cấp độ Bài hát cho Machine Learning)](#23-file-3-tracks_ml_datasetcsv-tập-dữ-liệu-cấp-độ-bài-hát-cho-machine-learning)
-   * [2.4. File Mẫu: `spotify_sample_merged.csv` (Bản mẫu rút gọn cho Dashboard Dev)](#24-file-mẫu-spotify_sample_mergedcsv-bản-mẫu-rút-gọn-cho-dashboard-dev)
+2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-output-datasets)
+   * [2.1. File Master: `merged_spotify_data.csv` (41 Cột Phục vụ Insight)](#21-file-master-merged_spotify_datacsv-41-cột-phục-vụ-insight)
+   * [2.2. File Sample 1: `spotify_sample_merged.csv` (Bản mẫu Dashboard & EDA)](#22-file-sample-1-spotify_sample_mergedcsv-bản-mẫu-dashboard--eda)
+   * [2.3. File Sample 2: `tracks_sample_ml.csv` (Dữ liệu Song-level cho Thành Tài làm ML)](#23-file-sample-2-tracks_sample_mlcsv-dữ-liệu-song-level-cho-thành-tài-làm-ml)
 3. [TỔNG HỢP 13 CALCULATED FIELDS & CÔNG THỨC TOÁN HỌC](#3-tổng-hợp-13-calculated-fields--công-thức-toán-học)
-4. [HƯỚNG DẪN TRUY XUẤT DỮ LIỆU TỰ ĐỘNG THÔNG QUA PYTHON API](#4-hướng-dẫn-truy-xuất-dữ-liệu-tự-động-thông-qua-python-api)
+4. [HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API](#4-hướng-dẫn-truy-xuất-dữ-liệu-thông-qua-python-api)
 
 ---
 
 ## 1. TỔNG QUAN NGUỒN DỮ LIỆU (5 BẢNG THÔ BAN ĐẦU)
 
-Hệ thống tích hợp dữ liệu từ 5 nguồn độc lập với tổng cộng hơn **1.9 triệu dòng bản ghi thô**:
+Hệ thống tích hợp dữ liệu từ 5 nguồn độc lập với tổng quy mô **hơn 1.9 triệu bản ghi thô**:
 
 ### 1.1. Bảng `best-selling-artists.csv`
 * **Nguồn dữ liệu:** Wikipedia / RIAA Historical Records.
 * **Quy mô:** 121 dòng × 7 cột | **Dung lượng:** ~16 KB
-* **Mục đích:** Xác định danh sách nghệ sĩ huyền thoại/di sản (Legacy Artists) có doanh số bán đĩa được chứng nhận cao nhất lịch sử.
+* **Mục đích:** Bổ sung danh sách nghệ sĩ huyền thoại/di sản (Legacy Artists) có doanh số bán đĩa được chứng nhận cao nhất lịch sử.
 
 | Tên trường | Kiểu dữ liệu | Ý nghĩa / Diễn giải | Ví dụ mẫu |
 | :--- | :--- | :--- | :--- |
@@ -103,41 +102,40 @@ Hệ thống tích hợp dữ liệu từ 5 nguồn độc lập với tổng c�
 
 ### 1.5. Bảng `spotify-weekly-charts.csv`
 * **Nguồn dữ liệu:** Bảng xếp hạng tuần khu vực và toàn cầu của Spotify (Top 200 Weekly Charts).
-* **Quy mô ban đầu:** 1,788,000 dòng × 36 cột | **Dung lượng:** ~796.6 MB
+* **Quy mô ban đầu:** 1,787,999 dòng × 36 cột | **Dung lượng:** ~796.6 MB
 * **Mục đích:** Xương sống chuỗi thời gian, ghi nhận thứ hạng, số lượt streams, tên bài hát, nghệ sĩ tại 74 quốc gia và bảng Global từ 2016 đến 2022.
 * **Xử lý làm sạch:**
   - Trích xuất `track_id` từ URI (`spotify:track:<id>`).
   - Ép kiểu `week` sang chuẩn `datetime`, tách `year`, `month`, `quarter`.
   - Lọc bỏ triệt để các bản ghi có `streams <= 0` hoặc `week` bị rỗng.
   - Khử trùng lặp bộ ba định danh `(track_id, week, country)`.
-  - Loại bỏ sớm 15 cột phụ không mang giá trị phân tích (`Unnamed: 0`, `uri`, `artist_names`, `artists_num`, `artist_id`, `key`, `mode`, `source`, `album_num_tracks`, `collab`, `release_date`, `previous_rank`, `artist_img`, `album_cover`, `pivot`, `region`).
+  - Loại bỏ sớm 15 cột phụ không mang giá trị cho insight (`Unnamed: 0`, `uri`, `artist_names`, `artists_num`, `artist_id`, `key`, `mode`, `source`, `album_num_tracks`, `collab`, `release_date`, `previous_rank`, `artist_img`, `album_cover`, `pivot`, `region`).
 
 ---
 
-## 2. CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (BRANCHING PIPELINE OUTPUTS)
+## 2. CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)
 
-Hệ thống Pipeline phân nhánh sinh ra **3 tập dữ liệu đầu ra chuyên biệt** trong thư mục `data/processed/` và **1 tập dữ liệu mẫu** trong thư mục `data/sample/`:
+Hệ thống ETL hợp nhất dữ liệu vào **1 tệp Master lớn duy nhất** trong `data/processed/` và sinh **2 tệp sample gọn nhẹ** trong `data/sample/`:
 
 ```text
 data/
 ├── processed/
-│   ├── spotify_socioeconomic_2021_2022.csv # 1,051,527 dòng × 40 cột (378.4 MB)
-│   ├── spotify_covid_timeline_2020_2022.csv # 26,598 dòng × 32 cột (7.6 MB)
-│   └── tracks_ml_dataset.csv               # 39,202 bài hát × 18 cột (6.1 MB)
+│   └── merged_spotify_data.csv # 1,078,125 dòng × 41 cột (407.4 MB) — Master Dataset
 └── sample/
-    └── spotify_sample_merged.csv           # 20,000 dòng × 40 cột (7.2 MB)
+    ├── spotify_sample_merged.csv # 20,000 dòng × 41 cột (7.6 MB) — Bản mẫu Dashboard & EDA
+    └── tracks_sample_ml.csv     # 36,699 bài hát × 18 cột (5.7 MB) — Song-level ML cho Thành Tài
 ```
 
 ---
 
-### 2.1. File 1: `spotify_socioeconomic_2021_2022.csv` (Kinh tế – Xã hội 74 Quốc gia)
-* **Quy mô:** 1,051,527 dòng × 40 cột | **Dung lượng:** ~378.4 MB
-* **Phục vụ chính:** Lý Gia Hân (Dashboard Trang 3: Kinh tế & Âm nhạc, Bản đồ tương tác Choropleth, Data Storytelling).
-* **Đặc điểm tối ưu:**
-  - Lọc sớm `country != 'Global'` trước khi JOIN World Bank GDP và Country Codes $\rightarrow$ **Nâng tỷ lệ khớp GDP từ 84.9% lên ~89.6% - 98%**, triệt tiêu hoàn toàn missing giả tạo.
-  - Tích hợp đầy đủ 9 đặc trưng âm học và các chỉ số kinh tế vĩ mô.
+### 2.1. File Master: `merged_spotify_data.csv` (41 Cột Phục vụ Insight)
+* **Quy mô:** 1,078,125 dòng × 41 cột | **Dung lượng:** ~407.4 MB
+* **Đặc điểm kiến trúc:**
+  - Hợp nhất toàn bộ dữ liệu 74 quốc gia và bảng Global giai đoạn 2020 – 2022.
+  - Tích hợp cả số liệu Kinh tế - Xã hội World Bank và phân kỳ 3 giai đoạn đại dịch COVID-19 (`covid_phase`).
+  - Lưu giữ chính xác **41 cột cốt lõi phục vụ Insight** cho đồ án, loại bỏ hoàn toàn các cột dư thừa từ raw.
 
-#### Từ điển chi tiết 40 cột của `spotify_socioeconomic_2021_2022.csv`:
+#### Từ điển chi tiết 41 cột của `merged_spotify_data.csv`:
 
 | STT | Tên cột | Kiểu dữ liệu | Nhóm thuộc tính | Ý nghĩa / Diễn giải phân tích |
 | :---: | :--- | :--- | :--- | :--- |
@@ -145,10 +143,10 @@ data/
 | 2 | `track_name` | String | Nhận dạng | Tên bài hát |
 | 3 | `artist_individual` | String | Nhận dạng | Tên từng nghệ sĩ riêng biệt biểu diễn bản thu |
 | 4 | `artist_genre` | String | Nhận dạng | Thể loại âm nhạc gắn với nghệ sĩ |
-| 5 | `country` | String | Không gian | Tên quốc gia của bảng xếp hạng (74 quốc gia) |
+| 5 | `country` | String | Không gian | Tên quốc gia của bảng xếp hạng (74 quốc gia và `Global`) |
 | 6 | `language` | String | Nhận dạng | Ngôn ngữ chính thể hiện bài hát (English, Spanish,...) |
 | 7 | `week` | Date (YYYY-MM-DD) | Thời gian | Ngày đầu tiên của tuần ghi nhận bảng xếp hạng |
-| 8 | `year` | Int64 | Thời gian | Năm phát hành bảng xếp hạng (`2021` hoặc `2022`) |
+| 8 | `year` | Int64 | Thời gian | Năm phát hành bảng xếp hạng (`2020`, `2021`, `2022`) |
 | 9 | `month` | Int64 | Thời gian | Tháng trong năm (`1` đến `12`) |
 | 10 | `quarter` | Int64 | Thời gian | Quý trong năm (`1` đến `4`) |
 | 11 | `rank` | Int64 | Xếp hạng | Thứ hạng của bài hát trên Top 200 tuần (`1` đến `200`) |
@@ -165,7 +163,7 @@ data/
 | 22 | `liveness` | Float64 | Audio Feature | Xác suất bài hát được thu âm trực tiếp $[0.0, 1.0]$ |
 | 23 | `valence` | Float64 | Audio Feature | Tính tích cực, vui tươi của giai điệu $[0.0, 1.0]$ |
 | 24 | `tempo` | Float64 | Audio Feature | Tốc độ nhịp đập bài hát tính theo Beats Per Minute (BPM) |
-| 25 | `gdp_value` | Float64 | Kinh tế World Bank| Tổng sản phẩm quốc nội tính bằng USD hiện hành |
+| 25 | `gdp_value` | Float64 | Kinh tế World Bank| Tổng sản phẩm quốc nội tính bằng USD hiện hành (với các quốc gia) |
 | 26 | `gdp_log` | Float64 | Kinh tế World Bank| $\ln(1 + \text{gdp\_value})$ nén quy mô GDP hàng nghìn tỷ USD |
 | 27 | `income_group` | String | Kinh tế World Bank| Phân tầng thu nhập (`High`, `Upper middle`, `Lower middle`, `Low`) |
 | 28 | `region_wb` | String | Địa lý World Bank | Khu vực địa lý kinh tế theo World Bank |
@@ -174,116 +172,36 @@ data/
 | 31 | `is_popular` | Int64 (0/1) | Calculated Field | $1$ nếu điểm phổ biến toàn cầu $\text{popularity} \ge 70$, $0$ nếu $< 70$ |
 | 32 | `mood_category` | String | Calculated Field | Phân loại tâm trạng theo mô hình Russell 4 góc phần tư |
 | 33 | `stream_share_country`| Float64 | Calculated Field | Tỷ trọng lượt stream của bài hát so với tổng stream của nước trong tuần |
-| 34 | `energy_loudness_index`| Float64 | Calculated Field | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa $[0, 1]$ |
-| 35 | `is_latin` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát thuộc dòng nhạc Latin hoặc tiếng Tây Ban Nha/Bồ Đào Nha |
-| 36 | `is_kpop` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát K-Pop hoặc tiếng Hàn Quốc |
-| 37 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử |
-| 38 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút |
-| 39 | `audio_diversity_score`| Float64 | Calculated Field | Độ lệch chuẩn giữa 4 đặc trưng âm học chính của bài hát |
-| 40 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks |
+| 34 | `covid_phase` | String | Calculated Field | 3 giai đoạn đại dịch (`Lockdown & Shock`, `Vaccine & Escapism`, `Reopening & New Normal`) |
+| 35 | `energy_loudness_index`| Float64 | Calculated Field | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa $[0, 1]$ |
+| 36 | `is_latin` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát thuộc dòng nhạc Latin hoặc tiếng Tây Ban Nha/Bồ Đào Nha |
+| 37 | `is_kpop` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát K-Pop hoặc tiếng Hàn Quốc |
+| 38 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử |
+| 39 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút |
+| 40 | `audio_diversity_score`| Float64 | Calculated Field | Độ lệch chuẩn giữa 4 đặc trưng âm học chính của bài hát |
+| 41 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks |
 
 ---
 
-### 2.2. File 2: `spotify_covid_timeline_2020_2022.csv` (Chuỗi thời gian Đại dịch COVID-19)
-* **Quy mô:** 26,598 dòng × 32 cột | **Dung lượng:** ~7.6 MB
-* **Phục vụ chính:** Lý Gia Hân (Data Storytelling & Trang COVID Timeline trên Dashboard).
-* **Đặc điểm tối ưu:**
-  - Sử dụng độc quyền bảng xếp hạng Toàn cầu (`country == 'Global'`) bao phủ trọn vẹn **3 năm đại dịch (2020 – 2022)**.
-  - Bỏ qua hoàn toàn các phép JOIN với GDP và Country Codes (do `Global` không có chỉ số kinh tế World Bank).
-  - Tích hợp phân loại 3 pha đại dịch (`covid_phase`) phản ánh sự chuyển biến tâm lý người nghe qua các đợt phong tỏa và mở cửa.
-
-#### Từ điển chi tiết 32 cột của `spotify_covid_timeline_2020_2022.csv`:
-
-| STT | Tên cột | Kiểu dữ liệu | Ý nghĩa / Diễn giải phân tích |
-| :---: | :--- | :--- | :--- |
-| 1 | `rank` | Int64 | Thứ hạng bài hát trên bảng xếp hạng Global trong tuần (1 - 200) |
-| 2 | `artist_individual` | String | Tên nghệ sĩ tham gia biểu diễn |
-| 3 | `artist_genre` | String | Thể loại âm nhạc của nghệ sĩ |
-| 4 | `track_name` | String | Tên bài hát |
-| 5 | `peak_rank` | Int64 | Thứ hạng cao nhất từng đạt được trên Global |
-| 6 | `weeks_on_chart` | Int64 | Số tuần liên tiếp bài hát trụ hạng trên Top Global |
-| 7 | `streams` | Int64 | Số lượt nghe trên phạm vi toàn cầu trong tuần |
-| 8 | `week` | Date | Ngày ghi nhận bảng xếp hạng tuần |
-| 9-17 | `danceability` $\to$ `tempo` | Float64 | 9 đặc trưng âm thanh chuẩn hóa của bài hát |
-| 18 | `country` | String | Cố định giá trị `Global` (Thước đo chuẩn mực không thiên lệch quốc gia) |
-| 19 | `language` | String | Ngôn ngữ thể hiện bài hát |
-| 20 | `track_id` | String | Mã định danh duy nhất của track |
-| 21-23 | `year`, `month`, `quarter` | Int64 | Các thành phần thời gian bóc tách từ `week` (2020 - 2022) |
-| 24 | `track_genre` | String | Thể loại bài hát thu thập từ Spotify API |
-| 25 | `covid_phase` | String | **Trường cốt lõi:** Phân kỳ 3 giai đoạn đại dịch (`Lockdown & Shock`, `Vaccine & Escapism`, `Reopening & New Normal`) |
-| 26 | `mood_category` | String | Tâm trạng người nghe toàn cầu (Russell 4 quadrants) |
-| 27 | `energy_loudness_index` | Float64 | Chỉ số cường độ âm thanh tổng hợp |
-| 28 | `is_trending` | Int64 | $1$ nếu lọt vào Top 50 Global tuần |
-| 29 | `is_legacy_artist` | Int64 | $1$ nếu do nghệ sĩ huyền thoại biểu diễn |
-| 30 | `duration_min` | Float64 | Thời lượng bài hát (phút) |
-| 31 | `log_streams` | Float64 | Logarithm tự nhiên của lượt nghe toàn cầu |
-| 32 | `audio_diversity_score` | Float64 | Điểm đa dạng âm học nội tại của bài hát |
+### 2.2. File Sample 1: `spotify_sample_merged.csv` (Bản mẫu Dashboard & EDA)
+* **Quy mô:** 20,000 dòng × 41 cột | **Dung lượng:** ~7.6 MB
+* **Nguồn gốc:** Lấy mẫu ngẫu nhiên có cố định hạt giống (`random_state=42`) từ Master Dataset.
+* **Mục đích:** Giúp nhóm phát triển giao diện Streamlit Dashboard và kiểm thử nhanh các biểu đồ Plotly trong 0.2 giây mà không cần nạp tệp 407 MB.
 
 ---
 
-### 2.3. File 3: `tracks_ml_dataset.csv` (Tập dữ liệu Cấp độ Bài hát cho Machine Learning)
-* **Quy mô:** 39,202 bài hát độc nhất × 18 cột | **Dung lượng:** ~6.1 MB
-* **Phục vụ chính:** Đỗ Thanh Thành Tài (ML Engineer — huấn luyện mô hình Logistic Regression trong `notebooks/03_model.ipynb` và dự báo tương tác trên Dashboard Trang 4).
-* **Đặc tính kỹ thuật & Giải pháp chống rò rỉ dữ liệu (Data Leakage):**
-  - **Cấp độ bài hát (Song-level Aggregation):** Gom nhóm dữ liệu theo `track_id`. Mỗi bài hát chỉ xuất hiện **chính xác 1 dòng duy nhất**.
-  - **Loại bỏ hoàn toàn biến không gian & thời gian:** Không chứa `country`, `week`, `year`, `streams` $\rightarrow$ Triệt tiêu 100% rủi ro Data Leakage khi phân chia tập Train / Test.
-  - **Tỷ lệ nhãn cân bằng:** Tỷ lệ nhãn Hit (`is_trending = 1`) đạt **35.9%** (14,073 bài hit / 39,202 bài), vô cùng lý tưởng để huấn luyện mô hình phân loại nhị phân.
-
-#### Từ điển chi tiết 18 cột của `tracks_ml_dataset.csv`:
-
-| STT | Tên cột | Kiểu dữ liệu | Vai trò trong ML | Ý nghĩa / Diễn giải kỹ thuật |
-| :---: | :--- | :--- | :---: | :--- |
-| 1 | `track_id` | String | Key | Khóa định danh duy nhất bài hát (không dùng để train) |
-| 2 | `track_name` | String | Metadata | Tên bài hát phục vụ hiển thị kết quả dự đoán |
-| 3 | `artist_individual` | String | Metadata | Tên nghệ sĩ thể hiện |
-| 4 | `artist_genre` | String | Feature | Thể loại âm nhạc của nghệ sĩ |
-| 5 | `language` | String | Feature | Ngôn ngữ bài hát |
-| 6 | `danceability` | Float64 | Feature ($X$) | Độ bắt nhịp, khả năng khiêu vũ $[0.0, 1.0]$ |
-| 7 | `energy` | Float64 | Feature ($X$) | Cường độ năng lượng, độ sôi động $[0.0, 1.0]$ |
-| 8 | `loudness` | Float64 | Feature ($X$) | Độ lớn âm lượng trung bình (dB, $[-60, 5]$) |
-| 9 | `speechiness` | Float64 | Feature ($X$) | Mật độ lời nói / đọc rap $[0.0, 1.0]$ |
-| 10 | `acousticness` | Float64 | Feature ($X$) | Tỷ lệ nhạc cụ mộc $[0.0, 1.0]$ |
-| 11 | `instrumentalness`| Float64 | Feature ($X$) | Mức độ không lời $[0.0, 1.0]$ |
-| 12 | `liveness` | Float64 | Feature ($X$) | Xác suất biểu diễn trực tiếp $[0.0, 1.0]$ |
-| 13 | `valence` | Float64 | Feature ($X$) | Tính tích cực / lạc quan của giai điệu $[0.0, 1.0]$ |
-| 14 | `tempo` | Float64 | Feature ($X$) | Tốc độ nhịp bài hát (BPM) |
-| 15 | `is_trending` | Int64 (0/1) | **Target Label ($y$)** | **Nhãn mục tiêu:** $1$ nếu bài hát từng lọt vào Top 50 BXH bất kỳ tuần nào, $0$ nếu chỉ đạt Top 51-200 |
-| 16 | `duration_min` | Float64 | Feature ($X$) | Thời lượng bài hát tính bằng phút |
-| 17 | `is_latin` | Int64 (0/1) | Feature ($X$) | Bài hát mang âm hưởng Latin / tiếng Tây Ban Nha / Bồ Đào Nha |
-| 18 | `is_kpop` | Int64 (0/1) | Feature ($X$) | Bài hát mang phong cách K-Pop / tiếng Hàn Quốc |
-
----
-
-### 2.4. File Mẫu: `spotify_sample_merged.csv` (Bản mẫu rút gọn cho Dashboard Dev)
-* **Quy mô:** 20,000 dòng × 40 cột | **Dung lượng:** ~7.2 MB
-* **Nguồn gốc:** Lấy mẫu ngẫu nhiên có phân tầng và cố định hạt giống (`random_state=42`) từ File 1 (`spotify_socioeconomic_2021_2022.csv`).
-* **Mục đích:** Giúp nhóm phát triển giao diện Streamlit Dashboard và kiểm thử biểu đồ Plotly siêu tốc trong 0.2 giây mà không cần load file 378 MB vào bộ nhớ RAM.
+### 2.3. File Sample 2: `tracks_sample_ml.csv` (Dữ liệu Song-level cho Thành Tài làm ML)
+* **Quy mô:** 36,699 bài hát độc nhất × 18 cột | **Dung lượng:** ~5.7 MB
+* **Phục vụ chính:** Đỗ Thanh Thành Tài (ML Engineer — huấn luyện mô hình Logistic Regression dự báo Top Hit).
+* **Đặc tính kỹ thuật & Chống rò rỉ dữ liệu (Data Leakage):**
+  - **Cấp độ bài hát (Song-level):** Mỗi bài hát chỉ xuất hiện **duy nhất 1 dòng**.
+  - **Loại bỏ hoàn toàn biến không gian & thời gian:** Không chứa `country`, `week`, `year`, `streams` $\rightarrow$ Triệt tiêu 100% rủi ro Data Leakage khi chia tập Train / Test.
+  - **Tỷ lệ nhãn cân bằng:** Tỷ lệ nhãn Hit (`is_trending = 1`) đạt **35.9%** (rất lý tưởng cho mô hình phân loại nhị phân).
+* **Cấu trúc 18 cột:** `track_id`, `track_name`, `artist_individual`, `artist_genre`, `language`, `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `duration_min`, `is_latin`, `is_kpop`, `is_trending` (nhãn mục tiêu).
 
 ---
 
 ## 3. TỔNG HỢP 13 CALCULATED FIELDS & CÔNG THỨC TOÁN HỌC
-
-Các trường tính toán được xây dựng nhất quán nhằm phục vụ 5 mục tiêu nghiên cứu lớn của đồ án:
-
-```mermaid
-graph LR
-    subgraph CF["13 CALCULATED FIELDS"]
-        direction TB
-        F1["1. is_trending (Hit Top 50)"]
-        F2["2. is_popular (Popularity >= 70)"]
-        F3["3. mood_category (Russell 4 Quadrants)"]
-        F4["4. stream_share_country (Thị phần nghe nhạc)"]
-        F5["5. covid_phase (3 Pha đại dịch)"]
-        F6["6. energy_loudness_index (Cường độ âm thanh)"]
-        F7["7. is_latin (Làn sóng Latin)"]
-        F8["8. is_kpop (Làn sóng K-Pop)"]
-        F9["9. is_legacy_artist (Nghệ sĩ huyền thoại)"]
-        F10["10. duration_min (Thời lượng phút)"]
-        F11["11. audio_diversity_score (Độ phân cực âm học)"]
-        F12["12. log_streams (Log lượt stream)"]
-        F13["13. gdp_log (Log quy mô GDP)"]
-    end
-```
 
 | STT | Tên trường tính toán | Công thức toán học / Quy tắc logic | Ứng dụng cụ thể trong đề tài |
 | :---: | :--- | :--- | :--- |
@@ -296,35 +214,30 @@ graph LR
 | 7 | `is_latin` | $(\text{genre} \text{ match 32 keywords Latin}) \lor (\text{lang} \in \{\text{es}, \text{pt}\})$ | Định lượng sự trỗi dậy của âm nhạc Latin trên thị trường thế giới. |
 | 8 | `is_kpop` | $(\text{genre} \text{ match } \{\text{k-pop}, \text{kpop}, \text{korean}\}) \lor (\text{lang} == \text{ko})$ | Định lượng làn sóng Hallyu / K-Pop vươn ra quốc tế. |
 | 9 | `is_legacy_artist` | $\mathbb{I}(\text{legacy\_artist\_name} \neq \text{Null})$ | Khảo sát mức độ trụ hạng của các tên tuổi huyền thoại (The Beatles, Queen). |
-| 10 | `duration_min` | $\text{duration\_min} = \frac{\text{duration\_ms}}{60,000}$ | Quy đổi thời lượng sang phút để dễ phân tích xu hướng rút ngắn bài hát. |
+| 10 | `duration_min` | $\text{duration\_min} = \frac{\text{duration\_ms}}{60,000}$ | Quy đổi thời lượng sang phút để phân tích xu hướng rút ngắn bài hát. |
 | 11 | `audio_diversity_score`| $\text{StdDev}(\text{danceability}, \text{energy}, \text{valence}, \text{acousticness})$ | Đo lường sự đa dạng / xung đột cảm xúc trong cùng một bài hát. |
-| 12 | `log_streams` | $\log(1 + \text{streams})$ | Kỹ thuật biến đổi đưa phân phối lượt nghe lệch phải về phân phối chuẩn Gauss. |
+| 12 | `log_streams` | $\log(1 + \text{streams})$ | Đưa phân phối lượt nghe lệch phải về phân phối chuẩn Gauss. |
 | 13 | `gdp_log` | $\log(1 + \text{gdp\_value})$ | Nén biên độ chênh lệch GDP giữa các siêu cường và các nước nhỏ. |
 
 ---
 
-## 4. HƯỚNG DẪN TRUY XUẤT DỮ LIỆU TỰ ĐỘNG THÔNG QUA PYTHON API
+## 4. HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API
 
-Để đảm bảo tính mô-đun và tránh lặp lại mã nguồn nạp dữ liệu, module [`src/data_loader.py`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/Spotify_Audio_Trends_Analytics/src/data_loader.py) cung cấp sẵn 4 hàm nạp tiện ích:
+Module [`src/data_loader.py`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/Spotify_Audio_Trends_Analytics/src/data_loader.py) cung cấp sẵn 3 hàm nạp tiện ích:
 
 ```python
-# 1. Nạp dữ liệu Kinh tế - Xã hội 74 quốc gia (Phục vụ Dashboard Trang 3):
-from src.data_loader import load_socioeconomic_data
-df_socio = load_socioeconomic_data()
-print(f"Socioeconomic: {df_socio.shape}")
+# 1. Nạp tệp Master dữ liệu lớn (merged_spotify_data.csv):
+from src.data_loader import load_master_data
+df_master = load_master_data()  # hoặc load_master_data(nrows=50000)
+print(f"Master Dataset: {df_master.shape}")
 
-# 2. Nạp dữ liệu Chuỗi thời gian 3 pha đại dịch COVID-19 (Phục vụ Trang Storytelling):
-from src.data_loader import load_covid_data
-df_covid = load_covid_data()
-print(f"COVID Timeline: {df_covid.shape}")
-
-# 3. Nạp dữ liệu cấp độ bài hát cho Machine Learning (Phục vụ Thành Tài train model):
-from src.data_loader import load_ml_data
-df_ml = load_ml_data()
-print(f"ML Dataset: {df_ml.shape}")
-
-# 4. Nạp bản mẫu thu nhỏ 20,000 dòng để phát triển Dashboard siêu tốc:
+# 2. Nạp tệp Sample 20,000 dòng có đầy đủ 41 cột (phục vụ Dashboard và EDA):
 from src.data_loader import load_sample_data
 df_sample = load_sample_data()
-print(f"Sample: {df_sample.shape}")
+print(f"Sample Dashboard: {df_sample.shape}")
+
+# 3. Nạp tệp Song-level Sample cho Thành Tài làm Machine Learning:
+from src.data_loader import load_ml_sample
+df_ml = load_ml_sample()
+print(f"ML Sample: {df_ml.shape}")
 ```

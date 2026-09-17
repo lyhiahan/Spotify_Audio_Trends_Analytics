@@ -6,8 +6,6 @@
 data/raw/*.csv
 data/processed/*.csv
 !data/processed/.gitkeep
-!data/processed/tracks_ml_dataset.csv
-!data/processed/spotify_covid_timeline_2020_2022.csv
 !data/sample/*.csv
 !**/.gitkeep
 
