@@ -526,6 +526,13 @@ def data_quality_report(df, name="Dataset"):
     return report
 
 
+# Các alias tên hàm tương thích ngược
+clean_weekly_charts = clean_raw_charts
+clean_tracks_dataset = clean_raw_tracks
+clean_best_selling_artists = clean_raw_artists
+join_all_tables = build_master_dataset
+
+
 if __name__ == "__main__":
     import sys
 
