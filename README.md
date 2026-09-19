@@ -3,7 +3,7 @@
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
-> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 41 Cột & Các Tệp Sample Gọn nhẹ (Version 3.1).
+> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 42 Cột & Tập Dữ liệu ML Cấp Bài Hát (Version 3.2).
 
 ---
 
@@ -12,7 +12,7 @@
 Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của một bản thu không chỉ phụ thuộc vào độ nhận diện của nghệ sĩ mà còn gắn liền mật thiết với **các đặc trưng âm thanh (Audio Features)** nội tại (như *danceability*, *energy*, *valence*, *tempo*, *acousticness*), cũng như **môi trường kinh tế - xã hội (quy mô GDP, phân tầng thu nhập World Bank)** của từng quốc gia.
 
 Đề tài giải quyết trọn vẹn 4 mục tiêu học thuật và ứng dụng thực tiễn:
-1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **41 cột cốt lõi phục vụ Insight**, đi kèm các tệp Sample gọn nhẹ cho nhóm phát triển.
+1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **42 cột cốt lõi phục vụ Insight**, đồng thời trích xuất tập dữ liệu cấp bài hát không rò rỉ cho mô hình học máy.
 2. **Khám phá Insight & Kể chuyện bằng Dữ liệu (Data Storytelling):** 
    * *Nghịch lý Cảm xúc (GDP vs Valence Paradox):* Liệu các nước đang phát triển (GDP trung bình/thấp) có chuộng âm nhạc sôi động và giàu năng lượng hơn để giải tỏa áp lực so với các nước phát triển?
    * *3 Giai đoạn Đại dịch COVID-19 (Timeline Waves 2020 – 2022):* Đo lường sự chuyển biến tâm lý người nghe toàn cầu qua các cột mốc: *Phong tỏa (Lockdown & Shock)*, *Giải tỏa (Vaccine & Escapism)* và *Bình thường mới (Reopening & New Normal)*.
@@ -26,7 +26,7 @@ Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của 
 
 ```text
 PROJECT/
-├── .gitignore                          # Cấu hình bỏ qua file nặng >100MB, theo dõi các file sample
+├── .gitignore                          # Cấu hình bỏ qua file lớn >100MB, theo dõi file ML
 ├── requirements.txt                    # Danh sách thư viện Python cần cài đặt
 ├── README.md                           # Giới thiệu đồ án, hướng dẫn cài đặt và tổng kết
 │
@@ -38,12 +38,9 @@ PROJECT/
 │   │   ├── spotify-tracks-dataset.csv  # 114,000 dòng × 22 cột (Đặc trưng âm thanh & thể loại)
 │   │   └── spotify-weekly-charts.csv   # 1,787,999 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
 │   │
-│   ├── processed/                      # Tệp Master lớn sau khi xử lý & kết nối 5 bảng
-│   │   └── merged_spotify_data.csv     # Master Dataset (1,078,125 dòng × 41 cột, 407.4 MB)
-│   │
-│   └── sample/                         # Các tệp dữ liệu mẫu rút gọn cho nhóm làm việc
-│       ├── spotify_sample_merged.csv   # Sample 20,000 dòng × 41 cột (7.6 MB) cho Dashboard & EDA
-│       └── tracks_sample_ml.csv        # Song-level Sample (36,699 bài × 18 cột, 5.7 MB) cho Thành Tài
+│   └── processed/                      # Tệp dữ liệu sau khi xử lý & kết nối 5 bảng
+│       ├── merged_spotify_data.csv     # Master Dataset (1,078,125 dòng × 42 cột, ~338.6 MB)
+│       └── tracks_ml_data.csv          # Song-level ML Dataset (36,699 bài × 18 cột, ~5.0 MB) cho Thành Tài
 │
 ├── notebooks/                          # Jupyter Notebooks nghiên cứu theo Barem đồ án
 │   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Master Pipeline, 13 biến & EDA tĩnh
@@ -67,8 +64,8 @@ PROJECT/
 │   └── assets/                         # Hình ảnh minh họa và assets
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
-│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 41 cột & Sample)
-│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.1
+│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 42 cột & ML)
+│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.2
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
 │   └── final_report.docx               # Báo cáo tổng kết đồ án theo cấu trúc chuẩn IEEE
 │
@@ -82,9 +79,8 @@ PROJECT/
 
 | Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
-| **`merged_spotify_data.csv`** | 1,078,125 × 41 | ~407.4 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 74 nước & COVID Timeline (`covid_phase`). |
-| **`spotify_sample_merged.csv`** | 20,000 × 41 | ~7.6 MB | **Lý Gia Hân** | • Bản mẫu đầy đủ 41 cột để dựng giao diện Streamlit Dashboard và kiểm thử biểu đồ Plotly trong 0.2 giây. |
-| **`tracks_sample_ml.csv`** | 36,699 × 18 | ~5.7 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống 100% Data Leakage cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
+| **`merged_spotify_data.csv`** | 1,078,125 × 42 | ~338.6 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 74 nước & COVID Timeline (`covid_phase`). |
+| **`tracks_ml_data.csv`** | 36,699 × 18 | ~5.0 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống 100% Data Leakage cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
 
 ---
 
@@ -113,11 +109,8 @@ pip install -r requirements.txt
 
 ### Bước 3: Thực thi Pipeline Tiền xử lý & Xuất dữ liệu
 ```bash
-# Chạy toàn bộ Master Pipeline (tự động nạp thô, làm sạch và xuất Master Dataset + 2 Sample):
+# Chạy toàn bộ Master Pipeline (tự động nạp thô, làm sạch và xuất Master Dataset + ML Dataset):
 python src/data_loader.py
-
-# (Tùy chọn) Chạy chế độ mẫu thử nhanh với 20,000 dòng:
-python src/data_loader.py --sample 20000
 ```
 
 ### Bước 4: Khởi chạy Ứng dụng Dashboard Streamlit
@@ -137,11 +130,7 @@ Các thành viên có thể nạp trực tiếp dữ liệu vào Jupyter Noteboo
 from src.data_loader import load_master_data
 df_master = load_master_data()  # hoặc load_master_data(nrows=50000)
 
-# 2. Nạp bản mẫu Sample 20,000 dòng (đầy đủ 41 cột cho Dashboard & EDA):
-from src.data_loader import load_sample_data
-df_sample = load_sample_data()
-
-# 3. Nạp tập dữ liệu Song-level cho Thành Tài huấn luyện Machine Learning:
+# 2. Nạp tập dữ liệu Song-level cho Thành Tài huấn luyện Machine Learning:
 from src.data_loader import load_ml_sample
 df_ml = load_ml_sample()
 ```
@@ -161,8 +150,8 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 ---
 
 ## 📑 7. Tài liệu Tham khảo & Báo cáo Đi kèm
-* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 41 cột và công thức toán học của 13 Calculated Fields.
-* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 41 cột phục vụ Insight.
+* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 42 cột và công thức toán học của 13 Calculated Fields.
+* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 42 cột phục vụ Insight.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
 * 📹 **Link Video Demo (YouTube / Google Drive):** `[CẬP NHẬT LINK VIDEO TẠI ĐÂY]`
 * 📊 **Link Slide Thuyết trình:** `[CẬP NHẬT LINK CANVA/GOOGLE SLIDES TẠI ĐÂY]`

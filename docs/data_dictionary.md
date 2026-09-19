@@ -2,7 +2,7 @@
 **Dự án:** Nghiên cứu & Trực quan hóa Đặc trưng Âm thanh và Dự đoán Xu hướng Bài hát Thịnh hành trên Spotify  
 **Môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 **Tác giả:** Đinh Quốc Anh (Data Engineer & Data Analyst)  
-**Phiên bản:** 3.1 (Kiến trúc Master Dataset Hợp nhất 41 Cột & Các Tệp Sample)  
+**Phiên bản:** 3.2 (Kiến trúc Master Dataset Hợp nhất 42 Cột & ML Dataset)  
 
 ---
 
@@ -14,9 +14,8 @@
    * [1.4. Bảng `spotify-tracks-dataset.csv`](#14-bảng-spotify-tracks-datasetcsv)
    * [1.5. Bảng `spotify-weekly-charts.csv`](#15-bảng-spotify-weekly-chartscsv)
 2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-output-datasets)
-   * [2.1. File Master: `merged_spotify_data.csv` (41 Cột Phục vụ Insight)](#21-file-master-merged_spotify_datacsv-41-cột-phục-vụ-insight)
-   * [2.2. File Sample 1: `spotify_sample_merged.csv` (Bản mẫu Dashboard & EDA)](#22-file-sample-1-spotify_sample_mergedcsv-bản-mẫu-dashboard--eda)
-   * [2.3. File Sample 2: `tracks_sample_ml.csv` (Dữ liệu Song-level cho Thành Tài làm ML)](#23-file-sample-2-tracks_sample_mlcsv-dữ-liệu-song-level-cho-thành-tài-làm-ml)
+   * [2.1. File Master: `merged_spotify_data.csv` (42 Cột Phục vụ Insight)](#21-file-master-merged_spotify_datacsv-42-cột-phục-vụ-insight)
+   * [2.2. File Dữ liệu ML: `tracks_ml_data.csv` (Cấp độ Bài hát cho Thành Tài làm ML)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-cấp-độ-bài-hát-cho-thành-tài-làm-ml)
 3. [TỔNG HỢP 13 CALCULATED FIELDS & CÔNG THỨC TOÁN HỌC](#3-tổng-hợp-13-calculated-fields--công-thức-toán-học)
 4. [HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API](#4-hướng-dẫn-truy-xuất-dữ-liệu-thông-qua-python-api)
 
@@ -115,27 +114,25 @@ Hệ thống tích hợp dữ liệu từ 5 nguồn độc lập với tổng qu
 
 ## 2. CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)
 
-Hệ thống ETL hợp nhất dữ liệu vào **1 tệp Master lớn duy nhất** trong `data/processed/` và sinh **2 tệp sample gọn nhẹ** trong `data/sample/`:
+Hệ thống ETL hợp nhất dữ liệu vào thư mục `data/processed/` gồm 2 tệp dữ liệu chính:
 
 ```text
 data/
-├── processed/
-│   └── merged_spotify_data.csv # 1,078,125 dòng × 41 cột (407.4 MB) — Master Dataset
-└── sample/
-    ├── spotify_sample_merged.csv # 20,000 dòng × 41 cột (7.6 MB) — Bản mẫu Dashboard & EDA
-    └── tracks_sample_ml.csv     # 36,699 bài hát × 18 cột (5.7 MB) — Song-level ML cho Thành Tài
+└── processed/
+    ├── merged_spotify_data.csv # 1,078,125 dòng × 42 cột (~338.6 MB) — Master Dataset hợp nhất
+    └── tracks_ml_data.csv     # 36,699 bài hát × 18 cột (~5.0 MB) — Dữ liệu Song-level cho ML
 ```
 
 ---
 
-### 2.1. File Master: `merged_spotify_data.csv` (41 Cột Phục vụ Insight)
-* **Quy mô:** 1,078,125 dòng × 41 cột | **Dung lượng:** ~407.4 MB
+### 2.1. File Master: `merged_spotify_data.csv` (42 Cột Phục vụ Insight)
+* **Quy mô:** 1,078,125 dòng × 42 cột | **Dung lượng:** ~338.6 MB
 * **Đặc điểm kiến trúc:**
   - Hợp nhất toàn bộ dữ liệu 74 quốc gia và bảng Global giai đoạn 2020 – 2022.
-  - Tích hợp cả số liệu Kinh tế - Xã hội World Bank và phân kỳ 3 giai đoạn đại dịch COVID-19 (`covid_phase`).
-  - Lưu giữ chính xác **41 cột cốt lõi phục vụ Insight** cho đồ án, loại bỏ hoàn toàn các cột dư thừa từ raw.
+  - Chuẩn hóa tên 7 quốc gia World Bank (`Korea`, `Turkey`, `Czech Republic`, `Hong Kong`, `Egypt`, `Slovakia`, `Venezuela`) và gán mã ISO-3, nâng tỷ lệ khớp GDP lên **98.2%** và số dòng thiếu `income_group`/`region_wb` về **0**.
+  - Lưu giữ chính xác **42 cột cốt lõi phục vụ Insight** cho đồ án, loại bỏ hoàn toàn các cột dư thừa từ raw.
 
-#### Từ điển chi tiết 41 cột của `merged_spotify_data.csv`:
+#### Từ điển chi tiết 42 cột của `merged_spotify_data.csv`:
 
 | STT | Tên cột | Kiểu dữ liệu | Nhóm thuộc tính | Ý nghĩa / Diễn giải phân tích |
 | :---: | :--- | :--- | :--- | :--- |
@@ -148,50 +145,45 @@ data/
 | 7 | `week` | Date (YYYY-MM-DD) | Thời gian | Ngày đầu tiên của tuần ghi nhận bảng xếp hạng |
 | 8 | `year` | Int64 | Thời gian | Năm phát hành bảng xếp hạng (`2020`, `2021`, `2022`) |
 | 9 | `month` | Int64 | Thời gian | Tháng trong năm (`1` đến `12`) |
-| 10 | `quarter` | Int64 | Thời gian | Quý trong năm (`1` đến `4`) |
-| 11 | `rank` | Int64 | Xếp hạng | Thứ hạng của bài hát trên Top 200 tuần (`1` đến `200`) |
-| 12 | `streams` | Int64 | Lượt nghe | Số lượt phát trực tuyến tích lũy trong tuần |
-| 13 | `log_streams` | Float64 | Lượt nghe | $\ln(1 + \text{streams})$ giúp chuẩn hóa phân phối lệch phải |
-| 14 | `weeks_on_chart` | Int64 | Trụ hạng | Số tuần bài hát duy trì có mặt trên bảng xếp hạng |
-| 15 | `peak_rank` | Int64 | Trụ hạng | Thứ hạng cao nhất bài hát từng đạt được lịch sử |
-| 16 | `danceability` | Float64 | Audio Feature | Mức độ phù hợp khiêu vũ / vũ đạo $[0.0, 1.0]$ |
-| 17 | `energy` | Float64 | Audio Feature | Cường độ năng lượng, độ sôi động $[0.0, 1.0]$ |
-| 18 | `loudness` | Float64 | Audio Feature | Độ to âm lượng tổng thể tính bằng Decibel ($[-60, 5]$ dB) |
-| 19 | `speechiness` | Float64 | Audio Feature | Tỷ lệ xuất hiện của lời nói / rap trong track $[0.0, 1.0]$ |
-| 20 | `acousticness` | Float64 | Audio Feature | Mức độ mộc / nhạc cụ acoustic không điện tử $[0.0, 1.0]$ |
-| 21 | `instrumentalness`| Float64 | Audio Feature | Tỷ lệ không có lời hát (nhạc không lời) $[0.0, 1.0]$ |
-| 22 | `liveness` | Float64 | Audio Feature | Xác suất bài hát được thu âm trực tiếp $[0.0, 1.0]$ |
-| 23 | `valence` | Float64 | Audio Feature | Tính tích cực, vui tươi của giai điệu $[0.0, 1.0]$ |
-| 24 | `tempo` | Float64 | Audio Feature | Tốc độ nhịp đập bài hát tính theo Beats Per Minute (BPM) |
-| 25 | `gdp_value` | Float64 | Kinh tế World Bank| Tổng sản phẩm quốc nội tính bằng USD hiện hành (với các quốc gia) |
-| 26 | `gdp_log` | Float64 | Kinh tế World Bank| $\ln(1 + \text{gdp\_value})$ nén quy mô GDP hàng nghìn tỷ USD |
-| 27 | `income_group` | String | Kinh tế World Bank| Phân tầng thu nhập (`High`, `Upper middle`, `Lower middle`, `Low`) |
-| 28 | `region_wb` | String | Địa lý World Bank | Khu vực địa lý kinh tế theo World Bank |
-| 29 | `country_code` | String (3 ký tự) | Địa lý World Bank | Mã định danh ISO-alpha-3 của quốc gia |
-| 30 | `is_trending` | Int64 (0/1) | Calculated Field | $1$ nếu bài hát xếp hạng Top 50 tuần ($\text{rank} \le 50$), $0$ nếu Top 51-200 |
-| 31 | `is_popular` | Int64 (0/1) | Calculated Field | $1$ nếu điểm phổ biến toàn cầu $\text{popularity} \ge 70$, $0$ nếu $< 70$ |
-| 32 | `mood_category` | String | Calculated Field | Phân loại tâm trạng theo mô hình Russell 4 góc phần tư |
-| 33 | `stream_share_country`| Float64 | Calculated Field | Tỷ trọng lượt stream của bài hát so với tổng stream của nước trong tuần |
-| 34 | `covid_phase` | String | Calculated Field | 3 giai đoạn đại dịch (`Lockdown & Shock`, `Vaccine & Escapism`, `Reopening & New Normal`) |
-| 35 | `energy_loudness_index`| Float64 | Calculated Field | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa $[0, 1]$ |
-| 36 | `is_latin` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát thuộc dòng nhạc Latin hoặc tiếng Tây Ban Nha/Bồ Đào Nha |
-| 37 | `is_kpop` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát K-Pop hoặc tiếng Hàn Quốc |
-| 38 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử |
-| 39 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút |
-| 40 | `audio_diversity_score`| Float64 | Calculated Field | Độ lệch chuẩn giữa 4 đặc trưng âm học chính của bài hát |
-| 41 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks |
+| 10 | `rank` | Int64 | Xếp hạng | Thứ hạng của bài hát trên Top 200 tuần (`1` đến `200`) |
+| 11 | `streams` | Int64 | Lượt nghe | Số lượt phát trực tuyến tích lũy trong tuần |
+| 12 | `log_streams` | Float64 | Lượt nghe | $\ln(1 + \text{streams})$ giúp chuẩn hóa phân phối lệch phải |
+| 13 | `weeks_on_chart` | Int64 | Trụ hạng | Số tuần bài hát duy trì có mặt trên bảng xếp hạng |
+| 14 | `peak_rank` | Int64 | Trụ hạng | Thứ hạng cao nhất bài hát từng đạt được lịch sử |
+| 15 | `danceability` | Float64 | Audio Feature | Mức độ phù hợp khiêu vũ / vũ đạo $[0.0, 1.0]$ |
+| 16 | `energy` | Float64 | Audio Feature | Cường độ năng lượng, độ sôi động $[0.0, 1.0]$ |
+| 17 | `loudness` | Float64 | Audio Feature | Độ to âm lượng tổng thể tính bằng Decibel ($[-60, 5]$ dB) |
+| 18 | `speechiness` | Float64 | Audio Feature | Tỷ lệ xuất hiện của lời nói / rap trong track $[0.0, 1.0]$ |
+| 19 | `acousticness` | Float64 | Audio Feature | Mức độ mộc / nhạc cụ acoustic không điện tử $[0.0, 1.0]$ |
+| 20 | `instrumentalness`| Float64 | Audio Feature | Tỷ lệ không có lời hát (nhạc không lời) $[0.0, 1.0]$ |
+| 21 | `liveness` | Float64 | Audio Feature | Xác suất bài hát được thu âm trực tiếp $[0.0, 1.0]$ |
+| 22 | `valence` | Float64 | Audio Feature | Tính tích cực, vui tươi của giai điệu $[0.0, 1.0]$ |
+| 23 | `tempo` | Float64 | Audio Feature | Tốc độ nhịp đập bài hát tính theo Beats Per Minute (BPM) |
+| 24 | `gdp_value` | Float64 | Kinh tế World Bank| Tổng sản phẩm quốc nội tính bằng USD hiện hành (với các quốc gia) |
+| 25 | `gdp_log` | Float64 | Kinh tế World Bank| $\ln(1 + \text{gdp\_value})$ nén quy mô GDP hàng nghìn tỷ USD |
+| 26 | `income_group` | String | Kinh tế World Bank| Phân tầng thu nhập (`High`, `Upper middle`, `Lower middle`, `Low`) |
+| 27 | `region_wb` | String | Địa lý World Bank | Khu vực địa lý kinh tế theo World Bank |
+| 28 | `country_code` | String (3 ký tự) | Địa lý World Bank | Mã định danh ISO-alpha-3 của quốc gia |
+| 29 | `is_trending` | Int64 (0/1) | Calculated Field | $1$ nếu bài hát xếp hạng Top 50 tuần ($\text{rank} \le 50$), $0$ nếu Top 51-200 |
+| 30 | `is_popular` | Int64 (0/1) | Calculated Field | $1$ nếu điểm phổ biến toàn cầu $\text{popularity} \ge 70$, $0$ nếu $< 70$ |
+| 31 | `mood_category` | String | Calculated Field | Phân loại tâm trạng theo mô hình Russell 4 góc phần tư |
+| 32 | `stream_share_country`| Float64 | Calculated Field | Tỷ trọng lượt stream của bài hát so với tổng stream của nước trong tuần |
+| 33 | `covid_phase` | String | Calculated Field | 3 giai đoạn đại dịch (`Lockdown & Shock`, `Vaccine & Escapism`, `Reopening & New Normal`) |
+| 34 | `energy_loudness_index`| Float64 | Calculated Field | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa $[0, 1]$ |
+| 35 | `is_latin` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát thuộc dòng nhạc Latin hoặc tiếng Tây Ban Nha/Bồ Đào Nha |
+| 36 | `is_kpop` | Int64 (0/1) | Calculated Field | $1$ nếu là bài hát K-Pop hoặc tiếng Hàn Quốc |
+| 37 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử |
+| 38 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút |
+| 39 | `audio_diversity_score`| Float64 | Calculated Field | Độ lệch chuẩn giữa 4 đặc trưng âm học chính của bài hát |
+| 40 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks |
+| 41 | `popularity` | Float64 | Khám phá bổ trợ | Điểm số độ phổ biến toàn cầu của bài hát $[0, 100]$ |
+| 42 | `explicit` | Boolean | Khám phá bổ trợ | Cờ cảnh báo nội dung nhạy cảm / ca từ thô tục (`True`/`False`/<NA>) |
 
 ---
 
-### 2.2. File Sample 1: `spotify_sample_merged.csv` (Bản mẫu Dashboard & EDA)
-* **Quy mô:** 20,000 dòng × 41 cột | **Dung lượng:** ~7.6 MB
-* **Nguồn gốc:** Lấy mẫu ngẫu nhiên có cố định hạt giống (`random_state=42`) từ Master Dataset.
-* **Mục đích:** Giúp nhóm phát triển giao diện Streamlit Dashboard và kiểm thử nhanh các biểu đồ Plotly trong 0.2 giây mà không cần nạp tệp 407 MB.
-
----
-
-### 2.3. File Sample 2: `tracks_sample_ml.csv` (Dữ liệu Song-level cho Thành Tài làm ML)
-* **Quy mô:** 36,699 bài hát độc nhất × 18 cột | **Dung lượng:** ~5.7 MB
+### 2.2. File Dữ liệu ML: `tracks_ml_data.csv` (Cấp độ Bài hát cho Thành Tài làm ML)
+* **Vị trí lưu trữ:** `data/processed/tracks_ml_data.csv`
+* **Quy mô:** 36,699 bài hát độc nhất × 18 cột | **Dung lượng:** ~5.0 MB
 * **Phục vụ chính:** Đỗ Thanh Thành Tài (ML Engineer — huấn luyện mô hình Logistic Regression dự báo Top Hit).
 * **Đặc tính kỹ thuật & Chống rò rỉ dữ liệu (Data Leakage):**
   - **Cấp độ bài hát (Song-level):** Mỗi bài hát chỉ xuất hiện **duy nhất 1 dòng**.
@@ -223,7 +215,7 @@ data/
 
 ## 4. HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API
 
-Module [`src/data_loader.py`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/Spotify_Audio_Trends_Analytics/src/data_loader.py) cung cấp sẵn 3 hàm nạp tiện ích:
+Module [`src/data_loader.py`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/Spotify_Audio_Trends_Analytics/src/data_loader.py) cung cấp các hàm nạp tiện ích:
 
 ```python
 # 1. Nạp tệp Master dữ liệu lớn (merged_spotify_data.csv):
@@ -231,13 +223,8 @@ from src.data_loader import load_master_data
 df_master = load_master_data()  # hoặc load_master_data(nrows=50000)
 print(f"Master Dataset: {df_master.shape}")
 
-# 2. Nạp tệp Sample 20,000 dòng có đầy đủ 41 cột (phục vụ Dashboard và EDA):
-from src.data_loader import load_sample_data
-df_sample = load_sample_data()
-print(f"Sample Dashboard: {df_sample.shape}")
-
-# 3. Nạp tệp Song-level Sample cho Thành Tài làm Machine Learning:
+# 2. Nạp tệp Song-level cho Thành Tài làm Machine Learning:
 from src.data_loader import load_ml_sample
 df_ml = load_ml_sample()
-print(f"ML Sample: {df_ml.shape}")
+print(f"ML Dataset: {df_ml.shape}")
 ```
