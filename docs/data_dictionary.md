@@ -129,7 +129,7 @@ data/
 * **Quy mô:** 1,078,125 dòng × 42 cột | **Dung lượng:** ~338.6 MB
 * **Đặc điểm kiến trúc:**
   - Hợp nhất toàn bộ dữ liệu 74 quốc gia và bảng Global giai đoạn 2020 – 2022.
-  - Chuẩn hóa tên 7 quốc gia World Bank (`Korea`, `Turkey`, `Czech Republic`, `Hong Kong`, `Egypt`, `Slovakia`, `Venezuela`) và gán mã ISO-3, nâng tỷ lệ khớp GDP lên **98.2%** và số dòng thiếu `income_group`/`region_wb` về **0**.
+  - Chuẩn hóa tên 7 quốc gia World Bank (`Korea`, `Turkey`, `Czech Republic`, `Hong Kong`, `Egypt`, `Slovakia`, `Venezuela`) và gán mã ISO-3, nâng tỷ lệ khớp GDP lên **98.2%** (chỉ còn 18,600 dòng khuyết GDP thuộc về Đài Loan và Venezuela do World Bank không có số liệu 2020–2022), đồng thời giảm số dòng thiếu `income_group`/`region_wb` về **0**.
   - Lưu giữ chính xác **42 cột cốt lõi phục vụ Insight** cho đồ án, loại bỏ hoàn toàn các cột dư thừa từ raw.
 
 #### Từ điển chi tiết 42 cột của `merged_spotify_data.csv`:

@@ -5,8 +5,8 @@ ETL pipeline: nạp 5 bảng, làm sạch, join thành một file master (42 c�
 và xuất file dữ liệu cấp bài hát cho Machine Learning.
 
 Đầu ra:
-    data/processed/merged_spotify_data.csv   file master (1,078,125 dòng x 42 cột, ~338.6 MB)
-    data/processed/tracks_ml_data.csv        dữ liệu cấp bài hát cho ML (36,699 bài x 18 cột, ~4.8 MB)
+    data/processed/merged_spotify_data.csv   file master (42 cột)
+    data/processed/tracks_ml_data.csv        dữ liệu cấp bài hát cho ML (18 cột)
 
 Author: Đinh Quốc Anh
 """
@@ -135,16 +135,14 @@ def clean_raw_charts(df):
         df.drop(columns=unnamed_cols, inplace=True)
 
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
-    df = df[df["week"].notna() & (df["week"] >= "2010-01-01") & (df["week"] <= "2024-12-31")]
-
     df["year"] = df["week"].dt.year.astype("Int64")
     df["month"] = df["week"].dt.month.astype("Int64")
+    df["quarter"] = df["week"].dt.quarter.astype("Int64")
+    df.dropna(subset=["week"], inplace=True)
 
     # trích track_id từ uri (spotify:track:XXXXX -> XXXXX)
     if "uri" in df.columns and "track_id" not in df.columns:
         df["track_id"] = df["uri"].str.replace("spotify:track:", "", regex=False)
-
-    df.dropna(subset=["track_name", "artist_individual", "country", "track_id"], inplace=True)
 
     df["streams"] = pd.to_numeric(df["streams"], errors="coerce").fillna(0).astype(int)
     df = df[df["streams"] > 0]
@@ -461,12 +459,7 @@ def load_master_data(nrows=None):
     return df
 
 
-def load_sample_data(nrows=20000):
-    """Đọc một phần dữ liệu master trực tiếp để kiểm thử nhanh."""
-    return load_master_data(nrows=nrows)
-
-
-def load_ml_sample():
+def load_ml_data():
     """Đọc dữ liệu cấp bài hát dùng cho ML."""
     p = os.path.join(PROCESSED_DIR, "tracks_ml_data.csv")
     if not os.path.exists(p):
@@ -491,11 +484,11 @@ def data_quality_report(df, name="Dataset"):
 
 
 # alias tương thích ngược
+load_ml_sample = load_ml_data
 clean_weekly_charts = clean_raw_charts
 clean_tracks_dataset = clean_raw_tracks
 clean_best_selling_artists = clean_raw_artists
 join_all_tables = build_master_dataset
-generate_sample_datasets = lambda df, **kw: (df.head(20000), generate_ml_dataset(df, **kw))
 
 
 if __name__ == "__main__":
