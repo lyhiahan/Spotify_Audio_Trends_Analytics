@@ -137,7 +137,6 @@ def clean_raw_charts(df):
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
     df["year"] = df["week"].dt.year.astype("Int64")
     df["month"] = df["week"].dt.month.astype("Int64")
-    df["quarter"] = df["week"].dt.quarter.astype("Int64")
     df.dropna(subset=["week"], inplace=True)
 
     # trích track_id từ uri (spotify:track:XXXXX -> XXXXX)

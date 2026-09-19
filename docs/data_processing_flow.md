@@ -40,7 +40,7 @@ flowchart TD
     end
 
     subgraph S2["2. TIỀN XỬ LÝ ĐỘC LẬP TỪNG BẢNG (DATA CLEANING)"]
-        CLEAN_C["clean_raw_charts()<br/>• Trích track_id từ URI, ép kiểu 9 audio features<br/>• Parse week (year, month, quarter), lọc streams <= 0<br/>• Dedup (track_id, week, country), loại 15 cột rác"]
+        CLEAN_C["clean_raw_charts()<br/>• Trích track_id từ URI, ép kiểu 9 audio features<br/>• Parse week (year, month), lọc streams <= 0<br/>• Dedup (track_id, week, country), loại 15 cột rác"]
         CLEAN_T["clean_raw_tracks()<br/>• Dedup track_id theo popularity cao nhất<br/>• Validate boundary [0,1], clip loudness, tempo<br/>• Chỉ giữ: track_id, track_genre, popularity"]
         CLEAN_A["clean_raw_artists()<br/>• Regex parse sales triệu bản, clean artist name"]
         CLEAN_G["clean_raw_gdp()<br/>• Chuẩn hóa: country_name, year, gdp_value"]
@@ -77,7 +77,7 @@ flowchart TD
 * **1. `clean_raw_charts()`:**
   - Loại bỏ các cột chỉ mục thừa (`Unnamed: 0`).
   - Trích xuất `track_id` chuẩn (22 ký tự) từ chuỗi `spotify:track:<track_id>`.
-  - Chuyển trường `week` sang định dạng `Datetime`, bóc tách các thành phần thời gian: `year`, `month`, `quarter`.
+  - Chuyển trường `week` sang định dạng `Datetime`, bóc tách các thành phần thời gian: `year`, `month`.
   - Ép kiểu số nguyên cho `streams`, loại bỏ triệt để các bản ghi có `streams <= 0`.
   - Ép kiểu số thực tường minh cho 9 đặc trưng âm học (`danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`).
   - Khử trùng lặp bản ghi trên bộ ba khóa định danh `(track_id, week, country)`.

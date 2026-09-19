@@ -105,7 +105,7 @@ Hệ thống tích hợp dữ liệu từ 5 nguồn độc lập với tổng qu
 * **Mục đích:** Xương sống chuỗi thời gian, ghi nhận thứ hạng, số lượt streams, tên bài hát, nghệ sĩ tại 74 quốc gia và bảng Global từ 2016 đến 2022.
 * **Xử lý làm sạch:**
   - Trích xuất `track_id` từ URI (`spotify:track:<id>`).
-  - Ép kiểu `week` sang chuẩn `datetime`, tách `year`, `month`, `quarter`.
+  - Ép kiểu `week` sang chuẩn `datetime`, tách `year`, `month`.
   - Lọc bỏ triệt để các bản ghi có `streams <= 0` hoặc `week` bị rỗng.
   - Khử trùng lặp bộ ba định danh `(track_id, week, country)`.
   - Loại bỏ sớm 15 cột phụ không mang giá trị cho insight (`Unnamed: 0`, `uri`, `artist_names`, `artists_num`, `artist_id`, `key`, `mode`, `source`, `album_num_tracks`, `collab`, `release_date`, `previous_rank`, `artist_img`, `album_cover`, `pivot`, `region`).
