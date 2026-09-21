@@ -31,18 +31,16 @@ Bảng phân công bám sát chính xác từng tiêu chí trong **Rubric đánh
 ## III. CHECKLIST CÔNG VIỆC CHI TIẾT THEO TỪNG THÀNH VIÊN
 
 ### 1. Đinh Quốc Anh (Phụ trách: Xử lý số liệu & EDA)
-- [ ] Kiểm tra, rà soát missing value và kiểu dữ liệu của cả 5 file dữ liệu trong thư mục `data/raw/`.
-- [ ] Chuẩn hóa `track_id`, liên kết mã quốc gia ISO-3 và nạp dữ liệu GDP theo từng năm.
-- [ ] Tạo các trường tính toán mới (**Calculated fields**):
+- [x] Kiểm tra, rà soát missing value và kiểu dữ liệu của cả 5 file dữ liệu trong thư mục `data/raw/`.
+- [x] Chuẩn hóa `track_id`, liên kết mã quốc gia ISO-3 và nạp dữ liệu GDP theo từng năm.
+- [x] Tạo các trường tính toán mới (**Calculated fields**):
   - `is_trending`: Đánh dấu bài hát thuộc nhóm hit bảng xếp hạng (1) hay nhóm nhạc thông thường (0).
   - `mood_category`: Phân loại nhóm cảm xúc bài hát dựa trên ngưỡng `energy` và `valence`.
   - `stream_share_country`: Tỷ trọng đóng góp lượt nghe theo từng quốc gia.
-- [ ] Hoàn thiện Notebook `notebooks/01_preprocess.ipynb` và module `src/data_loader.py`.
-- [ ] Hoàn thiện Notebook `notebooks/02_eda.ipynb` với ít nhất **5 biểu đồ tĩnh** chuẩn mực (Matplotlib/Seaborn):
-  - Biểu đồ phân phối đa biến các Audio Features.
-  - Biểu đồ nhiệt (Heatmap) ma trận tương quan giữa âm học và lượt nghe.
-  - Boxplot so sánh đặc trưng âm thanh giữa các thể loại/nhóm thu nhập.
-- [ ] Vẽ sơ đồ luồng dữ liệu (Data Pipeline Architecture) phục vụ Báo cáo cuối kỳ.
+  - `macro_genre`: Chuẩn hóa 6 dòng nhạc vĩ mô đại chúng.
+- [x] Hoàn thiện Notebook `notebooks/01_preprocess.ipynb` và module `src/data_loader.py`.
+- [x] Hoàn thiện Notebook `notebooks/02_eda.ipynb` với **6 biểu đồ tĩnh** chuẩn mực (Matplotlib/Seaborn) phân tích phân phối, độ lệch (skewness/kurtosis), biến đổi log streams, tương quan, kiểm định Mann-Whitney U, xu hướng theo tháng và phân phối 6 dòng nhạc vĩ mô.
+- [x] Vẽ sơ đồ luồng dữ liệu (Data Pipeline Architecture) phục vụ Báo cáo cuối kỳ.
 
 ### 2. Lý Gia Hân (Phụ trách: Trực quan hóa & Dashboard Tương tác)
 - [ ] Thiết kế cấu trúc giao diện Dashboard đa trang trên Streamlit (`dashboard/app.py` và các trang trong `dashboard/pages/`).
