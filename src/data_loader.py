@@ -1,12 +1,12 @@
 """
 src/data_loader.py
 
-ETL pipeline: nạp 5 bảng, làm sạch, join thành một file master (42 cột)
-và xuất file dữ liệu cấp bài hát cho Machine Learning.
+ETL pipeline: nạp 5 bảng, làm sạch, join thành một file master (39 cột)
+và xuất file dữ liệu cấp bài hát cho Machine Learning (17 cột).
 
 Đầu ra:
-    data/processed/merged_spotify_data.csv   file master (42 cột)
-    data/processed/tracks_ml_data.csv        dữ liệu cấp bài hát cho ML (18 cột)
+    data/processed/merged_spotify_data.csv   file master (39 cột)
+    data/processed/tracks_ml_data.csv        dữ liệu cấp bài hát cho ML (17 cột)
 
 Author: Đinh Quốc Anh
 """
@@ -67,20 +67,20 @@ COUNTRY_NAME_MAPPING = {
 }
 
 FINAL_INSIGHT_COLUMNS = [
-    # định danh, không gian, thời gian
+    # định danh, không gian, thời gian (9 cột)
     "track_id", "track_name", "artist_individual", "artist_genre",
     "country", "language", "week", "year", "month",
-    # xếp hạng và lượt stream
-    "rank", "streams", "log_streams", "weeks_on_chart", "peak_rank",
-    # 9 audio features
+    # xếp hạng và lượt stream (4 cột)
+    "rank", "streams", "weeks_on_chart", "peak_rank",
+    # 9 audio features (9 cột)
     "danceability", "energy", "loudness", "speechiness", "acousticness",
     "instrumentalness", "liveness", "valence", "tempo",
-    # kinh tế World Bank
+    # kinh tế World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
-    # các cột phân loại và tính thêm
+    # các cột phân loại và tính thêm (12 cột)
     "is_trending", "is_popular", "mood_category", "stream_share_country",
-    "covid_phase", "energy_loudness_index", "is_latin", "is_kpop",
-    "is_legacy_artist", "duration_min", "audio_diversity_score",
+    "energy_loudness_index", "macro_genre", "is_legacy_artist",
+    "duration_min", "audio_diversity_score",
     "track_genre", "popularity", "explicit",
 ]
 
@@ -296,13 +296,6 @@ def build_master_dataset(charts, gdp, country_codes, tracks, artists, save=True)
     df = pd.merge(df, artists, left_on="_artist_clean", right_on="artist_name_clean", how="left")
 
     # các cột tính thêm
-
-    # 3 pha COVID
-    df["covid_phase"] = "Unknown"
-    df.loc[df["year"] <= 2020, "covid_phase"] = "Lockdown & Shock"
-    df.loc[df["year"] == 2021, "covid_phase"] = "Vaccine & Escapism"
-    df.loc[df["year"] >= 2022, "covid_phase"] = "Reopening & New Normal"
-
     df["is_trending"] = (df["rank"] <= TRENDING_THRESHOLD).astype(int)
     df["is_popular"] = 0
     mask_pop = df["popularity"].notna() & (df["popularity"] >= POPULAR_THRESHOLD)
@@ -317,7 +310,7 @@ def build_master_dataset(charts, gdp, country_codes, tracks, artists, save=True)
     df.loc[~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
     df.loc[~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
 
-    # thị phần stream của bài trong từng quốc gia theo tuần
+    # thị phần stream của bài trong từng quốc gia theo tuần (trong Top 200)
     total_streams = df.groupby(["country", "week"])["streams"].transform("sum")
     df["stream_share_country"] = np.where(total_streams > 0, df["streams"] / total_streams, 0)
 
@@ -327,15 +320,8 @@ def build_master_dataset(charts, gdp, country_codes, tracks, artists, save=True)
     l_norm = (df["loudness"] - l_min) / l_range if l_range > 0 else 0.5
     df["energy_loudness_index"] = (df["energy"] + l_norm) / 2
 
-    # latin / kpop: dựa vào genre hoặc ngôn ngữ
-    genre_combo = df["artist_genre"].fillna("").str.lower() + " " + df["track_genre"].fillna("").str.lower()
-    latin_pat = "|".join(re.escape(kw) for kw in LATIN_KEYWORDS)
-    lang_latin = df["language"].fillna("").str.lower().isin(["spanish", "portuguese"])
-    df["is_latin"] = (genre_combo.str.contains(latin_pat, na=False) | lang_latin).astype(int)
-
-    kpop_pat = "|".join(re.escape(kw) for kw in KPOP_KEYWORDS)
-    lang_kr = df["language"].fillna("").str.lower().isin(["korean"])
-    df["is_kpop"] = (genre_combo.str.contains(kpop_pat, na=False) | lang_kr).astype(int)
+    # chuẩn hóa thể loại vĩ mô (macro_genre)
+    df["macro_genre"] = compute_macro_genre(df)
 
     df["is_legacy_artist"] = df["legacy_artist_name"].notna().astype(int)
 
@@ -345,7 +331,6 @@ def build_master_dataset(charts, gdp, country_codes, tracks, artists, save=True)
     div_cols = ["danceability", "energy", "valence", "acousticness"]
     df["audio_diversity_score"] = df[div_cols].std(axis=1)
 
-    df["log_streams"] = np.log1p(df["streams"])
     df["gdp_log"] = np.log1p(df["gdp_value"])
 
     # giữ đúng các cột cần dùng
@@ -372,6 +357,44 @@ def build_master_dataset(charts, gdp, country_codes, tracks, artists, save=True)
     return df
 
 
+def compute_macro_genre(df):
+    """
+    Phân loại dòng nhạc vĩ mô (macro_genre):
+    K-Pop, Latin, Hip-Hop/Rap, Rock/Metal, Pop, Others.
+
+    Quy tắc logic:
+    - K-Pop: khớp KPOP_KEYWORDS trong genre hoặc language == "korean"
+    - Latin: khớp LATIN_KEYWORDS trong genre hoặc language in ["spanish", "portuguese"]
+    - Hip-Hop/Rap: khớp "hip hop", "rap", "trap" trong genre
+    - Rock/Metal: khớp "rock", "metal", "punk" trong genre
+    - Pop: khớp "pop", "dance pop", "electropop" trong genre
+    - Others: các thể loại còn lại
+    """
+    genre_combo = (
+        df["artist_genre"].fillna("").astype(str).str.lower()
+        + " "
+        + df["track_genre"].fillna("").astype(str).str.lower()
+    )
+    lang = df["language"].fillna("").astype(str).str.lower()
+
+    kpop_pat = "|".join(re.escape(kw) for kw in KPOP_KEYWORDS)
+    latin_pat = "|".join(re.escape(kw) for kw in LATIN_KEYWORDS)
+    hiphop_pat = "hip hop|rap|trap"
+    rock_pat = "rock|metal|punk"
+    pop_pat = "pop|dance pop|electropop"
+
+    cond_kpop = genre_combo.str.contains(kpop_pat, regex=True, na=False) | (lang == "korean")
+    cond_latin = genre_combo.str.contains(latin_pat, regex=True, na=False) | lang.isin(["spanish", "portuguese"])
+    cond_hiphop = genre_combo.str.contains(hiphop_pat, regex=True, na=False)
+    cond_rock = genre_combo.str.contains(rock_pat, regex=True, na=False)
+    cond_pop = genre_combo.str.contains(pop_pat, regex=True, na=False)
+
+    conditions = [cond_kpop, cond_latin, cond_hiphop, cond_rock, cond_pop]
+    choices = ["K-Pop", "Latin", "Hip-Hop/Rap", "Rock/Metal", "Pop"]
+
+    return np.select(conditions, choices, default="Others")
+
+
 # Bước 3: xuất file dữ liệu cấp bài hát cho ML
 
 
@@ -379,6 +402,12 @@ def generate_ml_dataset(df_master, save=True):
     """
     Tạo file tracks_ml_data.csv: mỗi bài một dòng (song-level), dùng cho ML.
     Gom theo track_id để tránh rò rỉ dữ liệu (data leakage) giữa train và test.
+
+    Lưu ý:
+    - is_trending ở cấp bài hát là max(is_trending): 1 nếu bài từng vào Top 50
+      ở bất kỳ bảng xếp hạng nào (kể cả bảng Global).
+    - Các biến sau phát hành (streams, stream_share_country, weeks_on_chart, peak_rank)
+      được tách khỏi bộ đặc trưng để chống rò rỉ dữ liệu khi huấn luyện mô hình.
     """
     print("\nTạo dữ liệu cấp bài hát cho ML")
 
@@ -397,9 +426,8 @@ def generate_ml_dataset(df_master, save=True):
         "valence": "first",
         "tempo": "first",
         "duration_min": "first",
-        "is_latin": "first",
-        "is_kpop": "first",
-        "is_trending": "max",  # 1 nếu bài từng vào top 50
+        "macro_genre": "first",
+        "is_trending": "max",  # 1 nếu bài từng vào top 50 ở bất kỳ BXH nào
     }
     avail_rules = {k: v for k, v in agg_rules.items() if k in df_master.columns}
     ml_data = df_master.groupby("track_id").agg(avail_rules).reset_index()

@@ -64,8 +64,8 @@ PROJECT/
 │   └── assets/                         # Hình ảnh minh họa và assets
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
-│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 42 cột & ML)
-│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.2
+│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 39 cột & ML 17 cột)
+│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.3
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
 │   └── final_report.docx               # Báo cáo tổng kết đồ án theo cấu trúc chuẩn IEEE
 │
@@ -79,8 +79,8 @@ PROJECT/
 
 | Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
-| **`merged_spotify_data.csv`** | 1,078,125 × 42 | ~338.6 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 74 nước & COVID Timeline (`covid_phase`). |
-| **`tracks_ml_data.csv`** | 36,699 × 18 | ~5.0 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống 100% Data Leakage cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
+| **`merged_spotify_data.csv`** | 1,078,125 × 39 | ~312.4 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 73 nước + Global, phân loại dòng nhạc vĩ mô (`macro_genre`). |
+| **`tracks_ml_data.csv`** | 36,699 × 17 | ~5.2 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống rò rỉ dữ liệu cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
 
 ---
 
@@ -131,8 +131,8 @@ from src.data_loader import load_master_data
 df_master = load_master_data()  # hoặc load_master_data(nrows=50000)
 
 # 2. Nạp tập dữ liệu Song-level cho Thành Tài huấn luyện Machine Learning:
-from src.data_loader import load_ml_sample
-df_ml = load_ml_sample()
+from src.data_loader import load_ml_data
+df_ml = load_ml_data()
 ```
 
 ---
