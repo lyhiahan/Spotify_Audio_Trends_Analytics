@@ -31,6 +31,7 @@ venv.bak/
 # 3. Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
 */.ipynb_checkpoints/*
+notebooks/*.html
 
 # 4. Model checkpoints & Large artifact files
 models/*.pkl
