@@ -2,7 +2,7 @@
 **Dự án:** Nghiên cứu & Trực quan hóa Đặc trưng Âm thanh và Dự đoán Xu hướng Bài hát Thịnh hành trên Spotify  
 **Môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 **Tác giả:** Đinh Quốc Anh (MSSV: 24133003 — Data Engineer & Data Analyst)  
-**Phiên bản:** 3.3 (Kiến trúc Master Dataset Chuẩn hóa 39 Cột, Macro Genre & ML Dataset 17 Cột)  
+**Phiên bản:** 3.4 (Master Dataset 38 Cột — sửa macro_genre, bỏ 3 cột yếu, thêm chart_longevity & tempo_category, ML Dataset 19 Cột)  
 
 ---
 
@@ -124,20 +124,21 @@ Hệ thống ETL hợp nhất dữ liệu vào thư mục `data/processed/` gồ
 ```text
 data/
 └── processed/
-    ├── merged_spotify_data.csv # 1,078,125 dòng × 39 cột (~312.4 MB) — Master Dataset chuẩn hóa
-    └── tracks_ml_data.csv     # 36,699 bài hát × 17 cột (~5.2 MB) — Dữ liệu Song-level cho ML
+    ├── merged_spotify_data.csv # 1,078,125 dòng × 38 cột (~300 MB) — Master Dataset chuẩn hóa
+    └── tracks_ml_data.csv     # 36,699 bài hát × 19 cột (~5.5 MB) — Dữ liệu Song-level cho ML
 ```
 
 ---
 
-### 2.1. File Master: `merged_spotify_data.csv` (39 Cột Phục vụ Insight)
-* **Quy mô:** 1,078,125 dòng × 39 cột | **Dung lượng:** ~312.4 MB
+### 2.1. File Master: `merged_spotify_data.csv` (38 Cột Phục vụ Insight)
+* **Quy mô:** 1,078,125 dòng × 38 cột | **Dung lượng:** ~300 MB
 * **Đặc điểm kiến trúc:**
   - Hợp nhất toàn bộ dữ liệu **73 quốc gia và 1 bảng Global** giai đoạn 2020 – 2022.
-  - Chuẩn hóa tên 7 quốc gia World Bank (`Korea`, `Turkey`, `Czech Republic`, `Hong Kong`, `Egypt`, `Slovakia`, `Venezuela`) và gán mã ISO-3, nâng tỷ lệ khớp GDP lên **98.2%** (chỉ còn 18,600 dòng khuyết GDP thuộc về Đài Loan và Venezuela do World Bank không có số liệu 2020–2022), đồng thời giảm số dòng thiếu `income_group`/`region_wb` về **0**.
-  - Chuẩn hóa phân loại thể loại vĩ mô `macro_genre` (6 nhóm: `Pop`, `Latin`, `Hip-Hop/Rap`, `Rock/Metal`, `K-Pop`, `Others`) thay cho hai cờ nhị phân rời rạc `is_latin` và `is_kpop`.
-  - Loại bỏ hai cột dư thừa/gây nhiễu: `log_streams` (dẫn xuất thuần túy của `streams`) và `covid_phase` (do dữ liệu 2020 chỉ có Global nên pha COVID bị trùng lẫn hoàn toàn với thực thể Global).
-  - Lưu giữ chính xác **39 cột cốt lõi phục vụ Insight** cho đồ án.
+  - Chuẩn hóa tên 7 quốc gia World Bank (`Korea`, `Turkey`, `Czech Republic`, `Hong Kong`, `Egypt`, `Slovakia`, `Venezuela`) và gán mã ISO-3, nâng tỷ lệ khớp GDP lên **98.2%**.
+  - Chuẩn hóa phân loại thể loại vĩ mô `macro_genre` (6 nhóm: `Pop`, `Latin`, `Hip-Hop/Rap`, `Rock/Metal`, `K-Pop`, `Others`) **chỉ dựa trên `artist_genre` và `track_genre`**, sử dụng regex word boundary (`\b`) để tránh gán sai (ví dụ `"uk pop"` không match `"k pop"`). KHÔNG dùng cột `language` vì đó là ngôn ngữ thị trường BXH, không phải ngôn ngữ bài hát. Mỗi `track_id` chỉ có **1 macro_genre duy nhất** (ổn định bằng mode).
+  - Loại bỏ 5 cột yếu/gây nhiễu: `log_streams`, `covid_phase`, `is_popular` (66% NaN), `energy_loudness_index` (2 biến tương quan cao r≈0.8), `audio_diversity_score` (thiếu cơ sở khoa học).
+  - Thêm 2 cột mới: `chart_longevity` (số tuần trụ hạng cao nhất) và `tempo_category` (Slow/Medium/Fast/Very Fast).
+  - Lưu giữ chính xác **38 cột cốt lõi phục vụ Insight** cho đồ án.
 
 #### Từ điển chi tiết 39 cột của `merged_spotify_data.csv`:
 
@@ -146,9 +147,9 @@ data/
 | 1 | `track_id` | String (22 ký tự) | Nhận dạng | Mã định danh duy nhất của bài hát trên Spotify |
 | 2 | `track_name` | String | Nhận dạng | Tên bài hát |
 | 3 | `artist_individual` | String | Nhận dạng | **Nghệ sĩ chính / nghệ sĩ đầu tiên** biểu diễn (bóc tách từ chuỗi hợp tác) |
-| 4 | `artist_genre` | String | Nhận dạng | Thể loại âm nhạc gắn với nghệ sĩ (có tính biến động giữa các tuần/nước) |
-| 5 | `country` | String | Không gian | Tên quốc gia của bảng xếp hạng (**73 quốc gia và `Global`**) |
-| 6 | `language` | String | Không gian/Ngôn ngữ| **Ngôn ngữ gắn với thị trường BXH quốc gia** (không phải ngôn ngữ bài hát) |
+| 4 | `artist_genre` | String | Nhận dạng | Thể loại âm nhạc gắn với nghệ sĩ (**⚠ biến động** giữa các tuần/nước — 47% bài có ≥2 nhãn) |
+| 5 | `country` | String | Không gian | **Thị trường BXH** — 73 quốc gia và `Global` (⚠ `Global` không phải quốc gia, GDP/income_group sẽ NaN) |
+| 6 | `language` | String | Không gian | **⚠ Ngôn ngữ THỊ TRƯỜNG BXH** (quốc gia phát hành bảng xếp hạng), **KHÔNG phải ngôn ngữ bài hát** |
 | 7 | `week` | Date (YYYY-MM-DD) | Thời gian | Ngày đầu tiên của tuần ghi nhận bảng xếp hạng |
 | 8 | `year` | Int64 | Thời gian | Năm phát hành bảng xếp hạng (`2020`, `2021`, `2022`) |
 | 9 | `month` | Int64 | Thời gian | Tháng trong năm (`1` đến `12`) |
@@ -171,29 +172,30 @@ data/
 | 26 | `region_wb` | String | Địa lý World Bank | Khu vực địa lý kinh tế theo phân loại chuẩn World Bank |
 | 27 | `country_code` | String (3 ký tự) | Địa lý World Bank | Mã định danh ISO-alpha-3 của quốc gia |
 | 28 | `is_trending` | Int64 (0/1) | Calculated Field | $1$ nếu bài hát xếp hạng Top 50 tuần ($\text{rank} \le 50$), $0$ nếu Top 51-200 |
-| 29 | `is_popular` | Int64 (0/1) | Calculated Field | $1$ nếu điểm phổ biến toàn cầu $\text{popularity} \ge 70$, $0$ nếu $< 70$ |
-| 30 | `mood_category` | String | Calculated Field | Phân loại tâm trạng theo mô hình Russell 4 góc phần tư |
-| 31 | `stream_share_country`| Float64 | Calculated Field | **Tỷ trọng lượt stream so với tổng stream của Top 200** của nước trong tuần |
-| 32 | `energy_loudness_index`| Float64 | Calculated Field | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa $[0, 1]$ |
-| 33 | `macro_genre` | String | Calculated Field | **Dòng nhạc vĩ mô chuẩn hóa** (`Pop`, `Latin`, `Hip-Hop/Rap`, `Rock/Metal`, `K-Pop`, `Others`) |
-| 34 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử |
-| 35 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút |
-| 36 | `audio_diversity_score`| Float64 | Calculated Field | Độ lệch chuẩn giữa 4 đặc trưng âm học chính của bài hát |
-| 37 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks |
-| 38 | `popularity` | Float64 | Khám phá bổ trợ | Điểm số độ phổ biến toàn cầu của bài hát $[0, 100]$ |
-| 39 | `explicit` | Boolean | Khám phá bổ trợ | Cờ cảnh báo nội dung nhạy cảm / ca từ thô tục (`True`/`False`/<NA>) |
+| 29 | `mood_category` | String | Calculated Field | Phân loại **đặc tính cảm xúc bài hát** theo mô hình Russell 4 góc phần tư (`Unknown` khi thiếu audio) |
+| 30 | `stream_share_country`| Float64 | Calculated Field | **Tỷ trọng lượt stream so với tổng stream của Top 200** trong thị trường–tuần |
+| 31 | `macro_genre` | String | Calculated Field | **Dòng nhạc vĩ mô chuẩn hóa** — ổn định per track_id bằng mode (`Pop`, `Latin`, `Hip-Hop/Rap`, `Rock/Metal`, `K-Pop`, `Others`) |
+| 32 | `is_legacy_artist`| Int64 (0/1) | Calculated Field | $1$ nếu nghệ sĩ nằm trong danh sách bán đĩa chạy nhất lịch sử (121 nghệ sĩ) |
+| 33 | `duration_min` | Float64 | Calculated Field | Thời lượng bài hát tính theo phút ($\text{duration} / 60{,}000$) |
+| 34 | `chart_longevity` | Int64 | Calculated Field | Số tuần trụ hạng cao nhất của bài ($\max(\text{weeks\_on\_chart})$ per track_id) — phân biệt flash hit vs evergreen |
+| 35 | `tempo_category` | String | Calculated Field | Phân nhóm tốc độ nhịp: `Slow` (<90), `Medium` (90–120), `Fast` (120–150), `Very Fast` (≥150 BPM) |
+| 36 | `track_genre` | String | Khám phá bổ trợ | Thể loại âm nhạc chi tiết của track từ bảng Tracks (⚠ NaN ở 66% dòng) |
+| 37 | `popularity` | Float64 | Khám phá bổ trợ | Điểm số độ phổ biến toàn cầu của bài hát $[0, 100]$ (⚠ NaN ở 66% dòng) |
+| 38 | `explicit` | Boolean | Khám phá bổ trợ | Cờ cảnh báo nội dung nhạy cảm / ca từ thô tục (`True`/`False`/`<NA>`) |
 
 ---
 
-### 2.2. File Dữ liệu ML: `tracks_ml_data.csv` (17 Cột Cấp độ Bài hát cho ML)
+### 2.2. File Dữ liệu ML: `tracks_ml_data.csv` (19 Cột Cấp độ Bài hát cho ML)
 * **Vị trí lưu trữ:** `data/processed/tracks_ml_data.csv`
-* **Quy mô:** 36,699 bài hát độc nhất × 17 cột | **Dung lượng:** ~5.2 MB
-* **Phục vụ chính:** Đỗ Thanh Thành Tài (ML Engineer — huấn luyện mô hình Logistic Regression dự báo Top Hit).
+* **Quy mô:** 36,699 bài hát độc nhất × 19 cột | **Dung lượng:** ~5.5 MB
+* **Phục vụ chính:** Đỗ Thanh Thành Tài (ML Engineer — huấn luyện mô hình Logistic Regression & Linear Regression).
 * **Đặc tính kỹ thuật & Chống rò rỉ dữ liệu (Data Leakage):**
   - **Cấp độ bài hát (Song-level):** Mỗi bài hát chỉ xuất hiện **duy nhất 1 dòng**, gom nhóm (groupby) theo `track_id`.
   - **Loại bỏ hoàn toàn biến không gian & thời gian:** Không chứa `country`, `week`, `year`, `streams` $\rightarrow$ Triệt tiêu rủi ro rò rỉ dữ liệu khi chia tập Train / Test.
-  - **Tỷ lệ nhãn cân bằng:** Tỷ lệ nhãn Hit (`is_trending = 1`) đạt **35.9%** (rất lý tưởng cho mô hình phân loại nhị phân).
-* **Cấu trúc 17 cột:** `track_id`, `track_name`, `artist_individual`, `artist_genre`, `language`, `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `duration_min`, `macro_genre`, `is_trending` (nhãn mục tiêu).
+  - **Cột categorical dùng `mode`** (giá trị xuất hiện nhiều nhất) thay vì `first` cho `artist_genre` và `language` — đảm bảo ổn định.
+  - **Tỷ lệ nhãn cân bằng:** Tỷ lệ nhãn Hit (`is_trending = 1`) đạt **~35.9%** (rất lý tưởng cho mô hình phân loại nhị phân).
+  - **⚠ Lưu ý:** `chart_longevity` là biến hậu phát hành — **KHÔNG dùng làm feature ML**, chỉ dùng cho EDA.
+* **Cấu trúc 19 cột:** `track_id`, `track_name`, `artist_individual`, `artist_genre`, `language`, `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `duration_min`, `macro_genre`, `tempo_category`, `chart_longevity`, `is_trending` (nhãn mục tiêu).
 
 ---
 
@@ -207,7 +209,7 @@ Trong quá trình phân tích sâu dữ liệu thô và đối soát kiểm th�
    - *Hệ quả:* Một bài hát phát hành toàn cầu có thể mang tới **40 nhãn ngôn ngữ khác nhau** giữa các dòng xếp hạng tại các quốc gia.
 2. **Tính bất ổn định của `artist_genre`:**
    - Trường thể loại nghệ sĩ không bất biến. Thống kê cho thấy **17,272 trên tổng số 36,699 bài hát độc nhất (47.07%)** mang nhiều nhãn thể loại khác nhau giữa các dòng xếp hạng (ví dụ ca khúc *"Mr. Brightside"* của The Killers mang tới 5 nhãn thể loại khác nhau).
-   - *Giải pháp:* Gom nhóm về `macro_genre` bằng cách kết hợp `artist_genre`, `track_genre` và `language` để ổn định hóa phân loại.
+   - *Giải pháp:* Gom nhóm về `macro_genre` bằng cách kết hợp `artist_genre` và `track_genre` với regex word boundary (`\b`), tuyệt đối không dùng `language`, và ổn định duy nhất 1 nhãn per `track_id` bằng hàm `mode`.
 3. **Định nghĩa `is_trending` ở cấp bài hát:**
    - Ở cấp độ bài hát (song-level trong `tracks_ml_data.csv`), nhãn `is_trending` được tính bằng `max(is_trending)`.
    - *Bản chất:* Mang ý nghĩa *"bài hát từng ít nhất 1 lần lọt vào Top 50 ở bất kỳ bảng xếp hạng nào (kể cả bảng Global)"*.
@@ -225,28 +227,27 @@ Qua kiểm tra toàn bộ 1,078,125 bản ghi:
 ### 3.3. Cảnh báo rò rỉ dữ liệu (Data Leakage) khi huấn luyện mô hình
 Khi xây dựng mô hình dự báo mức độ thịnh hành của bài hát (`is_trending`), người thực hiện (Đỗ Thanh Thành Tài) cần lưu ý:
 > [!WARNING]
-> **Các cột phản ánh kết quả sau phát hành:**
-> - `streams`, `stream_share_country`, `weeks_on_chart`, `peak_rank`, cũng như biến phái sinh `log_streams` là những thông tin chỉ xuất hiện **sau khi** ca khúc đã được phát hành và được khán giả nghe thực tế trên thị trường.
+> **Các cột phản ánh kết quả sau phát hành (Post-release Metrics):**
+> - `streams`, `stream_share_country`, `weeks_on_chart`, `peak_rank`, `chart_longevity` cũng như biến phái sinh `log_streams` là những thông tin chỉ xuất hiện **sau khi** ca khúc đã được phát hành và được khán giả nghe thực tế trên thị trường.
 > - **Tuyệt đối không sử dụng** các cột này làm đặc trưng đầu vào (input features) khi huấn luyện mô hình Machine Learning dự báo bài hát thịnh hành, vì sẽ gây ra hiện tượng **Rò rỉ dữ liệu (Data Leakage)** nghiêm trọng, làm mô hình đạt độ chính xác ảo (over-optimistic) nhưng vô dụng trong thực tế.
 
 ---
 
-## 4. TỔNG HỢP 10 CALCULATED FIELDS & CÔNG THỨC TOÁN HỌC
+## 4. TỔNG HỢP 9 CALCULATED FIELDS & CÔNG THỨC TOÁN HỌC
 
-Trong Master Dataset 39 cột, có **10 Calculated Fields** được tính toán và chuẩn hóa:
+Trong Master Dataset 38 cột, có **9 Calculated Fields** được tính toán và chuẩn hóa:
 
 | STT | Trường tính toán | Quy tắc logic / Công thức toán học | Ứng dụng phân tích |
 | :---: | :--- | :--- | :--- |
 | 1 | `is_trending` | $$\text{is\_trending} = \mathbb{I}(\text{rank} \le 50)$$ | Biến phụ thuộc mục tiêu phân loại Top Hit. |
-| 2 | `is_popular` | $$\text{is\_popular} = \mathbb{I}(\text{popularity} \ge 70)$$ | Đánh giá bài hát đạt độ lan tỏa quốc tế cao. |
-| 3 | `mood_category` | $$\begin{cases} \text{Happy Energetic} & \text{valence} \ge 0.5 \land \text{energy} \ge 0.5 \\ \text{Peaceful Positive} & \text{valence} \ge 0.5 \land \text{energy} < 0.5 \\ \text{Tense Aggressive} & \text{valence} < 0.5 \land \text{energy} \ge 0.5 \\ \text{Sad Melancholic} & \text{valence} < 0.5 \land \text{energy} < 0.5 \end{cases}$$ | Bản đồ tâm trạng người nghe 4 góc phần tư Russell. |
-| 4 | `stream_share_country` | $$\text{share}_{i, c, w} = \frac{\text{streams}_{i, c, w}}{\sum_{k \in \text{Top200}(c, w)} \text{streams}_{k, c, w}}$$ | Tỷ trọng thống trị của bài hát tại thị trường quốc gia trong tuần. |
-| 5 | `energy_loudness_index` | $$\text{loud\_norm} = \frac{\text{loudness} - \min(\text{loudness})}{\max(\text{loudness}) - \min(\text{loudness})}, \quad \text{index} = \frac{\text{energy} + \text{loud\_norm}}{2}$$ | Chỉ số cường độ âm thanh tổng hợp chuẩn hóa trong đoạn $[0, 1]$. |
-| 6 | `macro_genre` | Phân loại ưu tiên 6 nhóm:<br>1. **K-Pop:** khớp từ khóa K-Pop hoặc `language == "korean"`<br>2. **Latin:** khớp từ khóa Latin hoặc `language` $\in$ {Spanish, Portuguese}<br>3. **Hip-Hop/Rap:** khớp "hip hop", "rap", "trap"<br>4. **Rock/Metal:** khớp "rock", "metal", "punk"<br>5. **Pop:** khớp "pop", "dance pop", "electropop"<br>6. **Others:** các thể loại còn lại | Danh mục dòng nhạc vĩ mô đồng nhất, loại bỏ thiên lệch và phục vụ trực quan hóa thị phần. |
-| 7 | `is_legacy_artist` | $$\mathbb{I}(\text{legacy\_artist\_name is not Null})$$ | Đánh dấu các nghệ sĩ huyền thoại bán đĩa chạy nhất lịch sử. |
-| 8 | `duration_min` | $$\text{duration\_min} = \frac{\text{duration\_ms}}{60,000}$$ | Quy đổi thời lượng sang phút để phân tích xu hướng rút ngắn track. |
-| 9 | `audio_diversity_score`| $$\text{StdDev}(\text{danceability}, \text{energy}, \text{valence}, \text{acousticness})$$ | Đo lường độ tương phản và đa dạng âm học nội tại của bài hát. |
-| 10 | `gdp_log` | $$\text{gdp\_log} = \ln(1 + \text{gdp\_value})$$ | Nén biên độ GDP hàng nghìn tỷ USD phục vụ phân tích tương quan kinh tế. |
+| 2 | `mood_category` | $$\begin{cases} \text{Happy Energetic} & \text{valence} \ge 0.5 \land \text{energy} \ge 0.5 \\ \text{Peaceful Positive} & \text{valence} \ge 0.5 \land \text{energy} < 0.5 \\ \text{Tense Aggressive} & \text{valence} < 0.5 \land \text{energy} \ge 0.5 \\ \text{Sad Melancholic} & \text{valence} < 0.5 \land \text{energy} < 0.5 \\ \text{Unknown} & \text{valence hoặc energy là NaN} \end{cases}$$ | Phân loại **đặc tính cảm xúc bài hát** (không phải tâm trạng người nghe) theo mô hình Russell 4 góc phần tư. |
+| 3 | `stream_share_country` | $$\text{share}_{i, c, w} = \frac{\text{streams}_{i, c, w}}{\sum_{k \in \text{Top200}(c, w)} \text{streams}_{k, c, w}}$$ | Tỷ trọng thống trị của bài hát tại thị trường trong tuần. |
+| 4 | `macro_genre` | Phân loại ưu tiên 6 nhóm bằng regex có word boundary (`\b`):<br>1. **K-Pop:** `\b(k-pop|kpop|k pop|k-rap)\b`<br>2. **Latin:** `\b(latin|reggaeton|salsa|...)\b`<br>3. **Hip-Hop/Rap:** `\b(hip hop|hip-hop|rap|trap)\b`<br>4. **Rock/Metal:** `\b(rock|metal|punk)\b`<br>5. **Pop:** `\b(pop|electropop)\b`<br>6. **Others:** các thể loại còn lại<br>**⚠ KHÔNG dùng `language`** (vì đó là ngôn ngữ thị trường). Ổn định per track_id bằng mode. | Danh mục dòng nhạc vĩ mô đồng nhất, ổn định 1 nhãn duy nhất cho mỗi bài hát. |
+| 5 | `is_legacy_artist` | $$\mathbb{I}(\text{legacy\_artist\_name is not Null})$$ | Đánh dấu các nghệ sĩ huyền thoại bán đĩa chạy nhất lịch sử (121 nghệ sĩ). |
+| 6 | `duration_min` | $$\text{duration\_min} = \frac{\text{duration}}{60{,}000}$$ | Quy đổi thời lượng sang phút để phân tích xu hướng rút ngắn track. |
+| 7 | `chart_longevity` | $$\text{chart\_longevity} = \max_{\text{per track\_id}}(\text{weeks\_on\_chart})$$ | Số tuần trụ hạng cao nhất — phân biệt flash hit (1-2 tuần) vs evergreen (nhiều tháng). |
+| 8 | `tempo_category` | $$\begin{cases} \text{Slow} & \text{tempo} < 90 \\ \text{Medium} & 90 \le \text{tempo} < 120 \\ \text{Fast} & 120 \le \text{tempo} < 150 \\ \text{Very Fast} & \text{tempo} \ge 150 \end{cases}$$ | Phân nhóm tốc độ nhịp phục vụ trực quan hóa phân bổ tempo trên Dashboard. |
+| 9 | `gdp_log` | $$\text{gdp\_log} = \ln(1 + \text{gdp\_value})$$ | Nén biên độ GDP hàng nghìn tỷ USD phục vụ phân tích tương quan kinh tế. |
 
 ---
 

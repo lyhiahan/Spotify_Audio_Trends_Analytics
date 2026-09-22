@@ -3,7 +3,7 @@
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
-> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 42 Cột & Tập Dữ liệu ML Cấp Bài Hát (Version 3.2).
+> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 38 Cột & Tập Dữ liệu ML Cấp Bài Hát 19 Cột (Version 3.4).
 
 ---
 
@@ -12,7 +12,7 @@
 Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của một bản thu không chỉ phụ thuộc vào độ nhận diện của nghệ sĩ mà còn gắn liền mật thiết với **các đặc trưng âm thanh (Audio Features)** nội tại (như *danceability*, *energy*, *valence*, *tempo*, *acousticness*), cũng như **môi trường kinh tế - xã hội (quy mô GDP, phân tầng thu nhập World Bank)** của từng quốc gia.
 
 Đề tài giải quyết trọn vẹn 4 mục tiêu học thuật và ứng dụng thực tiễn:
-1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **42 cột cốt lõi phục vụ Insight**, đồng thời trích xuất tập dữ liệu cấp bài hát không rò rỉ cho mô hình học máy.
+1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **38 cột cốt lõi phục vụ Insight**, đồng thời trích xuất tập dữ liệu cấp bài hát không rò rỉ cho mô hình học máy.
 2. **Khám phá Insight & Kể chuyện bằng Dữ liệu (Data Storytelling):** 
    * *Nghịch lý Cảm xúc (GDP vs Valence Paradox):* Liệu các nước đang phát triển (GDP trung bình/thấp) có chuộng âm nhạc sôi động và giàu năng lượng hơn để giải tỏa áp lực so với các nước phát triển?
    * *3 Giai đoạn Đại dịch COVID-19 (Timeline Waves 2020 – 2022):* Đo lường sự chuyển biến tâm lý người nghe toàn cầu qua các cột mốc: *Phong tỏa (Lockdown & Shock)*, *Giải tỏa (Vaccine & Escapism)* và *Bình thường mới (Reopening & New Normal)*.
@@ -39,19 +39,18 @@ PROJECT/
 │   │   └── spotify-weekly-charts.csv   # 1,787,999 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
 │   │
 │   └── processed/                      # Tệp dữ liệu sau khi xử lý & kết nối 5 bảng
-│       ├── merged_spotify_data.csv     # Master Dataset (1,078,125 dòng × 42 cột, ~338.6 MB)
-│       └── tracks_ml_data.csv          # Song-level ML Dataset (36,699 bài × 18 cột, ~5.0 MB) cho Thành Tài
+│       ├── merged_spotify_data.csv     # Master Dataset (1,078,125 dòng × 38 cột, ~308 MB)
+│       └── tracks_ml_data.csv          # Song-level ML Dataset (36,699 bài × 19 cột, ~5.5 MB) cho Thành Tài
 │
 ├── notebooks/                          # Jupyter Notebooks nghiên cứu theo Barem đồ án
-│   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Master Pipeline, 13 biến & EDA tĩnh
+│   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Master Pipeline, 9 biến & EDA tĩnh
 │   ├── 02_eda.ipynb                    # Phân tích khám phá dữ liệu (EDA) đa biến chuyên sâu
 │   ├── 03_model.ipynb                  # Huấn luyện mô hình Logistic Regression & trực quan hóa ML
 │   └── 04_story.ipynb                  # Khai thác Insight chuyên sâu & cốt truyện dữ liệu
 │
 ├── src/                                # Module mã nguồn dùng chung
 │   ├── __init__.py
-│   ├── data_loader.py                  # Pipeline ETL Master Dataset & các hàm nạp dữ liệu tiện ích
-│   └── models.py                       # Xây dựng và kiểm định mô hình Machine Learning
+│   └── data_loader.py                  # Pipeline ETL Master Dataset & các hàm nạp dữ liệu tiện ích
 │
 ├── dashboard/                          # Ứng dụng Dashboard Tương tác (Streamlit & Plotly)
 │   ├── app.py                          # Trang chủ (Homepage) của Dashboard
@@ -64,8 +63,8 @@ PROJECT/
 │   └── assets/                         # Hình ảnh minh họa và assets
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
-│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 39 cột & ML 17 cột)
-│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.3
+│   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (5 bảng thô, Master Dataset 38 cột & ML 19 cột)
+│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.4
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
 │   └── final_report.docx               # Báo cáo tổng kết đồ án theo cấu trúc chuẩn IEEE
 │
@@ -79,8 +78,8 @@ PROJECT/
 
 | Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
-| **`merged_spotify_data.csv`** | 1,078,125 × 39 | ~312.4 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 73 nước + Global, phân loại dòng nhạc vĩ mô (`macro_genre`). |
-| **`tracks_ml_data.csv`** | 36,699 × 17 | ~5.2 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống rò rỉ dữ liệu cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
+| **`merged_spotify_data.csv`** | 1,078,125 × 38 | ~308 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 73 nước + Global, phân loại dòng nhạc vĩ mô (`macro_genre`). |
+| **`tracks_ml_data.csv`** | 36,699 × 19 | ~5.5 MB | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống rò rỉ dữ liệu cho mô hình hồi quy (Tỷ lệ Hit: 35.9%). |
 
 ---
 
@@ -143,15 +142,15 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 
 | STT | Họ và tên | MSSV | Vai trò chính | Nhiệm vụ đảm nhiệm theo Barem Đồ án |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Master Pipeline (`src/data_loader.py`).<br>• Làm sạch và kết nối 5 bảng dữ liệu (>1.9M bản ghi).<br>• Xây dựng 13 Calculated Fields và viết `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh 8–10 biểu đồ chuyên sâu trong `notebooks/02_eda.ipynb`. |
+| 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Master Pipeline (`src/data_loader.py`).<br>• Làm sạch và kết nối 5 bảng dữ liệu (>1.9M bản ghi).<br>• Xây dựng 9 Calculated Fields và viết `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh 8–10 biểu đồ chuyên sâu trong `notebooks/02_eda.ipynb`. |
 | 2 | **Lý Gia Hân** | **24133016** | Visualization & Dashboard Dev | • Thiết kế toàn bộ giao diện tương tác Streamlit đa trang (`dashboard/`).<br>• Xây dựng Bản đồ tương tác thế giới Choropleth, Radar Chart và Russell Mood Map.<br>• Phân tích cốt truyện dữ liệu: Nghịch lý GDP vs Valence và 3 Pha COVID-19 trong `notebooks/04_story.ipynb`. |
 | 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Demo / Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu Song-level không rò rỉ (`notebooks/03_model.ipynb`).<br>• Xây dựng bộ công cụ tương tác dự báo trên Dashboard Trang 4.<br>• Soạn thảo Báo cáo tổng kết đồ án chuẩn IEEE (`docs/final_report.docx`) và quay Video Demo thuyết trình. |
 
 ---
 
 ## 📑 7. Tài liệu Tham khảo & Báo cáo Đi kèm
-* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 42 cột và công thức toán học của 13 Calculated Fields.
-* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 42 cột phục vụ Insight.
+* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 38 cột và công thức toán học của 9 Calculated Fields.
+* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 38 cột phục vụ Insight.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
 * 📹 **Link Video Demo (YouTube / Google Drive):** `[CẬP NHẬT LINK VIDEO TẠI ĐÂY]`
 * 📊 **Link Slide Thuyết trình:** `[CẬP NHẬT LINK CANVA/GOOGLE SLIDES TẠI ĐÂY]`
