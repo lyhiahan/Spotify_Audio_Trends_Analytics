@@ -72,26 +72,23 @@ COUNTRY_NAME_MAPPING = {
     "Venezuela": "Venezuela, RB",
 }
 
-# Danh sách cột chuẩn mực giữ lại trong Master Dataset
+# Danh sách 41 cột chuẩn mực giữ lại trong Master Dataset (Khớp 100% Data Dictionary)
 FINAL_COLUMNS = [
-    # Định danh, không gian, thời gian
+    # Định danh, không gian, thời gian (9 cột)
     "track_id", "track_name", "artist_individual", "artist_genre",
-    "country", "language", "week", "year", "month",
-    # Xếp hạng và lượt stream
+    "chart_country", "chart_language", "chart_week", "chart_year", "chart_month",
+    # Xếp hạng và lượt stream (4 cột)
     "rank", "streams", "weeks_on_chart", "peak_rank",
-    # 9 đặc trưng âm học
+    # 9 đặc trưng âm học (9 cột)
     "danceability", "energy", "loudness", "speechiness", "acousticness",
     "instrumentalness", "liveness", "valence", "tempo",
-    # Cấp bài hát (kết hợp Waterfall từ songs.csv + spotify-tracks-dataset.csv)
-    "song_genre", "song_genre_source", "explicit",
-    "song_popularity_raw", "song_popularity", "has_song_popularity", "popularity_status", "popularity_is_imputed",
-    # Cấp nghệ sĩ (artists.csv với tính minh bạch tuyệt đối)
-    "artist_main_genre",
-    "artist_followers_raw", "artist_followers", "artist_followers_is_imputed",
-    "artist_popularity_raw", "artist_popularity", "artist_popularity_is_imputed",
-    # Kinh tế & Địa lý World Bank
+    # Cấp bài hát (4 cột - Đã loại bỏ explicit, song_popularity_raw, has_song_popularity, popularity_is_imputed)
+    "song_genre", "song_genre_source", "song_popularity", "popularity_status",
+    # Cấp nghệ sĩ (3 cột - Đã loại bỏ artist_followers, artist_followers_raw, artist_followers_is_imputed, artist_popularity_raw)
+    "artist_main_genre", "artist_popularity", "artist_popularity_is_imputed",
+    # Kinh tế & Địa lý World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
-    # Các trường tính toán phái sinh (Calculated Fields)
+    # Các trường tính toán phái sinh (7 cột)
     "is_trending", "mood_category", "stream_share_country",
     "macro_genre", "duration_min", "chart_longevity", "tempo_category",
 ]
@@ -492,13 +489,22 @@ def build_master_dataset(charts, track_waterfall, artists, gdp, country_codes, s
     # CHỌN CỘT & LƯU FILE
     # ============================================================
 
+    # Đổi tên các trường không gian - thời gian chuẩn mực theo Data Dictionary
+    df.rename(columns={
+        "country": "chart_country",
+        "language": "chart_language",
+        "week": "chart_week",
+        "year": "chart_year",
+        "month": "chart_month",
+    }, inplace=True)
+
     final_cols = [c for c in FINAL_COLUMNS if c in df.columns]
     df = df[final_cols]
 
     # Làm tròn số thực
     float_cols = df.select_dtypes(include=["float64", "float32"]).columns
     for c in float_cols:
-        if c in ["gdp_value", "artist_followers", "artist_followers_raw"]:
+        if c in ["gdp_value"]:
             df[c] = df[c].round(0)
         else:
             df[c] = df[c].round(3)
@@ -573,15 +579,12 @@ def generate_ml_dataset(df_master, save=True):
         "artist_genre": _mode_or_first,
         "song_genre": _mode_or_first,
         "song_genre_source": _mode_or_first,
-        "explicit": "max",
-        "song_popularity_raw": "max",
         "song_popularity": "max",
-        "has_song_popularity": "max",
         "popularity_status": _mode_or_first,
-        "popularity_is_imputed": "min",
+        "artist_main_genre": _mode_or_first,
         "artist_popularity": "max",
-        "artist_followers": "max",
-        "language": _mode_or_first,
+        "artist_popularity_is_imputed": "max",
+        "chart_language": _mode_or_first,
         "danceability": "first",
         "energy": "first",
         "loudness": "first",
