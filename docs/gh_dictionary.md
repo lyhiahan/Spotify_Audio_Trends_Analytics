@@ -73,9 +73,9 @@ Hệ thống tích hợp dữ liệu từ 6 nguồn độc lập trong thư mụ
 | 30 | `valence` | Float64 [0, 1] | Mức độ tích cực, vui vẻ, tươi sáng của giai điệu | Trục tâm trạng cốt lõi mô hình cảm xúc 4 góc phần tư |
 | 31 | `tempo` | Float64 (BPM) | Tốc độ nhịp đập bài hát theo Beats Per Minute | Phân loại nhịp điệu bài hát (`tempo_category`: Slow, Medium, Fast, Very Fast) |
 | 32 | `duration` | Int64 (ms) | Thời lượng bài hát tính bằng mili-giây | Chia 60,000 để tạo biến thời lượng phút (`duration_min`) |
-| 33 | `country` | String | Thị trường BXH (73 quốc gia và bảng Global) | **Khóa JOIN không gian:** Khớp với `country_codes.csv` và `gdp_data.csv` |
+| 33 | `country` | String | Thị trường BXH (73 quốc gia và bảng Global) | **Khóa JOIN không gian:** Khớp với `country_codes.csv` và `gdp_data.csv`. Trong Master Dataset được đổi tên thành `chart_country` để tránh nhầm lẫn với quốc tịch nghệ sĩ. |
 | 34 | `region` | String | Phân vùng khu vực ban đầu trong file cào | Tham khảo phân vùng địa lý sơ cấp |
-| 35 | `language` | String | Ngôn ngữ chính thức của thị trường BXH | Khảo sát thị hiếu ngôn ngữ âm nhạc theo khu vực |
+| 35 | `language` | String | Ngôn ngữ chính thức của thị trường BXH | Khảo sát thị hiếu ngôn ngữ âm nhạc theo khu vực. Trong Master Dataset được đổi tên thành `chart_language` để tránh nhầm lẫn với ngôn ngữ lời bài hát. |
 | 36 | `pivot` | String/Int | Cờ kỹ thuật hỗ trợ xoay trục dữ liệu | Bỏ qua khi lưu trữ Master Dataset |
 
 ---
@@ -294,8 +294,8 @@ Dữ liệu khuyết được điền bằng **Trung vị (Median)** theo từng
 | 2 | `track_name` | String | Nhận dạng | Charts | Tên bài hát |
 | 3 | `artist_individual` | String | Nhận dạng | Charts | Tên nghệ sĩ chính / nghệ sĩ biểu diễn đầu tiên |
 | 4 | `artist_genre` | String | Nhận dạng | Charts | Thể loại âm nhạc gắn với nghệ sĩ trên BXH tuần |
-| 5 | `country` | String | Không gian | Charts | Thị trường BXH (73 quốc gia và bảng Global) |
-| 6 | `language` | String | Không gian | Charts | Ngôn ngữ của thị trường BXH (không phải ngôn ngữ bài hát) |
+| 5 | `chart_country` | String | Không gian | Charts | Quốc gia / Thị trường BXH (73 quốc gia và bảng Global, đổi tên từ `country` để tránh nhầm với quốc tịch nghệ sĩ) |
+| 6 | `chart_language` | String | Không gian | Charts | Ngôn ngữ của thị trường BXH (đổi tên từ `language` để tránh nhầm với ngôn ngữ lời bài hát) |
 | 7 | `week` | Date (YYYY-MM-DD)| Thời gian | Charts | Ngày bắt đầu của tuần ghi nhận BXH |
 | 8 | `year` | Int64 | Thời gian | Charts | Năm phát hành bảng xếp hạng (2020, 2021, 2022) |
 | 9 | `month` | Int64 | Thời gian | Charts | Tháng trong năm (1 đến 12) |
