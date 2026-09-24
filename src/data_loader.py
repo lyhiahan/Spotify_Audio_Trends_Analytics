@@ -72,7 +72,7 @@ COUNTRY_NAME_MAPPING = {
     "Venezuela": "Venezuela, RB",
 }
 
-# Danh sách 41 cột chuẩn mực giữ lại trong Master Dataset (Khớp 100% Data Dictionary)
+# Danh sách 40 cột chuẩn mực giữ lại trong Master Dataset (Khớp 100% Data Dictionary)
 FINAL_COLUMNS = [
     # Định danh, không gian, thời gian (9 cột)
     "track_id", "track_name", "artist_individual", "artist_genre",
@@ -84,8 +84,8 @@ FINAL_COLUMNS = [
     "instrumentalness", "liveness", "valence", "tempo",
     # Cấp bài hát (4 cột - Đã loại bỏ explicit, song_popularity_raw, has_song_popularity, popularity_is_imputed)
     "song_genre", "song_genre_source", "song_popularity", "popularity_status",
-    # Cấp nghệ sĩ (3 cột - Đã loại bỏ artist_followers, artist_followers_raw, artist_followers_is_imputed, artist_popularity_raw)
-    "artist_main_genre", "artist_popularity", "artist_popularity_is_imputed",
+    # Cấp nghệ sĩ (2 cột - Đã loại bỏ artist_followers, artist_followers_raw, artist_followers_is_imputed, artist_popularity_raw, artist_popularity_is_imputed)
+    "artist_main_genre", "artist_popularity",
     # Kinh tế & Địa lý World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
     # Các trường tính toán phái sinh (7 cột)
@@ -401,11 +401,7 @@ def build_master_dataset(charts, track_waterfall, artists, gdp, country_codes, s
     )
     df["macro_genre"] = df["track_id"].map(track_macro_mode)
 
-    # 5. XỬ LÝ NGHỆ SĨ MINH BẠCH (Xóa bỏ tiêu chuẩn kép)
-    # Ghi nhận cờ đánh dấu nguồn gốc cho ca sĩ
-    df["artist_popularity_is_imputed"] = df["artist_popularity_raw"].isna().astype(int)
-    df["artist_followers_is_imputed"] = df["artist_followers_raw"].isna().astype(int)
-
+    # 5. XỬ LÝ NGHỆ SĨ (Điền trung vị theo macro_genre)
     # Điền trung vị có điều kiện theo macro_genre
     macro_art_pop_med = df.groupby("macro_genre")["artist_popularity_raw"].transform("median")
     df["artist_popularity"] = df["artist_popularity_raw"].fillna(macro_art_pop_med).fillna(50)
@@ -583,7 +579,6 @@ def generate_ml_dataset(df_master, save=True):
         "popularity_status": _mode_or_first,
         "artist_main_genre": _mode_or_first,
         "artist_popularity": "max",
-        "artist_popularity_is_imputed": "max",
         "chart_language": _mode_or_first,
         "danceability": "first",
         "energy": "first",

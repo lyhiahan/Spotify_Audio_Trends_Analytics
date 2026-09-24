@@ -16,14 +16,14 @@
    * [1.6. Bảng country_codes.csv (3 trường)](#16-bảng-country_codescsv-phân-tầng-địa-lý--thu-nhập-world-bank)
    * [1.7. Kỹ thuật Ghép Thác Nước (Waterfall Join) Tối ưu Độ phủ Bài hát](#17-kỹ-thuật-ghép-thác-nước-waterfall-join-tối-ưu-độ-phủ-bài-hát)
 2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-output-datasets)
-   * [2.1. File Master: spotify.csv (1,078,125 Dòng × 41 Cột)](#21-file-master-spotifycsv-1078125-dòng--41-cột)
-   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 26 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--26-cột)
+   * [2.1. File Master: spotify.csv (1,078,125 Dòng × 40 Cột)](#21-file-master-spotifycsv-1078125-dòng--40-cột)
+   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 25 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--25-cột)
 3. [CHI TIẾT PHƯƠNG PHÁP ĐIỀU CHỈNH & XỬ LÝ DỮ LIỆU KHUYẾT THIẾU](#3-chi-tiết-phương-pháp-điều-chỉnh--xử-lý-dữ-liệu-khuyết-thiếu)
    * [3.1. Xử lý triệt để thể loại bài hát (song_genre & song_genre_source) bằng Bậc thang 4 tầng](#31-xử-lý-triệt-để-thể-loại-bài-hát-song_genre--song_genre_source-bằng-bậc-thang-4-tầng)
    * [3.2. Phương án A: Bảo toàn Dữ liệu Gốc cho Khai phá EDA & Tách bạch Trách nhiệm Machine Learning](#32-phương-án-a-bảo-toàn-dữ-liệu-gốc-cho-khai-phá-eda--tách-bạch-trách-nhiệm-machine-learning)
-   * [3.3. Xử lý dữ liệu Nghệ sĩ (artist_popularity & artist_popularity_is_imputed)](#33-xử-lý-dữ-liệu-nghệ-sĩ-artist_popularity--artist_popularity_is_imputed)
+   * [3.3. Xử lý dữ liệu Nghệ sĩ (artist_popularity)](#33-xử-lý-dữ-liệu-nghệ-sĩ-artist_popularity)
    * [3.4. Chuẩn hóa không gian và khớp nối kinh tế World Bank (GDP & Income Group)](#34-chuẩn-hóa-không-gian-và-khớp-nối-kinh-tế-world-bank-gdp--income-group)
-4. [TỪ ĐIỂN DỮ LIỆU CHI TIẾT 41 CỘT CỦA MASTER DATASET (spotify.csv)](#4-từ-điển-dữ-liệu-chi-tiết-41-cột-của-master-dataset-spotifycsv)
+4. [TỪ ĐIỂN DỮ LIỆU CHI TIẾT 40 CỘT CỦA MASTER DATASET (spotify.csv)](#4-từ-điển-dữ-liệu-chi-tiết-40-cột-của-master-dataset-spotifycsv)
 5. [TỔNG HỢP CÁC TRƯỜNG TÍNH TOÁN (CALCULATED FIELDS)](#5-tổng-hợp-các-trường-tính-toán-calculated-fields)
 6. [ĐÁNH GIÁ CHẤT LƯỢNG DỮ LIỆU, ĐỘ TIN CẬY MÔ HÌNH & CẢNH BÁO RÒ RỈ CHO ML](#6-đánh-giá-chất-lượng-dữ-liệu-độ-tin-cậy-mô-hình--cảnh-báo-rò-rỉ-cho-ml)
 7. [HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API](#7-hướng-dẫn-truy-xuất-dữ-liệu-thông-qua-python-api)
@@ -161,7 +161,7 @@ Hệ thống tích hợp dữ liệu từ 6 nguồn độc lập trong thư mụ
   - Chuẩn hóa tên nghệ sĩ `name` (xóa khoảng trắng thừa, hạ chữ thường để đối soát) và chuẩn hóa khóa `id` (`artist_id`).
   - Khử trùng lặp theo `artist_id` hoặc tên nghệ sĩ, giữ hồ sơ có lượng `followers` lớn nhất.
   - Xử lý chuỗi thể loại `main_genre` và `genres`: bóc tách chuỗi list dạng text, loại bỏ nhãn rác, chuyển về chữ thường.
-  - Điền khuyết minh bạch điểm nổi tiếng `artist_popularity` bằng trung vị theo siêu dòng nhạc `macro_genre` và gắn cờ kiểm soát nguồn gốc `artist_popularity_is_imputed`.
+  - Điền khuyết điểm nổi tiếng `artist_popularity` bằng trung vị theo siêu dòng nhạc `macro_genre`.
 
 | STT | Tên trường thô | Kiểu dữ liệu | Ý nghĩa / Diễn giải cụ thể | Vai trò trong quá trình JOIN & Phân tích |
 | :---: | :--- | :--- | :--- | :--- |
@@ -230,8 +230,8 @@ Hệ thống tích hợp dữ liệu từ 6 nguồn độc lập trong thư mụ
 ```text
 data/
 └── processed/
-    ├── spotify.csv         # 1,078,125 dòng × 41 cột (380+ MB) — Master Dataset tích hợp 6 bảng thô, chuẩn Phương án A
-    └── tracks_ml_data.csv  # 36,699 bài hát × 26 cột (7.8 MB)   — Dữ liệu Song-level không rò rỉ phục vụ Machine Learning
+    ├── spotify.csv         # 1,078,125 dòng × 40 cột (380+ MB) — Master Dataset tích hợp 6 bảng thô, chuẩn Phương án A
+    └── tracks_ml_data.csv  # 36,699 bài hát × 25 cột (7.8 MB)   — Dữ liệu Song-level không rò rỉ phục vụ Machine Learning
 ```
 
 ---
@@ -297,7 +297,7 @@ Thay vì che giấu sự thiếu hụt, người làm EDA tận dụng sự phâ
 
 ---
 
-### 3.3. Xử lý Dữ liệu Nghệ sĩ (`artist_popularity` & `artist_popularity_is_imputed`)
+### 3.3. Xử lý Dữ liệu Nghệ sĩ (`artist_popularity`)
 
 #### Bối cảnh:
 Trong bảng `artists.csv` (71K ca sĩ), có 36.9% dòng trên bảng xếp hạng không tìm thấy hồ sơ ca sĩ do họ là các nghệ sĩ bản địa / indie (đặc biệt tại các thị trường đang phát triển).
@@ -305,16 +305,16 @@ Trong bảng `artists.csv` (71K ca sĩ), có 36.9% dòng trên bảng xếp hạ
 #### Tại sao không xóa dòng:
 Nếu xóa bỏ các dòng thiếu nghệ sĩ, **thị trường Việt Nam sẽ bị xóa mất 61.3% dữ liệu**, Brazil mất 77.6%, Thổ Nhĩ Kỳ mất 82.0%. Cấu trúc Top 200 tuần sẽ bị gãy vụn (chỉ còn trung bình 126 bài/tuần), làm mất đi tính toàn vẹn của bảng xếp hạng.
 
-#### Thiết kế tinh gọn và minh bạch:
+#### Thiết kế tinh gọn:
 * `artist_popularity`: Dữ liệu độ nổi tiếng nghệ sĩ đã được điền khuyết sạch 100% bằng trung vị có điều kiện theo dòng nhạc (`macro_genre`).
-* `artist_popularity_is_imputed`: Cột cờ đánh dấu (0 = dữ liệu thật từ hồ sơ 71K nghệ sĩ, 1 = dữ liệu được điền khuyết).
+* Tinh giản hệ thống: Loại bỏ các cột phụ kỹ thuật (`artist_popularity_raw`, `artist_popularity_is_imputed`, `artist_followers`, `artist_followers_raw`, `artist_followers_is_imputed`) để tinh gọn Master Dataset.
 
 #### Kỹ thuật điền khuyết bằng Trung vị Dòng nhạc & Thừa nhận Hạn chế (Selection Bias):
 Dữ liệu khuyết độ nổi tiếng được điền bằng **Trung vị (Median)** theo từng dòng nhạc vĩ mô (`macro_genre`):
 * Dòng Pop: nhận trung vị 68 điểm.
 * Dòng Hip-Hop/Rap: nhận trung vị 65 điểm.
 * Dòng Rock/Metal: nhận trung vị 58 điểm.
-* *Thừa nhận giới hạn khoa học:* Tập `artists.csv` chủ yếu gồm các nghệ sĩ quốc tế có mức độ nhận diện cao, nên trung vị 68 điểm có thể hơi ưu ái đối với một nghệ sĩ indie mới ra mắt tại Việt Nam. Đây là một sự đánh đổi kỹ thuật có chủ đích (Engineering Trade-off) nhằm bảo toàn cấu trúc bảng xếp hạng và giữ trọn vẹn thị trường Việt Nam cho phân tích trực quan. Nhờ cột cờ `artist_popularity_is_imputed`, bất kỳ nhà nghiên cứu nào cũng có thể lọc riêng tập nghệ sĩ thuần túy khi cần.
+* *Thừa nhận giới hạn khoa học:* Tập `artists.csv` chủ yếu gồm các nghệ sĩ quốc tế có mức độ nhận diện cao, nên trung vị 68 điểm có thể hơi ưu ái đối với một nghệ sĩ indie mới ra mắt tại Việt Nam. Đây là một sự đánh đổi kỹ thuật có chủ đích (Engineering Trade-off) nhằm bảo toàn cấu trúc bảng xếp hạng và giữ trọn vẹn thị trường Việt Nam cho phân tích trực quan.
 
 ---
 
@@ -327,7 +327,7 @@ Dữ liệu khuyết độ nổi tiếng được điền bằng **Trung vị (M
 
 ---
 
-## 4. TỪ ĐIỂN DỮ LIỆU CHI TIẾT 41 CỘT CỦA MASTER DATASET (`spotify.csv`)
+## 4. TỪ ĐIỂN DỮ LIỆU CHI TIẾT 40 CỘT CỦA MASTER DATASET (`spotify.csv`)
 
 | STT | Tên cột | Kiểu dữ liệu | Nhóm thuộc tính | Nguồn gốc | Ý nghĩa / Diễn giải phân tích |
 | :---: | :--- | :--- | :--- | :--- | :--- |
@@ -359,19 +359,18 @@ Dữ liệu khuyết độ nổi tiếng được điền bằng **Trung vị (M
 | 26 | `popularity_status` | String | Phân loại EDA | Calculated Field | Phân nhóm trực quan: Official Spotify Score vs Unindexed / Regional Hits |
 | 27 | `artist_main_genre` | String | Nghệ sĩ | artists.csv | Dòng nhạc chính của nghệ sĩ trong hồ sơ nghệ sĩ |
 | 28 | `artist_popularity` | Float64 [0, 100] | Nghệ sĩ | Trung vị Dòng nhạc | Điểm độ nổi tiếng nghệ sĩ đã điền khuyết sạch 100% |
-| 29 | `artist_popularity_is_imputed` | Int64 (0/1) | Data Lineage | Calculated Field | Cờ đánh dấu: 0 = Điểm ca sĩ thật, 1 = Điền khuyết trung vị |
-| 30 | `gdp_value` | Float64 | Kinh tế World Bank | gdp_data.csv | Tổng sản phẩm quốc nội USD hiện hành (khuyết ở bảng Global và TWN/VEN) |
-| 31 | `gdp_log` | Float64 | Kinh tế | Calculated Field | ln(1 + gdp_value) nén quy mô kinh tế |
-| 32 | `income_group` | String | Kinh tế | country_codes | Phân tầng thu nhập quốc gia (High, Upper middle, Lower middle) |
-| 33 | `region_wb` | String | Địa lý | country_codes | Khu vực địa lý kinh tế theo World Bank |
-| 34 | `country_code` | String (3 ký tự) | Địa lý | country_codes | Mã định danh chuẩn ISO-alpha-3 của quốc gia |
-| 35 | `is_trending` | Int64 (0/1) | Calculated Field | Pipeline logic | 1 nếu bài thuộc Top 50 tuần (rank <= 50), 0 nếu Top 51–200 |
-| 36 | `mood_category` | String | Calculated Field | Mô hình Russell | Phân loại cảm xúc: Happy Energetic, Peaceful Positive, Tense Aggressive, Sad Melancholic |
-| 37 | `stream_share_country`| Float64 | Calculated Field | Pipeline logic | Thị phần stream bài hát so với tổng Top 200 trong thị trường–tuần |
-| 38 | `macro_genre` | String | Calculated Field | Regex chuẩn hóa | Dòng nhạc vĩ mô chuẩn hóa (6 nhóm: Pop, Latin, Hip-Hop, Rock, K-Pop, Others) |
-| 39 | `duration_min` | Float64 (phút) | Calculated Field | Pipeline logic | Thời lượng bài hát tính bằng phút (duration_ms / 60,000) |
-| 40 | `chart_longevity` | Int64 (tuần) | Calculated Field | Pipeline logic | Số tuần trụ hạng cao nhất của bài trên BXH |
-| 41 | `tempo_category` | String | Calculated Field | Phân khoảng nhịp | Phân nhóm nhịp: Slow (<90), Medium (90–120), Fast (120–150), Very Fast (>=150 BPM) |
+| 29 | `gdp_value` | Float64 | Kinh tế World Bank | gdp_data.csv | Tổng sản phẩm quốc nội USD hiện hành (khuyết ở bảng Global và TWN/VEN) |
+| 30 | `gdp_log` | Float64 | Kinh tế | Calculated Field | ln(1 + gdp_value) nén quy mô kinh tế |
+| 31 | `income_group` | String | Kinh tế | country_codes | Phân tầng thu nhập quốc gia (High, Upper middle, Lower middle) |
+| 32 | `region_wb` | String | Địa lý | country_codes | Khu vực địa lý kinh tế theo World Bank |
+| 33 | `country_code` | String (3 ký tự) | Địa lý | country_codes | Mã định danh chuẩn ISO-alpha-3 của quốc gia |
+| 34 | `is_trending` | Int64 (0/1) | Calculated Field | Pipeline logic | 1 nếu bài thuộc Top 50 tuần (rank <= 50), 0 nếu Top 51–200 |
+| 35 | `mood_category` | String | Calculated Field | Mô hình Russell | Phân loại cảm xúc: Happy Energetic, Peaceful Positive, Tense Aggressive, Sad Melancholic |
+| 36 | `stream_share_country`| Float64 | Calculated Field | Pipeline logic | Thị phần stream bài hát so với tổng Top 200 trong thị trường–tuần |
+| 37 | `macro_genre` | String | Calculated Field | Regex chuẩn hóa | Dòng nhạc vĩ mô chuẩn hóa (6 nhóm: Pop, Latin, Hip-Hop, Rock, K-Pop, Others) |
+| 38 | `duration_min` | Float64 (phút) | Calculated Field | Pipeline logic | Thời lượng bài hát tính bằng phút (duration_ms / 60,000) |
+| 39 | `chart_longevity` | Int64 (tuần) | Calculated Field | Pipeline logic | Số tuần trụ hạng cao nhất của bài trên BXH |
+| 40 | `tempo_category` | String | Calculated Field | Phân khoảng nhịp | Phân nhóm nhịp: Slow (<90), Medium (90–120), Fast (120–150), Very Fast (>=150 BPM) |
 
 ---
 
@@ -389,7 +388,7 @@ Master Dataset được thiết kế với **12 nhóm trường tính toán phá
 | 4 | `macro_genre` | String | Dòng nhạc vĩ mô | Regex 6 siêu nhóm có ranh giới từ -> Ổn định hóa theo Mode của `track_id` | Lọc phân tích cấp vĩ mô trên Dashboard, giải quyết phân mảnh 1,481 thể loại. |
 | 5 | `song_genre` & `song_genre_source` | String | Thể loại chuẩn | Bậc thang thác nước 4 tầng (Track Dataset -> Chart Detail -> Artist Profile -> Macro) | Đạt độ phủ sạch 100% dữ liệu, truy vết nguồn gốc minh bạch từng dòng. |
 | 6 | `popularity_status` | String | Trạng thái chỉ mục | Phân loại theo song_popularity: có điểm -> Official Spotify Score, ngược lại Unindexed / Regional Hits | Phân định trực quan giữa Mainstream toàn cầu vs Indie/Bản địa trong EDA. |
-| 7 | `artist_popularity` & `artist_popularity_is_imputed` | Float64 / Int64 | Năng lực ca sĩ | Điền Median có điều kiện theo `macro_genre` kèm cờ đánh dấu nguồn gốc | Cung cấp biến liên tục cho mô hình dự báo mà không xóa mất thị trường Việt Nam. |
+| 7 | `artist_popularity` | Float64 [0, 100] | Năng lực ca sĩ | Điền Median có điều kiện theo `macro_genre` | Cung cấp biến liên tục cho mô hình dự báo mà không xóa mất thị trường Việt Nam. |
 | 8 | `duration_min` | Float64 (phút) | Thời lượng | duration / 60,000 (làm tròn 3 chữ số thập phân) | Khảo sát xu hướng rút ngắn độ dài ca khúc trong thời đại streaming và TikTok. |
 | 9 | `chart_longevity` | Int64 (tuần) | Độ bền bỉ | max(weeks_on_chart) theo từng track_id | Phân loại ca khúc: Hiện tượng nhất thời (Viral Hit) vs Bản hit kinh điển (Evergreen). |
 | 10 | `tempo_category` | String | Nhịp độ âm nhạc | Phân đoạn 4 khoảng nhịp: Slow, Medium, Fast, Very Fast theo BPM | Phân tích gu thưởng thức tốc độ nhịp điệu theo khu vực địa lý và văn hóa. |
@@ -605,11 +604,10 @@ TIÊU CỰC ◄─────────────────────�
 
 ---
 
-#### 7. `artist_popularity` & `artist_popularity_is_imputed` — Điền Khuyết Minh Bạch Năng Lực Ca Sĩ
-* **Phương pháp & Giải pháp:** Có 36.9% dòng trên BXH thuộc về các nghệ sĩ indie hoặc nghệ sĩ bản địa không có hồ sơ trong bảng quốc tế `artists.csv`. Nếu xóa bỏ các dòng này, bảng xếp hạng Việt Nam sẽ mất 61.3% dữ liệu. Để giải quyết, hệ thống áp dụng kỹ thuật điền trung vị có điều kiện theo dòng nhạc vĩ mô và gắn cờ minh bạch:
-  1. Gán cờ `artist_popularity_is_imputed = 1` nếu nghệ sĩ khuyết điểm, `= 0` nếu là điểm thật từ hồ sơ 71K ca sĩ.
-  2. Tính trung vị điểm nổi tiếng Median(artist_popularity) cho từng nhóm `macro_genre` (Pop: 68, Hip-Hop: 65, Rock: 58,...).
-  3. Điền giá trị trung vị này vào các vị trí trống.
+#### 7. `artist_popularity` — Điền Khuyết Năng Lực Ca Sĩ
+* **Phương pháp & Giải pháp:** Có 36.9% dòng trên BXH thuộc về các nghệ sĩ indie hoặc nghệ sĩ bản địa không có hồ sơ trong bảng quốc tế `artists.csv`. Nếu xóa bỏ các dòng này, bảng xếp hạng Việt Nam sẽ mất 61.3% dữ liệu. Để giải quyết, hệ thống áp dụng kỹ thuật điền trung vị có điều kiện theo dòng nhạc vĩ mô (`macro_genre`):
+  1. Tính trung vị điểm nổi tiếng Median(artist_popularity) cho từng nhóm `macro_genre` (Pop: 68, Hip-Hop: 65, Rock: 58,...).
+  2. Điền giá trị trung vị này vào các vị trí trống (nếu khuyết thể loại thì dùng 50 làm giá trị dự phòng toàn cục).
 * **Công thức điền khuyết:**
   ```text
   artist_popularity = Điểm thật từ hồ sơ artists.csv (nếu có dữ liệu thật)
@@ -618,7 +616,6 @@ TIÊU CỰC ◄─────────────────────�
   ```
 * **Mã nguồn thực thi Python (`src/data_loader.py`):**
   ```python
-  df["artist_popularity_is_imputed"] = df["artist_popularity_raw"].isna().astype(int)
   macro_art_pop_med = df.groupby("macro_genre")["artist_popularity_raw"].transform("median")
   df["artist_popularity"] = df["artist_popularity_raw"].fillna(macro_art_pop_med).fillna(50)
   ```
@@ -738,13 +735,12 @@ Khi huấn luyện mô hình dự báo bài hát thịnh hành (`is_trending`), 
 > * **Khuyến nghị khắc phục:**
 >   - Ưu tiên sử dụng các thuật toán dạng cây (Random Forest, XGBoost, LightGBM) vốn ít nhạy cảm với quan hệ tuyến tính giữa các biến.
 >   - Hoặc chỉ giữ 1 trong 2 biến khi huấn luyện mô hình tuyến tính.
->   - Có thể đưa thêm cột cờ `artist_popularity_is_imputed` làm biến tương tác để mô hình phân biệt hai nhóm nghệ sĩ.
 
 > [!NOTE]
 > **3. DANH SÁCH BIẾN TIỀN PHÁT HÀNH ĐƯỢC PHÉP SỬ DỤNG CHO ML:**
 > * 9 Audio features nguyên bản: `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`.
 > * Thuộc tính bài hát: `duration_min`, `song_genre`, `macro_genre`, `tempo_category`.
-> * Thuộc tính nghệ sĩ tiền phát hành: `artist_popularity` (kèm cờ `artist_popularity_is_imputed`).
+> * Thuộc tính nghệ sĩ tiền phát hành: `artist_popularity`.
 
 ---
 
@@ -757,7 +753,7 @@ Mô-đun `src/data_loader.py` cung cấp sẵn các hàm tiện ích chuẩn hó
 from src.data_loader import load_master_data
 
 df = load_master_data()  # hoặc load_master_data(nrows=50000)
-print(f"Master Dataset: {df.shape}")  # (1,078,125 dòng, 41 cột)
+print(f"Master Dataset: {df.shape}")  # (1,078,125 dòng, 40 cột)
 
 # Kiểm tra phân bố độ phổ biến theo trạng thái lập chỉ mục:
 print(df.groupby("popularity_status")["song_popularity"].describe())
@@ -766,6 +762,6 @@ print(df.groupby("popularity_status")["song_popularity"].describe())
 from src.data_loader import load_ml_data
 
 df_ml = load_ml_data()
-print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 26 cột)
+print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 25 cột)
 print(f"Tỷ lệ bài Hit (is_trending=1): {df_ml['is_trending'].mean():.1%}")
 ```
