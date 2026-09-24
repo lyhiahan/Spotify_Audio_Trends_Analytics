@@ -1,5 +1,5 @@
 # 🎵 SPOTIFY AUDIO TRENDS & ANALYTICS
-## Nghiên cứu và Trực quan hóa các Đặc trưng Âm thanh & Dự đoán Xu hướng Bài hát Thịnh hành trên Spotify
+## Nghiên cứu và trực quan hóa các đặc trưng âm thanh và dự đoán xu hướng bài hát thịnh hành trên Spotify
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
@@ -7,13 +7,13 @@
 
 ---
 
-## 📌 1. Giới thiệu Đề tài & Mục tiêu Nghiên cứu
+## 📌 1. Giới thiệu đề tài và mục tiêu nghiên cứu
 
 Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của một bản thu không chỉ phụ thuộc vào độ nhận diện của nghệ sĩ mà còn gắn liền mật thiết với **các đặc trưng âm thanh (Audio Features)** nội tại (như *danceability*, *energy*, *valence*, *tempo*, *acousticness*), cũng như **môi trường kinh tế - xã hội (quy mô GDP, phân tầng thu nhập World Bank)** của từng quốc gia.
 
 Đề tài giải quyết trọn vẹn 4 mục tiêu học thuật và ứng dụng thực tiễn:
 1. **Kiến trúc Master Pipeline Hợp nhất:** Tích hợp 5 tập dữ liệu đa nguồn (>1.9 triệu dòng thô), làm sạch và xuất ra **1 tệp dữ liệu lớn duy nhất (Master Dataset)** tích hợp cả Kinh tế - Xã hội và COVID Timeline với đúng **38 cột cốt lõi phục vụ Insight**, đồng thời trích xuất tập dữ liệu cấp bài hát không rò rỉ cho mô hình học máy.
-2. **Khám phá Insight & Kể chuyện bằng Dữ liệu (Data Storytelling):** 
+2. **Khám phá insight và kể chuyện bằng dữ liệu (Data Storytelling):**
    * *Nghịch lý Cảm xúc (GDP vs Valence Paradox):* Liệu các nước đang phát triển (GDP trung bình/thấp) có chuộng âm nhạc sôi động và giàu năng lượng hơn để giải tỏa áp lực so với các nước phát triển?
    * *3 Giai đoạn Đại dịch COVID-19 (Timeline Waves 2020 – 2022):* Đo lường sự chuyển biến tâm lý người nghe toàn cầu qua các cột mốc: *Phong tỏa (Lockdown & Shock)*, *Giải tỏa (Vaccine & Escapism)* và *Bình thường mới (Reopening & New Normal)*.
    * *Làn sóng Dịch chuyển Âm nhạc Toàn cầu:* Sự bùng nổ của âm nhạc bản địa Latin (Bad Bunny) và K-Pop (BTS) từ các nước đang phát triển ra toàn thế giới.
