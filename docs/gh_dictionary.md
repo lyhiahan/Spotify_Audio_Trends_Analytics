@@ -16,14 +16,14 @@
    * [1.6. Bảng country_codes.csv (3 trường)](#16-bảng-country_codescsv-phân-tầng-địa-lý--thu-nhập-world-bank)
    * [1.7. Kỹ thuật Ghép Thác Nước (Waterfall Join) Tối ưu Độ phủ Bài hát](#17-kỹ-thuật-ghép-thác-nước-waterfall-join-tối-ưu-độ-phủ-bài-hát)
 2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-output-datasets)
-   * [2.1. File Master: spotify.csv (1,078,125 Dòng × 40 Cột)](#21-file-master-spotifycsv-1078125-dòng--40-cột)
-   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 25 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--25-cột)
+   * [2.1. File Master: spotify.csv (1,078,125 Dòng × 39 Cột)](#21-file-master-spotifycsv-1078125-dòng--39-cột)
+   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 24 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--24-cột)
 3. [CHI TIẾT PHƯƠNG PHÁP ĐIỀU CHỈNH & XỬ LÝ DỮ LIỆU KHUYẾT THIẾU](#3-chi-tiết-phương-pháp-điều-chỉnh--xử-lý-dữ-liệu-khuyết-thiếu)
    * [3.1. Xử lý triệt để thể loại bài hát (song_genre & song_genre_source) bằng Bậc thang 4 tầng](#31-xử-lý-triệt-để-thể-loại-bài-hát-song_genre--song_genre_source-bằng-bậc-thang-4-tầng)
    * [3.2. Phương án A: Bảo toàn Dữ liệu Gốc cho Khai phá EDA & Tách bạch Trách nhiệm Machine Learning](#32-phương-án-a-bảo-toàn-dữ-liệu-gốc-cho-khai-phá-eda--tách-bạch-trách-nhiệm-machine-learning)
    * [3.3. Xử lý dữ liệu Nghệ sĩ (artist_popularity)](#33-xử-lý-dữ-liệu-nghệ-sĩ-artist_popularity)
    * [3.4. Chuẩn hóa không gian và khớp nối kinh tế World Bank (GDP & Income Group)](#34-chuẩn-hóa-không-gian-và-khớp-nối-kinh-tế-world-bank-gdp--income-group)
-4. [TỪ ĐIỂN DỮ LIỆU CHI TIẾT 40 CỘT CỦA MASTER DATASET (spotify.csv)](#4-từ-điển-dữ-liệu-chi-tiết-40-cột-của-master-dataset-spotifycsv)
+4. [TỪ ĐIỂN DỮ LIỆU CHI TIẾT 39 CỘT CỦA MASTER DATASET (spotify.csv)](#4-từ-điển-dữ-liệu-chi-tiết-39-cột-của-master-dataset-spotifycsv)
 5. [TỔNG HỢP CÁC TRƯỜNG TÍNH TOÁN (CALCULATED FIELDS)](#5-tổng-hợp-các-trường-tính-toán-calculated-fields)
 6. [ĐÁNH GIÁ CHẤT LƯỢNG DỮ LIỆU, ĐỘ TIN CẬY MÔ HÌNH & CẢNH BÁO RÒ RỈ CHO ML](#6-đánh-giá-chất-lượng-dữ-liệu-độ-tin-cậy-mô-hình--cảnh-báo-rò-rỉ-cho-ml)
 7. [HƯỚNG DẪN TRUY XUẤT DỮ LIỆU THÔNG QUA PYTHON API](#7-hướng-dẫn-truy-xuất-dữ-liệu-thông-qua-python-api)
@@ -230,8 +230,8 @@ Hệ thống tích hợp dữ liệu từ 6 nguồn độc lập trong thư mụ
 ```text
 data/
 └── processed/
-    ├── spotify.csv         # 1,078,125 dòng × 40 cột (380+ MB) — Master Dataset tích hợp 6 bảng thô, chuẩn Phương án A
-    └── tracks_ml_data.csv  # 36,699 bài hát × 25 cột (7.8 MB)   — Dữ liệu Song-level không rò rỉ phục vụ Machine Learning
+    ├── spotify.csv         # 1,078,125 dòng × 39 cột (380+ MB) — Master Dataset tích hợp 6 bảng thô, chuẩn Phương án A
+    └── tracks_ml_data.csv  # 36,699 bài hát × 24 cột (7.8 MB)   — Dữ liệu Song-level không rò rỉ phục vụ Machine Learning
 ```
 
 ---
@@ -327,7 +327,7 @@ Dữ liệu khuyết độ nổi tiếng được điền bằng **Trung vị (M
 
 ---
 
-## 4. TỪ ĐIỂN DỮ LIỆU CHI TIẾT 40 CỘT CỦA MASTER DATASET (`spotify.csv`)
+## 4. TỪ ĐIỂN DỮ LIỆU CHI TIẾT 39 CỘT CỦA MASTER DATASET (`spotify.csv`)
 
 | STT | Tên cột | Kiểu dữ liệu | Nhóm thuộc tính | Nguồn gốc | Ý nghĩa / Diễn giải phân tích |
 | :---: | :--- | :--- | :--- | :--- | :--- |
@@ -357,20 +357,19 @@ Dữ liệu khuyết độ nổi tiếng được điền bằng **Trung vị (M
 | 24 | `song_genre_source` | String | Data Lineage | Calculated Field | Nguồn điền thể loại: track_dataset, artist_detailed_chart, artist_main_profile, macro_fallback |
 | 25 | `song_popularity` | Float64 [0, 100] | Nổi tiếng | Phương án A | Điểm độ nổi tiếng thật từ Spotify API (42.2% có điểm, 57.8% để trống tự nhiên) |
 | 26 | `popularity_status` | String | Phân loại EDA | Calculated Field | Phân nhóm trực quan: Official Spotify Score vs Unindexed / Regional Hits |
-| 27 | `artist_main_genre` | String | Nghệ sĩ | artists.csv | Dòng nhạc chính của nghệ sĩ trong hồ sơ nghệ sĩ |
-| 28 | `artist_popularity` | Float64 [0, 100] | Nghệ sĩ | Trung vị Dòng nhạc | Điểm độ nổi tiếng nghệ sĩ đã điền khuyết sạch 100% |
-| 29 | `gdp_value` | Float64 | Kinh tế World Bank | gdp_data.csv | Tổng sản phẩm quốc nội USD hiện hành (khuyết ở bảng Global và TWN/VEN) |
-| 30 | `gdp_log` | Float64 | Kinh tế | Calculated Field | ln(1 + gdp_value) nén quy mô kinh tế |
-| 31 | `income_group` | String | Kinh tế | country_codes | Phân tầng thu nhập quốc gia (High, Upper middle, Lower middle) |
-| 32 | `region_wb` | String | Địa lý | country_codes | Khu vực địa lý kinh tế theo World Bank |
-| 33 | `country_code` | String (3 ký tự) | Địa lý | country_codes | Mã định danh chuẩn ISO-alpha-3 của quốc gia |
-| 34 | `is_trending` | Int64 (0/1) | Calculated Field | Pipeline logic | 1 nếu bài thuộc Top 50 tuần (rank <= 50), 0 nếu Top 51–200 |
-| 35 | `mood_category` | String | Calculated Field | Mô hình Russell | Phân loại cảm xúc: Happy Energetic, Peaceful Positive, Tense Aggressive, Sad Melancholic |
-| 36 | `stream_share_country`| Float64 | Calculated Field | Pipeline logic | Thị phần stream bài hát so với tổng Top 200 trong thị trường–tuần |
-| 37 | `macro_genre` | String | Calculated Field | Regex chuẩn hóa | Dòng nhạc vĩ mô chuẩn hóa (6 nhóm: Pop, Latin, Hip-Hop, Rock, K-Pop, Others) |
-| 38 | `duration_min` | Float64 (phút) | Calculated Field | Pipeline logic | Thời lượng bài hát tính bằng phút (duration_ms / 60,000) |
-| 39 | `chart_longevity` | Int64 (tuần) | Calculated Field | Pipeline logic | Số tuần trụ hạng cao nhất của bài trên BXH |
-| 40 | `tempo_category` | String | Calculated Field | Phân khoảng nhịp | Phân nhóm nhịp: Slow (<90), Medium (90–120), Fast (120–150), Very Fast (>=150 BPM) |
+| 27 | `artist_popularity` | Float64 [0, 100] | Nghệ sĩ | Trung vị Dòng nhạc | Điểm độ nổi tiếng nghệ sĩ đã điền khuyết sạch 100% |
+| 28 | `gdp_value` | Float64 | Kinh tế World Bank | gdp_data.csv | Tổng sản phẩm quốc nội USD hiện hành (khuyết ở bảng Global và TWN/VEN) |
+| 29 | `gdp_log` | Float64 | Kinh tế | Calculated Field | ln(1 + gdp_value) nén quy mô kinh tế |
+| 30 | `income_group` | String | Kinh tế | country_codes | Phân tầng thu nhập quốc gia (High, Upper middle, Lower middle) |
+| 31 | `region_wb` | String | Địa lý | country_codes | Khu vực địa lý kinh tế theo World Bank |
+| 32 | `country_code` | String (3 ký tự) | Địa lý | country_codes | Mã định danh chuẩn ISO-alpha-3 của quốc gia |
+| 33 | `is_trending` | Int64 (0/1) | Calculated Field | Pipeline logic | 1 nếu bài thuộc Top 50 tuần (rank <= 50), 0 nếu Top 51–200 |
+| 34 | `mood_category` | String | Calculated Field | Mô hình Russell | Phân loại cảm xúc: Happy Energetic, Peaceful Positive, Tense Aggressive, Sad Melancholic |
+| 35 | `stream_share_country`| Float64 | Calculated Field | Pipeline logic | Thị phần stream bài hát so với tổng Top 200 trong thị trường–tuần |
+| 36 | `macro_genre` | String | Calculated Field | Regex chuẩn hóa | Dòng nhạc vĩ mô chuẩn hóa (6 nhóm: Pop, Latin, Hip-Hop, Rock, K-Pop, Others) |
+| 37 | `duration_min` | Float64 (phút) | Calculated Field | Pipeline logic | Thời lượng bài hát tính bằng phút (duration_ms / 60,000) |
+| 38 | `chart_longevity` | Int64 (tuần) | Calculated Field | Pipeline logic | Số tuần trụ hạng cao nhất của bài trên BXH |
+| 39 | `tempo_category` | String | Calculated Field | Phân khoảng nhịp | Phân nhóm nhịp: Slow (<90), Medium (90–120), Fast (120–150), Very Fast (>=150 BPM) |
 
 ---
 
@@ -753,7 +752,7 @@ Mô-đun `src/data_loader.py` cung cấp sẵn các hàm tiện ích chuẩn hó
 from src.data_loader import load_master_data
 
 df = load_master_data()  # hoặc load_master_data(nrows=50000)
-print(f"Master Dataset: {df.shape}")  # (1,078,125 dòng, 40 cột)
+print(f"Master Dataset: {df.shape}")  # (1,078,125 dòng, 39 cột)
 
 # Kiểm tra phân bố độ phổ biến theo trạng thái lập chỉ mục:
 print(df.groupby("popularity_status")["song_popularity"].describe())
@@ -762,6 +761,6 @@ print(df.groupby("popularity_status")["song_popularity"].describe())
 from src.data_loader import load_ml_data
 
 df_ml = load_ml_data()
-print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 25 cột)
+print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 24 cột)
 print(f"Tỷ lệ bài Hit (is_trending=1): {df_ml['is_trending'].mean():.1%}")
 ```

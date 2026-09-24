@@ -72,7 +72,7 @@ COUNTRY_NAME_MAPPING = {
     "Venezuela": "Venezuela, RB",
 }
 
-# Danh sách 40 cột chuẩn mực giữ lại trong Master Dataset (Khớp 100% Data Dictionary)
+# Danh sách 39 cột chuẩn mực giữ lại trong Master Dataset (Khớp 100% Data Dictionary)
 FINAL_COLUMNS = [
     # Định danh, không gian, thời gian (9 cột)
     "track_id", "track_name", "artist_individual", "artist_genre",
@@ -84,8 +84,8 @@ FINAL_COLUMNS = [
     "instrumentalness", "liveness", "valence", "tempo",
     # Cấp bài hát (4 cột - Đã loại bỏ explicit, song_popularity_raw, has_song_popularity, popularity_is_imputed)
     "song_genre", "song_genre_source", "song_popularity", "popularity_status",
-    # Cấp nghệ sĩ (2 cột - Đã loại bỏ artist_followers, artist_followers_raw, artist_followers_is_imputed, artist_popularity_raw, artist_popularity_is_imputed)
-    "artist_main_genre", "artist_popularity",
+    # Cấp nghệ sĩ (1 cột - Đã loại bỏ artist_followers, artist_followers_raw, artist_followers_is_imputed, artist_popularity_raw, artist_popularity_is_imputed, artist_main_genre)
+    "artist_popularity",
     # Kinh tế & Địa lý World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
     # Các trường tính toán phái sinh (7 cột)
@@ -577,7 +577,6 @@ def generate_ml_dataset(df_master, save=True):
         "song_genre_source": _mode_or_first,
         "song_popularity": "max",
         "popularity_status": _mode_or_first,
-        "artist_main_genre": _mode_or_first,
         "artist_popularity": "max",
         "chart_language": _mode_or_first,
         "danceability": "first",
