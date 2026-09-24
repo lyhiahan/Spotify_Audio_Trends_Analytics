@@ -84,7 +84,7 @@ FINAL_COLUMNS = [
     "instrumentalness", "liveness", "valence", "tempo",
     # Cấp bài hát (kết hợp Waterfall từ songs.csv + spotify-tracks-dataset.csv)
     "song_genre", "song_genre_source", "explicit",
-    "song_popularity_raw", "song_popularity", "popularity_is_imputed",
+    "song_popularity_raw", "song_popularity", "has_song_popularity", "popularity_status", "popularity_is_imputed",
     # Cấp nghệ sĩ (artists.csv với tính minh bạch tuyệt đối)
     "artist_main_genre",
     "artist_followers_raw", "artist_followers", "artist_followers_is_imputed",
@@ -456,38 +456,18 @@ def build_master_dataset(charts, track_waterfall, artists, gdp, country_codes, s
     )
     print(f"  sau xử lý song_genre bậc thang: {df['song_genre'].notna().mean():.1%} đầy đủ, {df['song_genre'].nunique():,} nhãn độc nhất")
 
-    # 7. ƯỚC LƯỢNG SONG_POPULARITY CÓ KHỐNG CHẾ TRẦN THEO THỨ HẠNG (Rank-Bounded Imputation)
-    df["popularity_is_imputed"] = df["song_popularity_raw"].isna().astype(int)
-
-    log_weeks = np.log1p(df["weeks_on_chart"].fillna(1))
-    rank_norm = (201 - df["rank"].fillna(100)) / 200.0
-    log_streams = np.log1p(df["streams"].fillna(1000))
-
-    # Công thức hồi quy hiệu chuẩn trên 450K+ dòng thật
-    base_pred = (
-        19.2156
-        + 0.4656 * df["artist_popularity"]
-        + 4.1948 * log_weeks
-        - 2.9476 * rank_norm
-        - 0.1156 * log_streams
+    # 7. PHƯƠNG ÁN A: BẢO TOÀN DỮ LIỆU THẬT CHO EDA & LOẠI BỎ HỒI QUY NHÂN TẠO
+    # Tuyệt đối không dùng mô hình Machine Learning ở bước tiền xử lý để chế số liệu.
+    # Cột song_popularity giữ 100% dữ liệu gốc từ Spotify (42.2% có điểm thật, 57.8% giữ NaN).
+    df["song_popularity"] = df["song_popularity_raw"]
+    df["has_song_popularity"] = df["song_popularity"].notna().astype(int)
+    df["popularity_is_imputed"] = 0
+    df["popularity_status"] = np.where(
+        df["song_popularity"].notna(),
+        "Official Spotify Score",
+        "Unindexed / Regional Hits"
     )
-
-    # Khống chế trần điểm theo thứ hạng (Loại bỏ triệt để lỗi bài hạng 180 mà 95 điểm)
-    rank_ceiling = np.where(
-        df["rank"] <= 20, 100,
-        np.where(df["rank"] <= 50, 92,
-        np.where(df["rank"] <= 100, 84,
-        np.where(df["rank"] <= 150, 78, 72)))
-    )
-
-    # Dao động nhẹ trong phạm vi hẹp [-6, +6] có khống chế
-    rng = np.random.RandomState(42)
-    bounded_noise = np.clip(rng.normal(0, 3.0, size=len(df)), -6, 6)
-    estimated_pop = np.clip(np.round(base_pred + bounded_noise), 0, rank_ceiling)
-
-    # Giữ nguyên điểm thật nếu có, chỉ điền ước lượng vào các dòng thiếu
-    df["song_popularity"] = df["song_popularity_raw"].fillna(pd.Series(estimated_pop, index=df.index)).astype(int)
-    print(f"  sau xử lý song_popularity: {df['song_popularity'].notna().mean():.1%} đầy đủ (Thật: {(df['popularity_is_imputed']==0).mean():.1%}, Ước lượng: {(df['popularity_is_imputed']==1).mean():.1%})")
+    print(f"  sau xử lý song_popularity (Phương án A - Chuẩn EDA): Có điểm thật: {df['has_song_popularity'].mean():.1%}, Unindexed/Indie: {(1 - df['has_song_popularity'].mean()):.1%}")
 
     # 8. duration_min
     if "duration" in df.columns:
@@ -596,6 +576,8 @@ def generate_ml_dataset(df_master, save=True):
         "explicit": "max",
         "song_popularity_raw": "max",
         "song_popularity": "max",
+        "has_song_popularity": "max",
+        "popularity_status": _mode_or_first,
         "popularity_is_imputed": "min",
         "artist_popularity": "max",
         "artist_followers": "max",
