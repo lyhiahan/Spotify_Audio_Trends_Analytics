@@ -223,6 +223,11 @@ Hệ thống tích hợp dữ liệu từ 6 nguồn độc lập trong thư mụ
 
 ## 2. CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)
 
+> [!IMPORTANT]
+> 📂 **Kho Dữ Liệu Đồ Án Đầy Đủ (Google Drive):**  
+> Do giới hạn 100MB của GitHub đối với các tệp dữ liệu lớn (`songs.csv` ~856 MB, `spotify-weekly-charts.csv` ~796 MB, `spotify.csv` ~390 MB), toàn bộ tệp dữ liệu thô và Master Dataset đầy đủ được lưu trữ tại:  
+> 👉 **[TươngTacData - Google Drive](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi)**
+
 ```text
 data/
 └── processed/

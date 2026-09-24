@@ -76,6 +76,11 @@ PROJECT/
 
 ## ⚡ 3. Các Tệp Dữ liệu Đầu ra (Output Datasets)
 
+> [!IMPORTANT]
+> 📂 **Kho Dữ Liệu Đồ Án Đầy Đủ (Google Drive):**  
+> Do giới hạn dung lượng 100MB của GitHub đối với các tệp dữ liệu lớn (`songs.csv` ~856 MB, `spotify-weekly-charts.csv` ~796 MB, `spotify.csv` ~390 MB), toàn bộ dữ liệu thô và dữ liệu đã xử lý được lưu trữ công khai tại:  
+> 👉 **[TươngTacData - Google Drive](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi)**
+
 | Tên tập dữ liệu | Quy mô (Dòng × Cột) | Dung lượng | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
 | **`merged_spotify_data.csv`** | 1,078,125 × 38 | ~308 MB | **Toàn nhóm** | • File lớn duy nhất chứa trọn vẹn Insight đồ án: Kinh tế 73 nước + Global, phân loại dòng nhạc vĩ mô (`macro_genre`). |
@@ -149,8 +154,9 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 ---
 
 ## 📑 7. Tài liệu Tham khảo & Báo cáo Đi kèm
-* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết 5 bảng thô, Master Dataset 38 cột và công thức toán học của 9 Calculated Fields.
-* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình 4 phép JOIN và phân bổ 38 cột phục vụ Insight.
+* 📂 **[Kho Dữ liệu Đồ án Đầy đủ (Google Drive)](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi):** Tải trọn bộ dữ liệu thô (`songs.csv`, `spotify-weekly-charts.csv`) và dữ liệu gộp (`spotify.csv`).
+* 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết các bảng thô, Master Dataset và công thức tính toán.
+* 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình JOIN và luồng dữ liệu.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
 * 📹 **Link Video Demo (YouTube / Google Drive):** `[CẬP NHẬT LINK VIDEO TẠI ĐÂY]`
 * 📊 **Link Slide Thuyết trình:** `[CẬP NHẬT LINK CANVA/GOOGLE SLIDES TẠI ĐÂY]`
