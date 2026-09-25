@@ -2,7 +2,7 @@
 **Dự án:** Nghiên cứu & Trực quan hóa Đặc trưng Âm thanh và Dự đoán Xu hướng Bài hát Thịnh hành trên Spotify  
 **Môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 **Tác giả:** Lý Gia Hân (MSSV: 24133016 — Visualization Specialist & Dashboard Dev)  
-**Phiên bản:** 6.4 (Cập nhật Chi Tiết Từng Trường Của 6 Bảng Thô, Master Dataset spotify.csv 41 Cột, ML Dataset 26 Cột, Tinh giản loại bỏ artist_followers_raw, Chuẩn hóa tên cột chart_week/chart_year/chart_month, Kỹ thuật Ghép Thác Nước Tối Ưu Độ Phủ, Bậc Thang Thể Loại 4 Tầng & Phương Án A: Bảo Tồn Dữ Liệu Gốc Cho Khai Phá EDA)  
+**Phiên bản:** 6.5 (Triển khai artist_chart_score đo Phong độ Toàn kỳ 2020–2022 bằng Percentile Rank, Loại bỏ hoàn toàn Điền khuyết Trung vị nghệ sĩ, Bảo tồn NaN tự nhiên cho artist_popularity theo Phương án A, Cảnh báo Rò rỉ Dữ liệu cho ML)  
 
 ---
 
@@ -17,11 +17,11 @@
    * [1.7. Kỹ thuật Ghép Thác Nước (Waterfall Join) Tối ưu Độ phủ Bài hát](#17-kỹ-thuật-ghép-thác-nước-waterfall-join-tối-ưu-độ-phủ-bài-hát)
 2. [CÁC TỆP DỮ LIỆU ĐẦU RA SAU XỬ LÝ (OUTPUT DATASETS)](#2-các-tệp-dữ-liệu-đầu-ra-sau-xử-lý-output-datasets)
    * [2.1. File Master: spotify.csv (1,078,125 Dòng × 40 Cột)](#21-file-master-spotifycsv-1078125-dòng--40-cột)
-   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 25 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--25-cột)
+   * [2.2. File Dữ liệu ML: tracks_ml_data.csv (36,699 Bài hát × 24 Cột)](#22-file-dữ-liệu-ml-tracks_ml_datacsv-36699-bài-hát--24-cột)
 3. [CHI TIẾT PHƯƠNG PHÁP ĐIỀU CHỈNH & XỬ LÝ DỮ LIỆU KHUYẾT THIẾU](#3-chi-tiết-phương-pháp-điều-chỉnh--xử-lý-dữ-liệu-khuyết-thiếu)
    * [3.1. Xử lý triệt để thể loại bài hát (song_genre & song_genre_source) bằng Bậc thang 4 tầng](#31-xử-lý-triệt-để-thể-loại-bài-hát-song_genre--song_genre_source-bằng-bậc-thang-4-tầng)
    * [3.2. Phương án A: Bảo toàn Dữ liệu Gốc cho Khai phá EDA & Tách bạch Trách nhiệm Machine Learning](#32-phương-án-a-bảo-toàn-dữ-liệu-gốc-cho-khai-phá-eda--tách-bạch-trách-nhiệm-machine-learning)
-   * [3.3. Xử lý dữ liệu Nghệ sĩ (artist_popularity & artist_popularity_is_imputed)](#33-xử-lý-dữ-liệu-nghệ-sĩ-artist_popularity--artist_popularity_is_imputed)
+   * [3.3. Xử lý dữ liệu Nghệ sĩ (artist_popularity & artist_chart_score)](#33-xử-lý-dữ-liệu-nghệ-sĩ-artist_popularity--artist_chart_score)
    * [3.4. Chuẩn hóa không gian và khớp nối kinh tế World Bank (GDP & Income Group)](#34-chuẩn-hóa-không-gian-và-khớp-nối-kinh-tế-world-bank-gdp--income-group)
 4. [TỪ ĐIỂN DỮ LIỆU CHI TIẾT 40 CỘT CỦA MASTER DATASET (spotify.csv)](#4-từ-điển-dữ-liệu-chi-tiết-40-cột-của-master-dataset-spotifycsv)
 5. [TỔNG HỢP CÁC TRƯỜNG TÍNH TOÁN (CALCULATED FIELDS)](#5-tổng-hợp-các-trường-tính-toán-calculated-fields)
@@ -297,28 +297,30 @@ Thay vì che giấu sự thiếu hụt, người làm EDA tận dụng sự phâ
 
 ---
 
-### 3.3. Xử lý Dữ liệu Nghệ sĩ (`artist_popularity` & `artist_popularity_is_imputed`)
+### 3.3. Xử lý Dữ liệu Nghệ sĩ (`artist_popularity` & `artist_chart_score`)
 
-#### Bối cảnh:
-Trong bảng `artists.csv` (71K ca sĩ), có 36.9% dòng trên bảng xếp hạng không tìm thấy hồ sơ ca sĩ do họ là các nghệ sĩ bản địa / indie (đặc biệt tại các thị trường đang phát triển).
+#### Bối cảnh & Nghịch lý của việc Điền khuyết Trung vị:
+Trong bảng `artists.csv` (71K ca sĩ), có 36.9% dòng trên bảng xếp hạng không tìm thấy hồ sơ ca sĩ do họ là các nghệ sĩ bản địa / indie (đặc biệt tại các thị trường đang phát triển: Việt Nam thiếu 61.3%, Brazil thiếu 77.6%, Thổ Nhĩ Kỳ thiếu 82.0%).
+* Nếu xóa dòng: Sẽ làm gãy vụn cấu trúc Top 200 tuần và mất hơn 60% dữ liệu thị trường Việt Nam.
+* Nếu điền trung vị (Median Imputation): Sẽ gây ra hiện tượng cào bằng phi lý (mọi ca sĩ indie mới ra mắt trong cùng một dòng nhạc đều nhận mức điểm trung vị cao 70–80 điểm), đồng thời mâu thuẫn trực tiếp với triết lý của `song_popularity` (vốn giữ nguyên `NaN` tự nhiên để tôn trọng sự thật).
 
-#### Tại sao không xóa dòng:
-Nếu xóa bỏ các dòng thiếu nghệ sĩ, **thị trường Việt Nam sẽ bị xóa mất 61.3% dữ liệu**, Brazil mất 77.6%, Thổ Nhĩ Kỳ mất 82.0%. Cấu trúc Top 200 tuần sẽ bị gãy vụn (chỉ còn trung bình 126 bài/tuần), làm mất đi tính toàn vẹn của bảng xếp hạng.
+#### Quyết định Thiết kế Phương án 2 (Data-driven Percentile Rank):
+Nhóm quyết định loại bỏ hoàn toàn kỹ thuật điền trung vị, loại bỏ cột cờ kỹ thuật `artist_popularity_is_imputed`, và triển khai giải pháp chuẩn mực gồm 2 trụ cột:
+1. **Bảo tồn tính nguyên bản của `artist_popularity` (Theo Phương án A):**
+   * Giữ nguyên điểm thật từ Spotify API (chiếm 63.1%).
+   * Các nghệ sĩ bản địa/indie chưa được lập chỉ mục toàn cầu được giữ nguyên `NaN` tự nhiên (chiếm 36.9%), đồng bộ 100% với cách xử lý của `song_popularity`.
+2. **Kiến tạo Chỉ số Phong độ Toàn kỳ `artist_chart_score` (Độ phủ 100%):**
+   * Thay vì dùng Min-Max (vốn rất dễ vỡ thang điểm khi có dữ liệu mới hoặc bị neo cứng bởi 2 nghệ sĩ cực trị), nhóm sử dụng **Percentile Rank** tính trên tổng lượt streams tích lũy:
+     $$\text{artist\_chart\_score} = \text{Rank}_{\text{pct}}\Big(\sum_{\text{2020–2022}} \text{streams}\Big) \times 100$$
+   * **Điểm kỹ thuật quan trọng:** Percentile Rank bắt buộc được tính trên **tập 9,704 nghệ sĩ độc nhất** rồi ánh xạ ngược lại bảng Fact, tránh hiện tượng lệch phân vị nghiêm trọng do các ca sĩ có nhiều tuần lọt chart chiếm hết vị trí đầu.
 
-#### Thiết kế minh bạch & Bảo toàn khả năng kiểm chứng:
-* `artist_popularity`: Dữ liệu độ nổi tiếng nghệ sĩ đã được điền khuyết sạch 100% bằng trung vị có điều kiện theo dòng nhạc (`macro_genre`).
-* `artist_popularity_is_imputed`: **Cột cờ kiểm chứng bắt buộc** (0 = điểm thật từ hồ sơ 71K nghệ sĩ, 1 = điểm được điền khuyết bằng trung vị). Việc giữ lại cột cờ này là nguyên tắc bất di bất dịch trong Khoa học Dữ liệu nhằm bảo đảm tính minh bạch và cho phép mọi nhà nghiên cứu tách riêng tập dữ liệu thật khi cần.
-
-#### Kỹ thuật Tính Trung Vị Sau Khi Khử Trùng Lặp Nghệ Sĩ (Deduplicated Median) & Thừa nhận Thiên lệch Lựa chọn (Selection Bias):
-* **Khử trùng lặp trước khi tính trung vị:** Trung vị theo `macro_genre` **bắt buộc được tính trên danh sách nghệ sĩ độc nhất** (sau khi `drop_duplicates(subset=['artist_individual'])`), tuyệt đối không tính trên toàn bộ 1.07 triệu dòng mở rộng theo quốc gia–tuần. Nếu tính trên toàn bộ dòng, các siêu nghệ sĩ quốc tế (như BTS, Bad Bunny, Ed Sheeran) xuất hiện hàng nghìn tuần ở hàng chục quốc gia sẽ làm sai lệch nghiêm trọng trung vị của dòng nhạc (ví dụ K-Pop bị thổi phồng từ 59 lên 81 điểm).
-* **Kết quả trung vị chuẩn hóa theo từng nghệ sĩ độc nhất:**
-  - `Pop`: 81.0 điểm
-  - `Latin`: 88.0 điểm
-  - `Rock/Metal`: 83.0 điểm
-  - `Hip-Hop/Rap`: 81.0 điểm
-  - `Others`: 71.0 điểm
-  - `K-Pop`: 59.0 điểm (đã phản ánh đúng mặt bằng chung của toàn bộ nghệ sĩ K-Pop, không bị lấn át bởi riêng BTS).
-* **Thừa nhận Giới hạn Thiên lệch Lựa chọn (Selection Bias Limitation):** Tập `artists.csv` chủ yếu gồm các nghệ sĩ quốc tế đã có hồ sơ lập chỉ mục chính thức, nên điểm trung vị này có xu hướng ưu ái hơn đối với một nghệ sĩ indie mới ra mắt tại Việt Nam. Đây là một sự đánh đổi kỹ thuật có chủ đích (Engineering Trade-off) nhằm bảo toàn cấu trúc bảng xếp hạng và giữ trọn vẹn thị trường Việt Nam cho phân tích trực quan. Nhờ có cột cờ `artist_popularity_is_imputed`, bất kỳ mô hình Machine Learning nào cũng có thể nhận biết và xử lý tương tác riêng.
+#### Ba Giả định Nghiệp vụ & Học thuật Cốt lõi của `artist_chart_score`:
+1. **Thước đo Phong độ Toàn kỳ 2020–2022 (All-time Performance, không phải Real-time):**
+   * Chỉ số này phản ánh tổng lực và vị thế thương mại tích lũy của nghệ sĩ trong toàn bộ 2.5 năm nghiên cứu, không phải điểm phong độ tức thời suy giảm theo thời gian (decaying rolling) như API của Spotify.
+2. **Giả định Collab Toàn quyền (Full Collaboration Credit):**
+   * Đối với các bài hát hợp tác (`collab = 1`, `artists_num > 1`), mỗi nghệ sĩ tham gia đều nhận nguyên vẹn 100% lượt streams của bài hát đó (không phân bổ chia tỷ lệ). Do đó, tổng streams tính theo từng nghệ sĩ cộng lại sẽ lớn hơn tổng streams độc nhất của dataset.
+3. **Tuyệt đối CẤM dùng làm Feature cho Machine Learning Dự đoán Hit (`is_trending`):**
+   * `artist_chart_score` được tính trực tiếp từ `streams`. Trong khi đó, `streams` trực tiếp sinh ra `rank`, và `rank <= 50` chính là nhãn `is_trending`. Việc đưa `artist_chart_score` vào mô hình sẽ gây ra **Rò rỉ Dữ liệu Tương lai (Data Leakage)** nghiêm trọng. Biến này chỉ được dùng cho phân tích trực quan EDA và Dashboard.
 
 ---
 
@@ -361,8 +363,8 @@ Nếu xóa bỏ các dòng thiếu nghệ sĩ, **thị trường Việt Nam sẽ
 | 24 | `song_genre_source` | String | Data Lineage | Calculated Field | Nguồn điền thể loại: track_dataset, artist_detailed_chart, artist_main_profile, macro_fallback |
 | 25 | `song_popularity` | Float64 [0, 100] | Nổi tiếng | Phương án A | Điểm độ nổi tiếng thật từ Spotify API (42.2% có điểm, 57.8% để trống tự nhiên) |
 | 26 | `popularity_status` | String | Phân loại EDA | Calculated Field | Phân nhóm trực quan: Official Spotify Score vs Unindexed / Regional Hits |
-| 27 | `artist_popularity` | Float64 [0, 100] | Nghệ sĩ | Trung vị Dòng nhạc | Điểm độ nổi tiếng nghệ sĩ đã điền khuyết sạch 100% (tính trên nghệ sĩ độc nhất) |
-| 28 | `artist_popularity_is_imputed` | Int64 (0/1) | Data Lineage | Calculated Field | **Cờ kiểm chứng bắt buộc:** 0 = Điểm ca sĩ thật, 1 = Điền khuyết trung vị |
+| 27 | `artist_popularity` | Float64 [0, 100] | Nghệ sĩ | Phương án A | Điểm độ nổi tiếng ca sĩ từ Spotify API (63.1% có điểm, 36.9% để trống tự nhiên theo Phương án A) |
+| 28 | `artist_chart_score` | Float64 [0.01, 100] | Phong độ toàn kỳ | Calculated Field | **Điểm phong độ toàn kỳ 2020–2022** theo Percentile Rank tổng streams trên 9,704 nghệ sĩ độc nhất (CẤM dùng cho ML) |
 | 29 | `gdp_value` | Float64 | Kinh tế World Bank | gdp_data.csv | Tổng sản phẩm quốc nội USD hiện hành (khuyết ở bảng Global và TWN/VEN) |
 | 30 | `gdp_log` | Float64 | Kinh tế | Calculated Field | ln(1 + gdp_value) nén quy mô kinh tế |
 | 31 | `income_group` | String | Kinh tế | country_codes | Phân tầng thu nhập quốc gia (High, Upper middle, Lower middle) |
@@ -392,7 +394,7 @@ Master Dataset được thiết kế với **12 nhóm trường tính toán phá
 | 4 | `macro_genre` | String | Dòng nhạc vĩ mô | Regex 6 siêu nhóm có ranh giới từ -> Ổn định hóa theo Mode của `track_id` | Lọc phân tích cấp vĩ mô trên Dashboard, giải quyết phân mảnh 1,481 thể loại. |
 | 5 | `song_genre` & `song_genre_source` | String | Thể loại chuẩn | Bậc thang thác nước 4 tầng (Track Dataset -> Chart Detail -> Artist Profile -> Macro) | Đạt độ phủ sạch 100% dữ liệu, truy vết nguồn gốc minh bạch từng dòng. |
 | 6 | `popularity_status` | String | Trạng thái chỉ mục | Phân loại theo song_popularity: có điểm -> Official Spotify Score, ngược lại Unindexed / Regional Hits | Phân định trực quan giữa Mainstream toàn cầu vs Indie/Bản địa trong EDA. |
-| 7 | `artist_popularity` & `artist_popularity_is_imputed` | Float64 / Int64 | Năng lực ca sĩ | Điền Median có điều kiện theo `macro_genre` (sau khi khử trùng lặp nghệ sĩ) kèm cờ kiểm chứng | Cung cấp biến liên tục cho mô hình dự báo mà không xóa mất thị trường Việt Nam. |
+| 7 | `artist_chart_score` | Float64 [0.01, 100] | Phong độ toàn kỳ | Percentile Rank tổng streams 2020–2022 trên 9,704 ca sĩ độc nhất | Đo lường vị thế và sức hút thương mại tích lũy của nghệ sĩ giai đoạn 2020–2022 (CẤM dùng cho ML). |
 | 8 | `duration_min` | Float64 (phút) | Thời lượng | duration / 60,000 (làm tròn 3 chữ số thập phân) | Khảo sát xu hướng rút ngắn độ dài ca khúc trong thời đại streaming và TikTok. |
 | 9 | `chart_longevity` | Int64 (tuần) | Độ bền bỉ | max(weeks_on_chart) theo từng track_id | Phân loại ca khúc: Hiện tượng nhất thời (Viral Hit) vs Bản hit kinh điển (Evergreen). |
 | 10 | `tempo_category` | String | Nhịp độ âm nhạc | Phân đoạn 4 khoảng nhịp: Slow, Medium, Fast, Very Fast theo BPM | Phân tích gu thưởng thức tốc độ nhịp điệu theo khu vực địa lý và văn hóa. |
@@ -608,28 +610,27 @@ TIÊU CỰC ◄─────────────────────�
 
 ---
 
-#### 7. `artist_popularity` & `artist_popularity_is_imputed` — Điền Khuyết Năng Lực Ca Sĩ & Cờ Kiểm Chứng Bắt Buộc
-* **Phương pháp & Giải pháp:** Có 36.9% dòng trên BXH thuộc về các nghệ sĩ indie hoặc nghệ sĩ bản địa không có hồ sơ trong bảng quốc tế `artists.csv`. Để giải quyết triệt để mà không thiên lệch, hệ thống áp dụng kỹ thuật tính trung vị sau khi khử trùng lặp nghệ sĩ và gắn cờ kiểm chứng:
-  1. Gán cờ kiểm chứng: `artist_popularity_is_imputed = 1` nếu nghệ sĩ khuyết điểm, `= 0` nếu là điểm thật từ hồ sơ 71K ca sĩ.
-  2. Khử trùng lặp theo từng ca sĩ độc nhất (`drop_duplicates(subset=['artist_individual'])`), sau đó tính trung vị điểm nổi tiếng cho từng nhóm `macro_genre` (Pop: 81, Latin: 88, Rock/Metal: 83, Hip-Hop/Rap: 81, Others: 71, K-Pop: 59).
-  3. Điền giá trị trung vị này vào các vị trí trống (nếu khuyết thể loại thì dùng 50 làm giá trị dự phòng toàn cục).
-* **Công thức điền khuyết:**
-  ```text
-  artist_popularity_is_imputed = 1 nếu khuyết điểm ca sĩ gốc, 0 nếu có điểm thật
-  artist_popularity = Điểm thật từ hồ sơ artists.csv (nếu có dữ liệu thật)
-  artist_popularity = Median(artist_popularity) theo từng macro_genre trên tập nghệ sĩ độc nhất (nếu khuyết dữ liệu)
-  artist_popularity = 50 (dự phòng toàn cục nếu không xác định được thể loại)
-  ```
+#### 7. `artist_chart_score` — Điểm Phong Độ Nghệ Sĩ Toàn Kỳ 2020–2022 (Percentile Rank)
+* **Phương pháp & Bản chất:** Nhóm loại bỏ hoàn toàn việc điền trung vị cào bằng. Thay vào đó, nhóm xây dựng chỉ số nội tại khách quan 100% dựa trên thành tích thương mại thực tế của nghệ sĩ trên BXH Spotify qua toàn bộ giai đoạn 2020–2022.
+* **Lý do chọn Percentile Rank thay vì Min-Max:**
+  - Min-Max rất dễ vỡ thang điểm khi có dữ liệu mới và bị neo cứng vào 2 nghệ sĩ cực trị hiện tại.
+  - Percentile Rank ổn định tuyệt đối: luôn mang ý nghĩa chuẩn xác *"nghệ sĩ này có tổng lượt streams tích lũy vượt qua X% các nghệ sĩ khác trên toàn bộ bảng xếp hạng"*.
+* **Công thức toán học:**
+  $$\text{artist\_chart\_score} = \text{Rank}_{\text{pct}}\Big(\sum_{\text{2020–2022}} \text{streams}\Big) \times 100$$
+  *(Tính trên danh sách 9,704 nghệ sĩ độc nhất rồi ánh xạ ngược lại bảng Fact, đảm bảo phân vị chuẩn xác)*.
 * **Mã nguồn thực thi Python (`src/data_loader.py`):**
   ```python
-  df["artist_popularity_is_imputed"] = df["artist_popularity_raw"].isna().astype(int)
-  art_unique = (
-      df.dropna(subset=["artist_popularity_raw"])
-      .drop_duplicates(subset=["artist_individual"])[["artist_individual", "macro_genre", "artist_popularity_raw"]]
-  )
-  macro_art_pop_med = art_unique.groupby("macro_genre")["artist_popularity_raw"].median()
-  df["artist_popularity"] = df["artist_popularity_raw"].fillna(df["macro_genre"].map(macro_art_pop_med)).fillna(50)
+  # 1. Tính tổng streams theo nghệ sĩ độc nhất:
+  art_tot = df.groupby("artist_individual")["streams"].sum()
+  # 2. Xếp hạng phân vị trên 9,704 nghệ sĩ:
+  art_pct = (art_tot.rank(pct=True) * 100).round(2)
+  # 3. Ánh xạ vào từng dòng:
+  df["artist_chart_score"] = df["artist_individual"].map(art_pct)
   ```
+* **Ba Giả định Nghiệp vụ:**
+  1. *Toàn kỳ 2020–2022:* Đo lường tổng lực thương mại tích lũy cả giai đoạn, không phải điểm phong độ tức thời (rolling decay) như Spotify API.
+  2. *Collab toàn quyền:* Mỗi nghệ sĩ trong bài hát chung nhận nguyên vẹn 100% streams của bài đó.
+  3. *Cảnh báo Data Leakage:* Tuyệt đối CẤM dùng làm feature trong bài toán Machine Learning dự đoán Hit (`is_trending`) vì được tính trực tiếp từ `streams`.
 
 ---
 
@@ -724,11 +725,11 @@ TIÊU CỰC ◄─────────────────────�
 ## 6. ĐÁNH GIÁ CHẤT LƯỢNG DỮ LIỆU, ĐỘ TIN CẬY MÔ HÌNH & CẢNH BÁO RÒ RỈ CHO ML
 
 ### 6.1. Đánh giá chất lượng dữ liệu sau tiền xử lý
-* **Độ sạch Missing Values:** Toàn bộ các trường phân tích trọng tâm đều đạt 100% dữ liệu sạch: `song_genre` (0% NA), `song_popularity` (0% NA), `artist_popularity` (0% NA). Audio features chỉ khuyết 0.01% (do Spotify chưa lập chỉ mục một số bài hiếm), GDP chỉ khuyết 4.19% (hoàn toàn thuộc về bảng xếp hạng `Global`).
+* **Độ sạch Missing Values & Tính nguyên bản:** Trường thể loại `song_genre` và phong độ nghệ sĩ `artist_chart_score` đạt **100% dữ liệu sạch (0% NA)**. Độ nổi tiếng bài hát `song_popularity` và ca sĩ `artist_popularity` tuân thủ triệt để Phương án A: Bảo tồn `NaN` tự nhiên để tôn trọng sự thật khách quan của các thị trường bản địa, loại bỏ hoàn toàn các giá trị điền khuyết nhân tạo. Audio features chỉ khuyết 0.01% (145 dòng / 6 bài hiếm), GDP chỉ khuyết 4.19% (thuộc về thực thể toàn cầu `Global`).
 * **Độ phủ dữ liệu thật tăng vọt:** Kỹ thuật ghép thác nước hai bảng bài hát đã tăng số bài hát thật từ 2,551 lên 4,487 bài (tăng 75.9%), nâng độ phủ từ 19.8% lên **42.2% tổng bản ghi** (tương ứng 454,880 dòng trên tổng số 1,078,125 bản ghi bảng xếp hạng).
 * **Tính ổn định của nhãn thể loại:** Áp dụng hàm `mode` cho `macro_genre` theo từng bài hát giúp triệt tiêu hoàn toàn hiện tượng một bài hát bị nhảy nhãn dòng nhạc giữa các tuần.
 
-### 6.2. Cảnh báo rò rỉ dữ liệu (Data Leakage) & Đa cộng tuyến cho Machine Learning
+### 6.2. Cảnh báo rò rỉ dữ liệu (Data Leakage) & Kiểm soát Đa cộng tuyến cho Machine Learning
 Khi huấn luyện mô hình dự báo bài hát thịnh hành (`is_trending`), nhóm Machine Learning cần tuân thủ nghiêm ngặt các nguyên tắc sau:
 
 > [!WARNING]
@@ -736,22 +737,20 @@ Khi huấn luyện mô hình dự báo bài hát thịnh hành (`is_trending`), 
 > * **`rank` (Rò rỉ trực tiếp nghiêm trọng nhất — Direct Label Leakage):** Biến mục tiêu `is_trending` được định nghĩa bằng quy tắc `rank <= 50`. Nếu đưa `rank` vào làm feature, mô hình sẽ đạt độ chính xác 100% một cách vô nghĩa vì đang dùng chính đáp án để dự đoán đáp án.
 > * **`peak_rank`:** Rò rỉ trực tiếp thứ hạng cao nhất trong quá khứ của bài hát (nếu `peak_rank <= 50` thì xác suất rất cao bài đang hoặc đã là trending).
 > * **`streams`, `stream_share_country`:** Lượt nghe là cơ chế trực tiếp sinh ra thứ hạng của bảng xếp hạng trong tuần.
+> * **`artist_chart_score` (Rò rỉ từ tổng streams tích lũy — Cumulative Performance Leakage):** Chỉ số phong độ toàn kỳ 2020–2022 được tính trực tiếp từ tổng lượt streams tích lũy của nghệ sĩ. Do streams là động cơ trực tiếp quyết định rank, việc đưa `artist_chart_score` vào làm feature dự đoán `is_trending` sẽ làm lộ trước kết quả thương mại, gây rò rỉ dữ liệu nghiêm trọng. Tuyệt đối CẤM đưa vào tập feature $X$ của ML.
 > * **`weeks_on_chart`, `chart_longevity`:** Là các biến hậu phát hành (post-release metrics) chỉ hình thành sau khi bài hát đã bám trụ trên thị trường qua nhiều tuần.
-> * **`song_popularity` (Rò rỉ gián tiếp — Indirect Leakage):** Đối với 57.8% dòng được ước lượng, công thức hồi quy sử dụng chính biến `rank_norm` (phái sinh từ `rank`) làm biến đầu vào. Do đó, `song_popularity` ở nhóm này gián tiếp mang thông tin của `rank`. Nếu dùng `song_popularity` làm biến dự đoán `is_trending`, mô hình sẽ bị rò rỉ nhãn gián tiếp, làm thổi phồng độ chính xác thực tế.
+> * **`song_popularity` (Rò rỉ gián tiếp nếu dùng mô hình hồi quy):** Ở các bài hát chưa có điểm, nếu dùng công thức phái sinh từ `rank` để điền điểm thì `song_popularity` sẽ gián tiếp mang thông tin của `rank`. Nhóm đã giữ `NaN` tự nhiên theo Phương án A để chống rò rỉ.
 
 > [!IMPORTANT]
-> **2. CẢNH BÁO ĐA CỘNG TUYẾN CỤC BỘ (MULTICOLLINEARITY):**
-> * Đối với 36.9% dòng nghệ sĩ khuyết thông tin trong `artists.csv`, biến `artist_popularity` được điền bằng trung vị có điều kiện theo `macro_genre`. Trong phân khúc 36.9% này, `artist_popularity` trở thành hàm đơn ánh phụ thuộc hoàn toàn vào `macro_genre` (ví dụ: ca sĩ Pop thiếu luôn nhận điểm 68, ca sĩ Rock luôn nhận điểm 58).
-> * **Hệ quả:** Nếu sử dụng đồng thời cả `macro_genre` và `artist_popularity` làm biến đầu vào trong các mô hình tuyến tính (Logistic Regression, Linear SVC), sẽ xảy ra hiện tượng đa cộng tuyến cục bộ, làm tăng phương sai của trọng số và gây nhiễu loạn khi phân tích độ quan trọng của đặc trưng (Feature Importance).
-> * **Khuyến nghị khắc phục:**
->   - Ưu tiên sử dụng các thuật toán dạng cây (Random Forest, XGBoost, LightGBM) vốn ít nhạy cảm với quan hệ tuyến tính giữa các biến.
->   - Hoặc chỉ giữ 1 trong 2 biến khi huấn luyện mô hình tuyến tính.
+> **2. TRIỆT TIÊU HOÀN TOÀN ĐA CỘNG TUYẾN NHÂN TẠO (MULTICOLLINEARITY ELIMINATED):**
+> * Trước đây, việc điền trung vị theo `macro_genre` khiến `artist_popularity` trở thành hàm đơn ánh phụ thuộc vào dòng nhạc, gây đa cộng tuyến cục bộ cho các mô hình tuyến tính.
+> * **Hiện tại:** Do nhóm đã bãi bỏ hoàn toàn kỹ thuật điền trung vị và bảo tồn `NaN` tự nhiên theo Phương án A, hiện tượng đa cộng tuyến nhân tạo giữa nghệ sĩ và dòng nhạc đã được **triệt tiêu 100%**.
 
 > [!NOTE]
 > **3. DANH SÁCH BIẾN TIỀN PHÁT HÀNH ĐƯỢC PHÉP SỬ DỤNG CHO ML:**
 > * 9 Audio features nguyên bản: `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`.
 > * Thuộc tính bài hát: `duration_min`, `song_genre`, `macro_genre`, `tempo_category`.
-> * Thuộc tính nghệ sĩ tiền phát hành: `artist_popularity` (kèm cờ kiểm chứng `artist_popularity_is_imputed`).
+> * Thuộc tính nghệ sĩ tiền phát hành: `artist_popularity` (giữ nguyên điểm gốc Spotify API; các thuật toán cây hiện đại như LightGBM, XGBoost, CatBoost xử lý trực tiếp `NaN` một cách tối ưu mà không cần impute nhân tạo).
 
 ---
 
@@ -773,7 +772,7 @@ print(df.groupby("popularity_status")["song_popularity"].describe())
 from src.data_loader import load_ml_data
 
 df_ml = load_ml_data()
-print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 25 cột)
+print(f"ML Dataset: {df_ml.shape}")   # (36,699 bài hát, 24 cột)
 print(f"Tỷ lệ bài Hit (is_trending=1): {df_ml['is_trending'].mean():.1%}")
 ```
 
@@ -785,8 +784,8 @@ Khi báo cáo và bảo vệ đồ án trước Hội đồng chấm điểm, nh
 
 1. **Thiên lệch Lập chỉ mục Địa lý của Spotify Web API (Geographical Catalog Indexing Bias):**
    * Hai tập tra cứu bài hát bổ trợ chủ yếu cào danh mục nhạc Âu-Mỹ (Western Mainstream catalog). Do đó, 57.8% các bản hit địa phương (V-Pop, Turkish Pop, Thai Rap,...) chưa có điểm `song_popularity` tích lũy toàn cầu. Nhóm đã minh bạch hóa bằng cột cờ `popularity_status` và giữ nguyên tính trung thực theo Phương án A thay vì tự ý chế số liệu.
-2. **Thiên lệch Lựa chọn khi Điền khuyết Nghệ sĩ (Artist Selection Bias):**
-   * Tập `artists.csv` (71K nghệ sĩ) chỉ đại diện cho các ca sĩ đã có mức độ nhận diện quốc tế nhất định. Việc điền trung vị theo `macro_genre` có thể hơi ưu ái điểm số đối với các nghệ sĩ indie mới nổi tại các thị trường đang phát triển. Nhóm đã bảo toàn cờ `artist_popularity_is_imputed = 1` để bất kỳ nhà nghiên cứu nào cũng có thể bóc tách độc lập.
+2. **Tính Khách quan của Điểm Nghệ sĩ & Thước đo Phong độ Toàn kỳ (`artist_chart_score`):**
+   * Tập `artists.csv` (71K nghệ sĩ) chỉ có điểm cho 63.1% nghệ sĩ có hồ sơ quốc tế. Nhóm bãi bỏ hoàn toàn kỹ thuật điền trung vị nhân tạo, bảo tồn `NaN` tự nhiên cho `artist_popularity` theo Phương án A. Đồng thời, nhóm phát triển chỉ số `artist_chart_score` (Percentile Rank từ tổng streams toàn kỳ 2020–2022) phản ánh chính xác 100% vị thế thương mại thực tế của nghệ sĩ trên BXH.
 3. **Đặc thù dữ liệu Bảng xếp hạng Toàn cầu năm 2020 (Global 2020 Data Asymmetry):**
    * Trong tập dữ liệu thô, năm 2020 chỉ ghi nhận duy nhất bảng xếp hạng toàn cầu `Global` (chưa thu thập 73 quốc gia thành viên). Do đó, các phân tích so sánh quốc tế chỉ nên tập trung vào giai đoạn 2021 – 2022 để bảo đảm tính tương đồng mẫu.
 4. **Bản chất của trường Ngôn ngữ (`chart_language`):**
@@ -794,4 +793,4 @@ Khi báo cáo và bảo vệ đồ án trước Hội đồng chấm điểm, nh
 5. **Dữ liệu Dị biệt Âm lượng (+1.9 dB) và Thời lượng dài (>15 phút):**
    * Có 247 dòng mang độ to âm lượng dương (`loudness > 0 dB`) do kỹ thuật nén âm thanh cực đại (brickwall limiting/loudness war) của các bản thu thương mại hiện đại. 87 dòng có thời lượng > 15 phút là các bản podcast và live DJ mix hợp lệ, nhóm quyết định giữ nguyên để tôn trọng tính toàn vẹn của bảng xếp hạng.
 6. **Rủi ro Rò rỉ Dữ liệu Hậu phát hành (Post-release Data Leakage):**
-   * Các chỉ số `rank`, `streams`, `weeks_on_chart`, `peak_rank`, `chart_longevity` xuất hiện sau khi bài hát đã ra mắt. Khi ứng dụng Machine Learning dự báo bài hát thịnh hành, nhóm đã tách riêng tệp `tracks_ml_data.csv` (25 cột cấp track) và cảnh báo nghiêm ngặt việc cấm dùng các biến này làm đặc trưng đầu vào.
+   * Các chỉ số `rank`, `streams`, `weeks_on_chart`, `peak_rank`, `chart_longevity`, `artist_chart_score` xuất hiện sau khi bài hát đã ra mắt. Khi ứng dụng Machine Learning dự báo bài hát thịnh hành, nhóm đã tách riêng tệp `tracks_ml_data.csv` (24 cột cấp track) và cảnh báo nghiêm ngặt việc cấm dùng các biến này làm đặc trưng đầu vào.

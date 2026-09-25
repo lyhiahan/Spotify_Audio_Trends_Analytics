@@ -84,8 +84,8 @@ FINAL_COLUMNS = [
     "instrumentalness", "liveness", "valence", "tempo",
     # Cấp bài hát (4 cột - Đã loại bỏ explicit, song_popularity_raw, has_song_popularity, popularity_is_imputed)
     "song_genre", "song_genre_source", "song_popularity", "popularity_status",
-    # Cấp nghệ sĩ (2 cột - Giữ artist_popularity và cờ kiểm chứng bắt buộc artist_popularity_is_imputed)
-    "artist_popularity", "artist_popularity_is_imputed",
+    # Cấp nghệ sĩ (2 cột - artist_popularity giữ NaN tự nhiên theo Phương án A, artist_chart_score đo phong độ toàn kỳ)
+    "artist_popularity", "artist_chart_score",
     # Kinh tế & Địa lý World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
     # Các trường tính toán phái sinh (7 cột)
@@ -401,21 +401,15 @@ def build_master_dataset(charts, track_waterfall, artists, gdp, country_codes, s
     )
     df["macro_genre"] = df["track_id"].map(track_macro_mode)
 
-    # 5. XỬ LÝ NGHỆ SĨ (Điền trung vị theo macro_genre sau khi dedupe theo từng nghệ sĩ)
-    # Cờ kiểm chứng nguồn gốc bắt buộc
-    df["artist_popularity_is_imputed"] = df["artist_popularity_raw"].isna().astype(int)
+    # 5. XỬ LÝ NGHỆ SĨ (Bảo tồn NaN tự nhiên theo Phương án A & Tính artist_chart_score theo Percentile Rank)
+    # Không điền trung vị nữa để tránh bóp méo dữ liệu ca sĩ bản địa/indie
+    df["artist_popularity"] = df["artist_popularity_raw"]
 
-    # Trung vị theo macro_genre được tính sau khi dedupe theo từng nghệ sĩ
-    # (không tính trên toàn bộ dòng mở rộng theo quốc gia-tuần, tránh bị lệch bởi nghệ sĩ charting nhiều nơi)
-    art_unique = (
-        df.dropna(subset=["artist_popularity_raw"])
-        .drop_duplicates(subset=["artist_individual"])[["artist_individual", "macro_genre", "artist_popularity_raw"]]
-    )
-    macro_art_pop_med = art_unique.groupby("macro_genre")["artist_popularity_raw"].median()
-    df["artist_popularity"] = df["artist_popularity_raw"].fillna(df["macro_genre"].map(macro_art_pop_med)).fillna(50)
-
-    macro_fol_med = df.groupby("macro_genre")["artist_followers_raw"].transform("median")
-    df["artist_followers"] = df["artist_followers_raw"].fillna(macro_fol_med).fillna(100_000)
+    # artist_chart_score: Điểm phong độ toàn kỳ 2020-2022 theo Percentile Rank trên 9,704 nghệ sĩ độc nhất
+    # Giả định collab: Mỗi nghệ sĩ trong bài hát chung nhận nguyên vẹn streams của bài đó
+    art_tot = df.groupby("artist_individual")["streams"].sum()
+    art_pct = (art_tot.rank(pct=True) * 100).round(2)
+    df["artist_chart_score"] = df["artist_individual"].map(art_pct)
 
     # 6. BẬC THANG 4 TẦNG CHO THỂ LOẠI (song_genre) KÈM CỘT NGUỒN GỐC
     artist_genre_clean = (
@@ -586,7 +580,6 @@ def generate_ml_dataset(df_master, save=True):
         "song_popularity": "max",
         "popularity_status": _mode_or_first,
         "artist_popularity": "max",
-        "artist_popularity_is_imputed": "max",
         "chart_language": _mode_or_first,
         "danceability": "first",
         "energy": "first",
