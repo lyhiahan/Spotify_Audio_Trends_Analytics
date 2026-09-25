@@ -82,9 +82,9 @@ FINAL_COLUMNS = [
     # 9 đặc trưng âm học (9 cột)
     "danceability", "energy", "loudness", "speechiness", "acousticness",
     "instrumentalness", "liveness", "valence", "tempo",
-    # Cấp bài hát (4 cột - Đã loại bỏ explicit, song_popularity_raw, has_song_popularity, popularity_is_imputed)
+    # Cấp bài hát (4 cột)
     "song_genre", "song_genre_source", "song_popularity", "popularity_status",
-    # Cấp nghệ sĩ (2 cột - artist_popularity giữ NaN tự nhiên theo Phương án A, artist_chart_score đo phong độ toàn kỳ)
+    # Cấp nghệ sĩ (2 cột - artist_popularity giữ NaN tự nhiên, artist_chart_score đo phong độ toàn kỳ)
     "artist_popularity", "artist_chart_score",
     # Kinh tế & Địa lý World Bank (5 cột)
     "gdp_value", "gdp_log", "income_group", "region_wb", "country_code",
