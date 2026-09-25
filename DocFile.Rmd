@@ -19,7 +19,7 @@ library(readr)
 library(dplyr)
 
 # Đường dẫn đến file dữ liệu CSV
-file_path <- "data/processed/merged_spotify_data.csv"
+file_path <- "data/processed/spotify.csv"
 
 # Đọc file CSV
 spotify_data <- read_csv(file_path)

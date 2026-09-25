@@ -52,6 +52,6 @@ Thumbs.db
 *.log
 
 # 7. R Temporary Files
-.RDataTmp
+.RDataTmp*
 .Rhistory
 
