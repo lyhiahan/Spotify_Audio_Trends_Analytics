@@ -1,0 +1,74 @@
+chart_country,country_code,wb_country_name,wb_region,wb_income_group,chart_region,chart_language,n_weeks
+Argentina,ARG,Argentina,Latin America & Caribbean,Upper middle income,South America,Spanish,76
+Australia,AUS,Australia,East Asia & Pacific,High income,Oceania,English,76
+Austria,AUT,Austria,Europe & Central Asia,High income,Europe,German,76
+Belarus,BLR,Belarus,Europe & Central Asia,Upper middle income,Europe,Russian,22
+Belgium,BEL,Belgium,Europe & Central Asia,High income,Europe,Dutch,76
+Bolivia,BOL,Bolivia,Latin America & Caribbean,Lower middle income,South America,Spanish,76
+Brazil,BRA,Brazil,Latin America & Caribbean,Upper middle income,South America,Portuguese,76
+Bulgaria,BGR,Bulgaria,Europe & Central Asia,Upper middle income,Europe,Bulgarian,76
+Canada,CAN,Canada,North America,High income,North America,English,76
+Chile,CHL,Chile,Latin America & Caribbean,High income,South America,Spanish,76
+Colombia,COL,Colombia,Latin America & Caribbean,Upper middle income,South America,Spanish,76
+Costa Rica,CRI,Costa Rica,Latin America & Caribbean,Upper middle income,Central America,Spanish,76
+Cyprus,CYP,Cyprus,Europe & Central Asia,High income,Europe,Greek,76
+Czech Republic,CZE,Czechia,Europe & Central Asia,High income,Europe,Czech,76
+Denmark,DNK,Denmark,Europe & Central Asia,High income,Europe,Danish,76
+Dominican Republic,DOM,Dominican Republic,Latin America & Caribbean,Upper middle income,Caribbean,Spanish,76
+Ecuador,ECU,Ecuador,Latin America & Caribbean,Upper middle income,South America,Spanish,76
+Egypt,EGY,"Egypt, Arab Rep.",Middle East & North Africa,Lower middle income,Middle East,Arabic,76
+El Salvador,SLV,El Salvador,Latin America & Caribbean,Upper middle income,Central America,Spanish,76
+Estonia,EST,Estonia,Europe & Central Asia,High income,Europe,Estonian,76
+Finland,FIN,Finland,Europe & Central Asia,High income,Europe,Finnish,76
+France,FRA,France,Europe & Central Asia,High income,Europe,French,76
+Germany,DEU,Germany,Europe & Central Asia,High income,Europe,German,76
+Greece,GRC,Greece,Europe & Central Asia,High income,Europe,Greek,76
+Guatemala,GTM,Guatemala,Latin America & Caribbean,Upper middle income,Central America,Spanish,76
+Honduras,HND,Honduras,Latin America & Caribbean,Lower middle income,Central America,Spanish,76
+Hong Kong,HKG,"Hong Kong SAR, China",East Asia & Pacific,High income,Asia,Cantonese,76
+Hungary,HUN,Hungary,Europe & Central Asia,High income,Europe,Hungarian,76
+Iceland,ISL,Iceland,Europe & Central Asia,High income,Europe,Icelandic,76
+India,IND,India,South Asia,Lower middle income,Asia,Hindi,76
+Indonesia,IDN,Indonesia,East Asia & Pacific,Upper middle income,Asia,Indonesian,76
+Ireland,IRL,Ireland,Europe & Central Asia,High income,Europe,English,76
+Israel,ISR,Israel,Middle East & North Africa,High income,Middle East,Hebrew,76
+Italy,ITA,Italy,Europe & Central Asia,High income,Europe,Italian,76
+Japan,JPN,Japan,East Asia & Pacific,High income,Asia,Japanese,76
+Kazakhstan,KAZ,Kazakhstan,Europe & Central Asia,Upper middle income,Asia,Russian,22
+Korea,KOR,"Korea, Rep.",East Asia & Pacific,High income,Asia,Korean,76
+Latvia,LVA,Latvia,Europe & Central Asia,High income,Europe,Latvian,76
+Lithuania,LTU,Lithuania,Europe & Central Asia,High income,Europe,Lithuanian,76
+Luxembourg,LUX,Luxembourg,Europe & Central Asia,High income,Europe,French,76
+Malaysia,MYS,Malaysia,East Asia & Pacific,Upper middle income,Asia,Malay,76
+Mexico,MEX,Mexico,Latin America & Caribbean,Upper middle income,North America,Spanish,76
+Morocco,MAR,Morocco,Middle East & North Africa,Lower middle income,Africa,Arabic,76
+Netherlands,NLD,Netherlands,Europe & Central Asia,High income,Europe,Dutch,76
+New Zealand,NZL,New Zealand,East Asia & Pacific,High income,Oceania,English,76
+Nicaragua,NIC,Nicaragua,Latin America & Caribbean,Lower middle income,Central America,Spanish,76
+Nigeria,NGA,Nigeria,Sub-Saharan Africa,Lower middle income,Africa,English,22
+Norway,NOR,Norway,Europe & Central Asia,High income,Europe,Norwegian,75
+Pakistan,PAK,Pakistan,South Asia,Lower middle income,Asia,Urdu,10
+Panama,PAN,Panama,Latin America & Caribbean,High income,Central America,Spanish,76
+Paraguay,PRY,Paraguay,Latin America & Caribbean,Upper middle income,South America,Spanish,76
+Peru,PER,Peru,Latin America & Caribbean,Upper middle income,South America,Spanish,76
+Philippines,PHL,Philippines,East Asia & Pacific,Lower middle income,Asia,Tagalog,75
+Poland,POL,Poland,Europe & Central Asia,High income,Europe,Polish,76
+Portugal,PRT,Portugal,Europe & Central Asia,High income,Europe,Portuguese,76
+Romania,ROU,Romania,Europe & Central Asia,High income,Europe,Romanian,76
+Saudi Arabia,SAU,Saudi Arabia,Middle East & North Africa,High income,Middle East,Arabic,76
+Singapore,SGP,Singapore,East Asia & Pacific,High income,Asia,English,76
+Slovakia,SVK,Slovak Republic,Europe & Central Asia,High income,Europe,Slovak,76
+South Africa,ZAF,South Africa,Sub-Saharan Africa,Upper middle income,Africa,Zulu,76
+Spain,ESP,Spain,Europe & Central Asia,High income,Europe,Spanish,76
+Sweden,SWE,Sweden,Europe & Central Asia,High income,Europe,Swedish,76
+Switzerland,CHE,Switzerland,Europe & Central Asia,High income,Europe,German,76
+Taiwan,TWN,"Taiwan, China",East Asia & Pacific,High income,Asia,Mandarin,76
+Thailand,THA,Thailand,East Asia & Pacific,Upper middle income,Asia,Thai,76
+Turkey,TUR,Turkiye,Europe & Central Asia,Upper middle income,Middle East,Turkish,76
+Ukraine,UKR,Ukraine,Europe & Central Asia,Lower middle income,Europe,Ukrainian,76
+United Arab Emirates,ARE,United Arab Emirates,Middle East & North Africa,High income,Middle East,Arabic,75
+United Kingdom,GBR,United Kingdom,Europe & Central Asia,High income,Europe,English,76
+United States,USA,United States,North America,High income,North America,English,76
+Uruguay,URY,Uruguay,Latin America & Caribbean,High income,South America,Spanish,76
+Venezuela,VEN,"Venezuela, RB",Latin America & Caribbean,Upper middle income,South America,Spanish,17
+Vietnam,VNM,Vietnam,East Asia & Pacific,Lower middle income,Asia,Vietnamese,76

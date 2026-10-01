@@ -2,11 +2,9 @@
 # GITIGNORE CHO DỰ ÁN TƯƠNG TÁC DỮ LIỆU
 # ==========================================
 
-# 1. Bỏ qua các file dữ liệu nặng (Đặc biệt tránh lỗi GitHub 100MB limit)
-data/raw/*.csv
-data/processed/*.csv
+# 1. Bỏ qua các file dữ liệu quá lớn (GitHub 100MB limit)
+data/raw/spotify-weekly-charts.csv
 !data/processed/.gitkeep
-!data/processed/tracks_ml_data.csv
 !data/sample/*.csv
 !**/.gitkeep
 
