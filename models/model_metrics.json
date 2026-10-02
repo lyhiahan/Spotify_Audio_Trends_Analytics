@@ -1,10 +1,6 @@
 {
-    "model_name": "Logistic Regression (Hit Predictor)",
-    "accuracy": 0.5519265118652718,
-    "precision": 0.17599785695151351,
-    "recall": 0.6010978956999085,
-    "f1_score": 0.27227517612929963,
-    "roc_auc": 0.5906191228364068,
+    "model_name": "Logistic Regression (White-box Explainable Model)",
+    "threshold_default": 0.5,
     "features": [
         "danceability",
         "energy",
@@ -17,19 +13,73 @@
         "tempo",
         "duration_min"
     ],
-    "coefficients": [
-        0.08265967614398902,
-        -0.1942768033155884,
-        0.3423050122504056,
-        -0.20375688059903818,
-        0.08717319858906193,
-        -0.022708611918659544,
-        -0.016656688422305083,
-        0.030787607386029554,
-        0.029677278925005504,
-        0.15338252228376273
-    ],
+    "coefficients": {
+        "danceability": 0.08265967614398902,
+        "energy": -0.1942768033155884,
+        "loudness": 0.3423050122504056,
+        "speechiness": -0.20375688059903818,
+        "acousticness": 0.08717319858906193,
+        "instrumentalness": -0.022708611918659544,
+        "liveness": -0.016656688422305083,
+        "valence": 0.030787607386029554,
+        "tempo": 0.029677278925005504,
+        "duration_min": 0.15338252228376273
+    },
+    "odds_ratios": {
+        "danceability": 1.0861720953649123,
+        "energy": 0.8234299445812189,
+        "loudness": 1.4081897471408482,
+        "speechiness": 0.8156606500122205,
+        "acousticness": 1.0910856378471856,
+        "instrumentalness": 0.9775472879056395,
+        "liveness": 0.9834812671890664,
+        "valence": 1.0312664472479092,
+        "tempo": 1.0301220382131635,
+        "duration_min": 1.1657708269829776
+    },
     "intercept": -0.05069520090677927,
-    "train_samples": 31352,
-    "test_samples": 7838
+    "metrics": {
+        "accuracy": 0.5519265118652718,
+        "precision": 0.17599785695151351,
+        "recall": 0.6010978956999085,
+        "f1_score": 0.27227517612929963,
+        "roc_auc": 0.5906191228364068,
+        "confusion_matrix": [
+            [
+                3669,
+                3076
+            ],
+            [
+                436,
+                657
+            ]
+        ]
+    },
+    "rf_benchmark_auc": 0.5954637537751185,
+    "strategies": [
+        {
+            "Chiến lược": "Sơ loại rộng",
+            "Ngưỡng T": "0.40",
+            "Accuracy": "26.70%",
+            "Precision": "14.81%",
+            "Recall": "89.57%",
+            "Ứng dụng": "Không bỏ sót bài tiềm năng"
+        },
+        {
+            "Chiến lược": "Cân bằng F1 (mặc định)",
+            "Ngưỡng T": "0.50",
+            "Accuracy": "55.19%",
+            "Precision": "17.60%",
+            "Recall": "60.11%",
+            "Ứng dụng": "Hit Simulator Dashboard"
+        },
+        {
+            "Chiến lược": "Đầu tư chọn lọc",
+            "Ngưỡng T": "0.60",
+            "Accuracy": "80.77%",
+            "Precision": "19.29%",
+            "Recall": "11.89%",
+            "Ứng dụng": "Rót vốn đầu tư lớn"
+        }
+    ]
 }
