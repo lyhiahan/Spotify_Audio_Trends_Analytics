@@ -1,0 +1,35 @@
+{
+    "model_name": "Logistic Regression (Hit Predictor)",
+    "accuracy": 0.5519265118652718,
+    "precision": 0.17599785695151351,
+    "recall": 0.6010978956999085,
+    "f1_score": 0.27227517612929963,
+    "roc_auc": 0.5906191228364068,
+    "features": [
+        "danceability",
+        "energy",
+        "loudness",
+        "speechiness",
+        "acousticness",
+        "instrumentalness",
+        "liveness",
+        "valence",
+        "tempo",
+        "duration_min"
+    ],
+    "coefficients": [
+        0.08265967614398902,
+        -0.1942768033155884,
+        0.3423050122504056,
+        -0.20375688059903818,
+        0.08717319858906193,
+        -0.022708611918659544,
+        -0.016656688422305083,
+        0.030787607386029554,
+        0.029677278925005504,
+        0.15338252228376273
+    ],
+    "intercept": -0.05069520090677927,
+    "train_samples": 31352,
+    "test_samples": 7838
+}
