@@ -1,4 +1,5 @@
 # BẢNG PHÂN CHIA NHIỆM VỤ THEO BAREM (PROJECT CUỐI KỲ)
+
 **Môn học:** Tương tác dữ liệu trực quan (Interactive Data Visualization / Visual Analytics)
 **Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh và tương quan với các vấn đề xã hội. Phân tích dự đoán xu hướng bài hát thịnh hành trên Spotify
 **Quy mô nhóm:** 03 thành viên
@@ -25,7 +26,7 @@
 | **2. Thiết kế Dashboard (Trọng tâm)** | **3.5đ** | • **Giao diện & UI/UX (0.5đ):** Layout hợp lý, màu sắc hài hòa, Legend rõ ràng.<br>• **Đa dạng biểu đồ (1.0đ):** Sử dụng ≥ 8 loại biểu đồ khác nhau (Bar, Line, Pie, Scatter, Heatmap, Treemap, Radar, Boxplot...).<br>• **Bản đồ không gian (0.5đ):** Ít nhất 1 biểu đồ dạng Geographic Map.<br>• **Tính tương tác (1.5đ):** Bộ lọc đa cấp (Filters), Drill-down, Tooltip khi hover, Cross-filtering. |
 | **3. Phân tích Insight & Dự báo** | **2.0đ** | • **Khai phá Insight (1.0đ):** Rút ra câu chuyện dữ liệu (Storytelling), phân tích nguyên nhân và xu hướng.<br>• **Mô hình Dự báo (0.5đ):** Áp dụng đúng thuật toán Hồi quy tuyến tính hoặc Logistic.<br>• **Trực quan Dự báo (0.5đ):** Tích hợp kết quả dự báo lên biểu đồ trực quan trong Dashboard. |
 | **4. Báo cáo & Demo ứng dụng** | **2.0đ** | • **Báo cáo khoa học (1.0đ):** Cấu trúc chuẩn, sơ đồ Pipeline hệ thống, trích dẫn IEEE, giải thích logic chọn biểu đồ, minh họa code.<br>• **Ứng dụng Demo (1.0đ):** Dashboard chạy mượt mà, kịch bản lôi cuốn, đóng vai Data Analyst thuyết trình với sếp/khách hàng. |
-| **Tổng cộng** | **10.0đ** | |
+| **Tổng cộng** | **10.0đ** | Toàn bộ 4 phần theo Rubric |
 
 ---
 
