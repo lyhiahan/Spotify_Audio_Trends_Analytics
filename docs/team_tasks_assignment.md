@@ -1,6 +1,6 @@
 # BẢNG PHÂN CHIA NHIỆM VỤ THEO BAREM (PROJECT CUỐI KỲ)
 **Môn học:** Tương tác dữ liệu trực quan (Interactive Data Visualization / Visual Analytics)
-**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh & dự đoán xu hướng bài hát thịnh hành trên Spotify
+**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh và tương quan với các vấn đề xã hội. Phân tích dự đoán xu hướng bài hát thịnh hành trên Spotify
 **Quy mô nhóm:** 03 thành viên
 
 > Bảng dưới đây liệt kê đầy đủ các tiêu chí chấm điểm theo Rubric (barem 10 điểm) của đồ án.
