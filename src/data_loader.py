@@ -258,9 +258,13 @@ def load_master_data(project_root: Optional[str] = None) -> pd.DataFrame:
     if "month" not in df_loaded.columns or df_loaded["month"].isna().any():
         df_loaded["month"] = df_loaded["week"].dt.month
 
-    # Chuẩn hóa tên cột quốc gia và nghệ sĩ
+    # Chuẩn hóa tên cột quốc gia, khu vực, ngôn ngữ và nghệ sĩ
     if "chart_country" in df_loaded.columns and "country" not in df_loaded.columns:
         df_loaded["country"] = df_loaded["chart_country"]
+    if "chart_region" in df_loaded.columns and "region" not in df_loaded.columns:
+        df_loaded["region"] = df_loaded["chart_region"]
+    if "chart_language" in df_loaded.columns and "language" not in df_loaded.columns:
+        df_loaded["language"] = df_loaded["chart_language"]
     if "artist_individual" in df_loaded.columns:
         df_loaded["artists"] = df_loaded["artist_individual"]
     elif "artist_names" in df_loaded.columns and "artists" not in df_loaded.columns:
@@ -272,10 +276,17 @@ def load_master_data(project_root: Optional[str] = None) -> pd.DataFrame:
         df_loaded["covid_phase"] = df_loaded["year"].map(phase_map).fillna("Unknown")
 
     # is_latin, is_kpop
+    lang_col = "language" if "language" in df_loaded.columns else ("chart_language" if "chart_language" in df_loaded.columns else None)
     if "is_latin" not in df_loaded.columns:
-        df_loaded["is_latin"] = df_loaded["language"].astype(str).str.lower().str.contains("spanish|latin").astype(int)
+        if lang_col:
+            df_loaded["is_latin"] = df_loaded[lang_col].astype(str).str.lower().str.contains("spanish|latin").astype(int)
+        else:
+            df_loaded["is_latin"] = 0
     if "is_kpop" not in df_loaded.columns:
-        df_loaded["is_kpop"] = df_loaded["language"].astype(str).str.lower().str.contains("korean|k-pop").astype(int)
+        if lang_col:
+            df_loaded["is_kpop"] = df_loaded[lang_col].astype(str).str.lower().str.contains("korean|k-pop").astype(int)
+        else:
+            df_loaded["is_kpop"] = 0
 
     # duration_min
     if "duration_min" not in df_loaded.columns and "duration" in df_loaded.columns:
