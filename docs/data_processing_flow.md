@@ -1,8 +1,9 @@
 # LUỒNG TIỀN XỬ LÝ DỮ LIỆU TẦNG LÕI (CORE DATA PROCESSING FLOW)
 
-Tài liệu này mô tả chi tiết kiến trúc và toàn bộ tiến trình xử lý dữ liệu thực tế đang được triển khai trong notebook [`notebooks/test_preprocess.ipynb`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/notebooks/test_preprocess.ipynb) của dự án Tương tác dữ liệu trực quan (IDVI).
+Tài liệu này mô tả chi tiết kiến trúc và toàn bộ tiến trình xử lý dữ liệu thực tế đang được triển khai trong notebook [`notebooks/01_preprocess.ipynb`](../notebooks/01_preprocess.ipynb) của dự án Tương tác dữ liệu trực quan (IDVI).
 
 Luồng xử lý được thiết kế theo nguyên tắc:
+
 1. **Module `src/data_loader.py` tinh gọn:** Chỉ đảm nhiệm nạp dữ liệu thô từ đĩa, kiểm tra tính tồn tại của file và lưu trữ các hằng số tham chiếu chuẩn hóa.
 2. **Notebook kiểm soát toàn diện:** Mọi logic làm sạch sâu, biến đổi cấu trúc, kiểm tra cấp độ hạt (grain verification), trích xuất đặc trưng và xuất tập tin sạch cốt lõi và các bảng Data Marts được thực hiện minh bạch từng bước, tuân thủ nghiêm ngặt quy tắc phong cách (mỗi ô một việc, có markdown giải thích, kiểm tra assertion trước/sau).
 3. **Kiến trúc dữ liệu phân tầng tinh gọn (Data Lakehouse / Medallion Pattern):**
@@ -75,12 +76,14 @@ flowchart TD
 ## 2. NGUYÊN TẮC THIẾT KẾ CÁC BẢNG DATA MARTS VÀ PHÒNG CHỐNG DATA LEAKAGE
 
 ### 2.1. Bản chất của việc Deduplicate trước khi Aggregate
+
 * **Hiện tượng Collab:** Trên bảng xếp hạng tuần của Spotify, một vị trí xếp hạng (slot) có thể chứa từ 2 đến 10 nghệ sĩ. Trong bảng `charts_clean`, dữ liệu được nhân bản dòng cho từng nghệ sĩ (hệ số trung bình 1.61).
 * **Quy tắc tính toán:**
   * **Khi tính xu hướng âm thanh (Dashboard 1, 2, 3) hoặc chỉ số bài hát (ML):** Bắt buộc phải `drop_duplicates(subset=["chart_country", "week", "rank"])` trước khi `groupby`. Nếu không, các bài hát collab sẽ bị phóng đại trọng số (2x-3x) so với bài hát đơn ca, làm sai lệch phân bố âm thanh.
   * **Khi tính thành tích nghệ sĩ (`mart_artist_chart`):** Dùng toàn bộ bảng `charts_clean` để ghi nhận công bằng lượt nghe và thứ hạng cho mọi nghệ sĩ tham gia.
 
 ### 2.2. Phòng chống triệt để Rò rỉ Dữ liệu (Data Leakage) trong Machine Learning
+
 * **Bối cảnh bài toán:** Một nghệ sĩ hoặc hãng đĩa muốn dự đoán: *"Với một bài hát mới có các đặc trưng âm thanh X và thông tin phát hành, bài hát này có tiềm năng đạt điểm phổ biến `pop_score` bao nhiêu (Hồi quy) và có trở thành Hit (`is_hit == 1`) hay không (Phân loại)?"*
 * **Phân định rạch ròi giữa X và Y:**
   * **Biến mục tiêu ($Y$):** `pop_score` (0–100), `is_hit` (ngưỡng 50 điểm - cân bằng 13.9%), `is_mega_hit` (ngưỡng 70 điểm), `hit_tier` (4 mức).
@@ -97,6 +100,7 @@ flowchart TD
 > Mỗi Dashboard và bài toán mô hình đều có một Data Mart tương ứng được thiết kế tối ưu sẵn. Bạn không cần nạp file `charts_clean.parquet` nặng 65MB vào ứng dụng giao diện.
 
 ### 3.1. Dashboard 1: Xu Hướng Đặc Trưng Âm Thanh BXH & Phân Tích Nghệ Sĩ
+
 * **Tập tin sử dụng:** `mart_audio_trend_weekly.parquet` và `mart_artist_chart.parquet`.
 * **Mục tiêu trực quan:**
   * Theo dõi biến thiên của các chỉ số âm thanh theo thời gian (2017–2022).
@@ -111,6 +115,7 @@ flowchart TD
 ---
 
 ### 3.2. Dashboard 2: Tương Quan Âm Thanh Theo Quốc Gia & Mức Độ Hạnh Phúc
+
 * **Tập tin sử dụng:** `mart_country_year.parquet`.
 * **Cấp độ hạt (Grain):** `(chart_country, year)` — đúng **141 dòng** (khớp 100% các chu kỳ năm có dữ liệu quốc gia của Spotify Charts).
 * **Mục tiêu trực quan:**
@@ -123,6 +128,7 @@ flowchart TD
 ---
 
 ### 3.3. Dashboard 3: Xu Hướng Biến Động Âm Nhạc Trong Thời Kỳ Đại Dịch COVID-19
+
 * **Tập tin sử dụng:** Ghép nối `mart_audio_trend_weekly.parquet` với `covid_weekly_clean.csv` trên cặp khóa `(chart_country = country, week)`.
 * **Mục tiêu trực quan:**
   * Quan sát sự thay đổi của chỉ số tâm trạng tích cực `valence` và năng lượng `energy` khi số ca tử vong tuần `weekly_deaths` đạt đỉnh.
@@ -133,6 +139,7 @@ flowchart TD
 ---
 
 ### 3.4. Dashboard 4 & Machine Learning: Hồi Quy Tuyến Tính & Hồi Quy Logistic
+
 * **Tập tin sử dụng:** `ml_tracks.parquet` (hoặc `ml_tracks.csv`) với 39,190 bài hát độc nhất 100% và **0% giá trị khuyết thiếu**.
 * **Kiến trúc hai bài toán Machine Learning:**
   1. **Hồi quy Tuyến tính (Ridge / Linear Regression):**
@@ -143,6 +150,7 @@ flowchart TD
      * **Cân bằng nhãn:** Sử dụng nhãn `is_hit` ($\ge 50$ điểm) chiếm 13.9% và tham số `class_weight='balanced'`.
      * **Đánh giá hiệu năng:** ROC-AUC, PR-AUC, F1-Score, Confusion Matrix.
 * **Code mẫu khởi tạo mô hình trong Scikit-Learn:**
+
   ```python
   import pandas as pd
   from sklearn.model_selection import train_test_split

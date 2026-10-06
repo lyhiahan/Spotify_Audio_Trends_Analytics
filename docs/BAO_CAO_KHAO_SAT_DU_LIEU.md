@@ -1,15 +1,16 @@
 # BÁO CÁO KHẢO SÁT CHI TIẾT CÁC BỘ DỮ LIỆU THÔ (RAW DATA SURVEY REPORT)
-**Học phần:** Tương tác dữ liệu trực quan (Information Design & Visual Interaction - IDVI)  
-**Chủ đề nghiên cứu:** Khảo sát xu hướng âm nhạc số Spotify trong mối tương quan với mức độ hạnh phúc quốc gia, khủng hoảng đại dịch COVID-19 và bối cảnh kinh tế vĩ mô toàn cầu  
-**Đơn vị thực hiện:** Nhóm / Cá nhân nghiên cứu đồ án IDVI  
-**Thời gian cập nhật:** Tháng 10/2026  
-**Thư mục dữ liệu khảo sát:** [`data/raw/`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/data/raw)
+
+**Học phần:** Tương tác dữ liệu trực quan (Information Design & Visual Interaction - IDVI)
+**Chủ đề nghiên cứu:** Khảo sát xu hướng âm nhạc số Spotify trong mối tương quan với mức độ hạnh phúc quốc gia, khủng hoảng đại dịch COVID-19 và bối cảnh kinh tế vĩ mô toàn cầu
+**Đơn vị thực hiện:** Nhóm / Cá nhân nghiên cứu đồ án IDVI
+**Thời gian cập nhật:** Tháng 10/2026
+**Thư mục dữ liệu khảo sát:** [`data/raw/`](../data/raw/)
 
 ---
 
 ## 1. TỔNG QUAN BÁO CÁO (EXECUTIVE SUMMARY)
 
-Báo cáo này thực hiện khảo sát toàn diện, kiểm thử thống kê cấu trúc và đánh giá chuyên sâu **6 tập tin dữ liệu thô dạng bảng (Tabular CSV)** hiện có trong thư mục `data/raw/`. 
+Báo cáo này thực hiện khảo sát toàn diện, kiểm thử thống kê cấu trúc và đánh giá chuyên sâu **6 tập tin dữ liệu thô dạng bảng (Tabular CSV)** hiện có trong thư mục `data/raw/`.
 
 Sự bổ sung mới nhất của tập dữ liệu **`whs_years_updated.csv`** (Báo cáo Hạnh phúc Thế giới - World Happiness Report qua 10 năm từ 2015 đến 2024) kết hợp cùng tập dữ liệu **`global_deaths.csv`** (Tử vong COVID-19 của Đại học Johns Hopkins) đã hoàn thiện một **không gian dữ liệu tích hợp 4 chiều độc nhất vô nhị** cho đồ án:
 
@@ -18,14 +19,14 @@ flowchart TD
     subgraph DataSpace["KHÔNG GIAN DỮ LIỆU ĐA CHIỀU IDVI (4 TRỤ CỘT)"]
         direction TB
         Music["1. HÀNH VI ÂM NHẠC SỐ (SPOTIFY)<br/>- 1.78M dòng BXH tuần (73 quốc gia & Global)<br/>- 12 đặc trưng âm học: Valence, Energy, Danceability...<br/>- 71.4k hồ sơ nghệ sĩ: Followers, Genres"]
-        
+
         Happiness["2. TÂM LÝ & MỨC ĐỘ HẠNH PHÚC (WHR)<br/>- 1,510 bản ghi qua 10 năm (2015-2024)<br/>- 168 quốc gia; Điểm hạnh phúc (Ladder Score 0-10)<br/>- 6 nhân tố: GDP, Hỗ trợ xã hội, Tuổi thọ, Tự do..."]
-        
+
         Covid["3. KHỦNG HOẢNG Y TẾ (JHU COVID-19)<br/>- 1,142 ngày theo dõi liên tục (01/2020 - 03/2023)<br/>- 6.88 triệu ca tử vong trên 201 quốc gia<br/>- Đo lường mức độ khốc liệt của 4 làn sóng dịch"]
-        
+
         Econ["4. KINH TẾ VĨ MÔ (WORLD BANK)<br/>- GDP danh nghĩa 1960-2022 (214 quốc gia)<br/>- 4 nhóm thu nhập: High, Upper-Mid, Lower-Mid, Low<br/>- 7 khu vực địa lý toàn cầu"]
     end
-    
+
     Music <--> Happiness
     Music <--> Covid
     Music <--> Econ
@@ -49,6 +50,7 @@ flowchart TD
 
 > [!IMPORTANT]
 > **Độ giao thoa thời gian & không gian hoàn hảo:**
+>
 > - **Giao thoa không gian:** 100% các quốc gia có mặt trên Spotify Weekly Charts đều được đối chiếu thành công sang Báo cáo Hạnh phúc Thế giới (**73/73 quốc gia**, sau khi map 6 alias chuẩn) và sang dữ liệu tử vong COVID-19 (**74/74 thực thể**, bao gồm cả Global).
 > - **Giao thoa thời gian:** Tập dữ liệu `whs_years_updated.csv` bao phủ trọn vẹn 10 năm liên tục từ 2015 đến 2024. Giai đoạn này phủ kín **100% chu kỳ** của Spotify Charts (2016–2022), cho phép phân tích chuỗi thời gian nhiều năm (Panel Data Analysis) về mối tương quan giữa sự biến động điểm số hạnh phúc và sự dịch chuyển âm hưởng âm nhạc.
 
@@ -72,7 +74,8 @@ timeline
     2023 - 2024 : Bình thường mới hậu đại dịch
 ```
 
-#### A. Quy mô và cấu trúc
+#### 2.1.A. Quy mô và cấu trúc của whs_years_updated.csv
+
 - **Dung lượng:** 0.31 MB.
 - **Kích thước:** 1,510 dòng, 46 cột.
 - **Phạm vi thời gian:** 10 năm liên tục từ **2015 đến 2024**.
@@ -82,6 +85,7 @@ timeline
   - 2020: 153 nước | 2021: 149 nước | 2022: 146 nước | 2023: 137 nước | 2024: 143 nước
 
 #### B. Phân tích các trường thông tin cốt lõi
+
 1. **Trường mục tiêu cốt lõi — Điểm số hạnh phúc (`Score`):**
    - Đạt độ đầy đủ tuyệt đối: **1,510/1,510 dòng đều có giá trị (0% khuyết thiếu)** qua tất cả các năm.
    - Thang điểm Cantril Ladder từ 0 đến 10 (thực tế từ 1.72 đến 7.84).
@@ -97,6 +101,7 @@ timeline
    - `Trust (Government Corruption)` / `Perceptions of corruption`: Nhận thức về sự trong sạch của chính quyền và doanh nghiệp.
 
 #### C. Đánh giá chất lượng và phương án tiền xử lý (Data Engineering Needs)
+
 1. **Chuẩn hóa cấu trúc cột đa niên (Schema Harmonization):** Vì dữ liệu được ghép nối từ 10 năm báo cáo độc lập của Liên Hợp Quốc, tên cột các năm có sự khác biệt nhỏ (ví dụ: `Happiness Rank` ở 2015–2016, `Happiness.Rank` ở 2017, `Overall rank` ở 2018–2019, `RANK` ở 2022). Tuy nhiên, cột `Score` và `Country`, `Year` lại hoàn toàn đồng nhất. Chỉ cần trích xuất bảng rút gọn 8 cột chuẩn: `(country, year, happiness_score, gdp_factor, social_support, life_expectancy, freedom, generosity)`.
 2. **Ánh xạ tên quốc gia:** Chỉ cần chuẩn hóa 6 trường hợp alias để đạt tỷ lệ khớp 100% với Spotify:
    - `Viet Nam` $\rightarrow$ `Vietnam`
@@ -112,7 +117,8 @@ timeline
 
 Đây là nguồn dữ liệu ghi nhận hành vi tiêu thụ âm nhạc đồ sộ nhất của dự án, phản ánh sở thích nghe nhạc thực tế của hơn 1.25 nghìn tỷ lượt stream.
 
-#### A. Quy mô và cấu trúc
+#### 2.2.A. Quy mô và cấu trúc của spotify-weekly-charts.csv
+
 - **Dung lượng:** 796.63 MB.
 - **Số bản ghi:** 1,787,999 dòng thô (1,787,926 dòng sạch sau khi lọc 73 dòng header rác).
 - **Số thuộc tính:** 36 cột thô (sau chuẩn hóa giữ lại 32 cột trọng tâm).
@@ -120,6 +126,7 @@ timeline
 - **Khung thời gian:** Từ `2016-12-29` đến `2022-07-14` (290 tuần liên tục).
 
 #### B. 12 đặc trưng âm học chuẩn của Spotify Audio API
+
 - `valence`: Thang đo cảm xúc tích cực (0.0 = u buồn, sầu não; 1.0 = vui vẻ, hân hoan).
 - `danceability`: Mức độ phù hợp để khiêu vũ dựa trên nhịp điệu và độ nảy (mean = 0.698).
 - `energy`: Cường độ năng lượng, độ dồn dập và ồn ào (mean = 0.656).
@@ -128,6 +135,7 @@ timeline
 - `loudness` (dB), `speechiness`, `instrumentalness`, `liveness`, `duration`, `key`, `mode`.
 
 #### C. Phát hiện cấu trúc đặc thù
+
 - **Hệ số nhân dòng nghệ sĩ hợp tác (Collab Multiplier 1.61x):** Bài hát có nhiều nghệ sĩ được nhân bản dòng theo từng nghệ sĩ. Khi tính tổng lượt nghe hoặc số tuần xuất hiện, bắt buộc phải deduplicate theo `(chart_country, week, rank)`.
 - **Bảng bài hát độc nhất (`df_tracks`):** Trích xuất được đúng **39,190 bài hát độc nhất** với đầy đủ 12 đặc trưng âm học, tạo thành bộ khung hoàn hảo cho bài toán mô hình hóa Machine Learning.
 
@@ -148,8 +156,8 @@ timeline
 
 - **Khảo sát ban đầu:** 5.25 MB, 71,440 nghệ sĩ từ Kaggle.
 - **Vấn đề phát hiện khi tích hợp (Join Missing Rate nghiêm trọng):**
-  * Khi left-join vào bảng xếp hạng tuần của Spotify, chỉ có 3,731 nghệ sĩ khớp được, dẫn đến **75.5% nghệ sĩ BXH bị NaN tên và thể loại** (`mart_artist_chart`).
-  * Trong bài toán Machine Learning, các cột metadata nghệ sĩ bị khuyết tới **63.9%** (`ml_tracks`).
+  - Khi left-join vào bảng xếp hạng tuần của Spotify, chỉ có 3,731 nghệ sĩ khớp được, dẫn đến **75.5% nghệ sĩ BXH bị NaN tên và thể loại** (`mart_artist_chart`).
+  - Trong bài toán Machine Learning, các cột metadata nghệ sĩ bị khuyết tới **63.9%** (`ml_tracks`).
 - **Quyết định kỹ thuật:** **Loại bỏ hoàn toàn tệp `artists.csv` khỏi `data/raw/` và pipeline ETL.** Toàn bộ thông tin nghệ sĩ (`artist_names`, `artist_genre`, `artists_num`) được trích xuất trực tiếp từ `spotify-weekly-charts.csv`, đảm bảo **100% đầy đủ (0% NaN)**.
 
 ---
@@ -251,7 +259,7 @@ flowchart TD
         R_CC["country_codes.csv<br/>(0.01MB, 217 dòng)"]
     end
 
-    subgraph CleaningSteps["2. Tiền Xử Lý Phân Tầng (test_preprocess.ipynb)"]
+    subgraph CleaningSteps["2. Tiền Xử Lý Phân Tầng (01_preprocess.ipynb)"]
         C_Charts["Module 1-2: Xử lý Charts & Xuất file<br/>- Lọc 73 dòng header rác & 395 dòng thiếu audio<br/>- Tách tracks_dimension, xuất charts_clean.parquet"]
         C_CC["Module 3: Chuẩn hóa Country Codes<br/>- Đổi tên wb_region, wb_income_group"]
         C_GDP["Module 4: Xử lý GDP & Reference<br/>- Tách aggregates trong bộ nhớ"]
@@ -288,8 +296,7 @@ Với sự hiện diện của đầy đủ 4 trụ cột dữ liệu (Âm nhạ
 
 ---
 
-### 🌟 Hướng đề tài trung tâm (Khuyến nghị số 1):  
-### *"The Symphony of Well-Being: Nhịp Đập Âm Nhạc, Mức Độ Hạnh Phúc và Cơn Đại Dịch Toàn Cầu"*
+### 🌟 Hướng đề tài 1: "The Symphony of Well-Being - Nhịp Đập Âm Nhạc, Mức Độ Hạnh Phúc và Cơn Đại Dịch Toàn Cầu"
 
 ```mermaid
 journey
@@ -308,18 +315,20 @@ journey
 ```
 
 #### A. Các câu hỏi nghiên cứu cốt lõi
-1. **Giải mã "Nghịch lý Bắc Âu" (The Nordic Music Paradox):**  
+
+1. **Giải mã "Nghịch lý Bắc Âu" (The Nordic Music Paradox):**
    *Tại sao các quốc gia luôn dẫn đầu thế giới về chỉ số hạnh phúc (Phần Lan, Đan Mạch, Thụy Điển, Na Uy, Iceland) lại có xu hướng tiêu thụ âm nhạc có `valence` (tích cực) thấp nhất, chuộng các bài hát trầm buồn, acoustic và rock/metal? Liệu việc đón nhận nỗi buồn qua âm nhạc chính là một cơ chế giúp thanh lọc cảm xúc (catharsis) để đạt được sự an yên nội tại?*
-2. **Sự đối nghịch giữa Mỹ Latinh và Bắc Âu:**  
+2. **Sự đối nghịch giữa Mỹ Latinh và Bắc Âu:**
    *Tại sao các quốc gia Mỹ Latinh (Colombia, Mexico, Brazil) có điểm số hạnh phúc và GDP ở mức trung bình nhưng lại liên tục dẫn đầu thế giới về chỉ số `valence` (> 0.65) và `danceability` (> 0.75)? Đâu là vai trò của bản sắc văn hóa âm nhạc đối với cảm giác hạnh phúc chủ quan?*
-3. **Tam giác khủng hoảng trong đại dịch COVID-19:**  
+3. **Tam giác khủng hoảng trong đại dịch COVID-19:**
    *Mối quan hệ định lượng giữa 3 biến số:*
    $$\text{Số ca tử vong COVID-19 hàng tuần} \longleftrightarrow \text{Mức độ sụt giảm điểm Hạnh phúc (WHR)} \longleftrightarrow \text{Biến thiên chỉ số cảm xúc âm nhạc (Valence / Acousticness)}$$
    *Liệu âm nhạc đóng vai trò như một **"tấm đệm giảm chấn tâm lý" (Emotional Buffer)** giúp người dân ở các nước duy trì cảm giác an toàn khi đối mặt với khủng hoảng?*
-4. **Tự do cá nhân (`Freedom`) và Sự đa dạng âm nhạc:**  
+4. **Tự do cá nhân (`Freedom`) và Sự đa dạng âm nhạc:**
    *Mức độ tự do lựa chọn cuộc sống (`Freedom to make life choices`) có tương quan thuận với mức độ đa dạng thể loại âm nhạc (`genres_count`) và tỷ lệ các ca khúc indie/niche lọt vào Top 200 hay không?*
 
 #### B. Các thành phần trực quan hóa tương tác trên Dashboard (UI/UX Concepts)
+
 - **1. "Happiness vs. Musical Positiveness" Scatter Plot (Hans Rosling Style):**
   - Trục hoành (X): Điểm hạnh phúc quốc gia (`Score` từ WHR, 0–10).
   - Trục tung (Y): Điểm cảm xúc âm nhạc trung bình (`valence` từ Spotify, 0–1).
@@ -340,22 +349,24 @@ journey
 
 ---
 
-### 🎵 Hướng đề tài 2:  
-### *"Global Soundscape & Economy: Âm Nhạc Toàn Cầu Dưới Lăng Kính Kinh Tế"*
-* Tập trung vào mối quan hệ giữa GDP bình quân, năng lực chi trả thuê bao âm nhạc số và sự giao thoa văn hóa giữa âm nhạc phương Tây với âm nhạc bản địa.
+### 🎵 Hướng đề tài 2: "Global Soundscape & Economy - Âm Nhạc Toàn Cầu Dưới Lăng Kính Kinh Tế"
+
+- Tập trung vào mối quan hệ giữa GDP bình quân, năng lực chi trả thuê bao âm nhạc số và sự giao thoa văn hóa giữa âm nhạc phương Tây với âm nhạc bản địa.
 
 ---
 
-### 📊 Hướng đề tài 3:  
-### *"Anatomy of a Hit Song: Giải Mã Công Thức Bài Hát Thịnh Hành"*
-* Sử dụng 12 đặc trưng âm học kết hợp dữ liệu nghệ sĩ để xây dựng mô hình Machine Learning dự đoán bài hát tiềm năng trở thành Hit toàn cầu (`pop_score`).
+### 📊 Hướng đề tài 3: "Anatomy of a Hit Song - Giải Mã Công Thức Bài Hát Thịnh Hành"
+
+- Sử dụng 12 đặc trưng âm học kết hợp dữ liệu nghệ sĩ để xây dựng mô hình Machine Learning dự đoán bài hát tiềm năng trở thành Hit toàn cầu (`pop_score`).
 
 ---
 
 ## 6. KẾT LUẬN & KẾ HOẠCH HÀNH ĐỘNG TIẾP THEO
 
 ### Kết luận
-Cơ sở dữ liệu thô tại [`data/raw/`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/data/raw) hiện tại đạt mức độ hoàn thiện xuất sắc:
+
+Cơ sở dữ liệu thô tại [`data/raw/`](../data/raw/) hiện tại đạt mức độ hoàn thiện xuất sắc:
+
 1. **Đầy đủ 4 trụ cột phân tích:** Âm nhạc số (Spotify), Y tế cộng đồng (JHU COVID-19), Tâm lý xã hội (World Happiness Report) và Kinh tế vĩ mô (World Bank).
 2. **Khả năng ghép nối hoàn hảo:** Tỷ lệ khớp nối giữa Spotify Charts với World Happiness đạt **100.0% (73/73 nước)**; với COVID-19 đạt **100.0% (74/74 thực thể)**; với World Bank đạt **98.6%**.
 3. **Tính độc đáo của đề tài:** Sự kết hợp giữa Báo cáo Hạnh phúc và Đặc trưng Âm thanh Spotify giúp giải mã những nghịch lý cảm xúc thú vị, mang lại giá trị kể chuyện (Data Storytelling) và sức thuyết phục thị giác đỉnh cao cho đồ án IDVI.
@@ -364,10 +375,10 @@ Cơ sở dữ liệu thô tại [`data/raw/`](file:///d:/uni/hk1nam3/idvi/idvi-f
 
 | Giai đoạn | Nhiệm vụ chính | Sản phẩm đầu ra | Ưu tiên |
 | :---: | :--- | :--- | :---: |
-| **1** | **Bổ sung Module 7 vào `test_preprocess.ipynb`:**<br/>- Nạp và khám phá `whs_years_updated.csv`<br/>- Chuẩn hóa 8 cột cốt lõi (`country`, `year`, `score`, 6 nhân tố)<br/>- Map 6 alias quốc gia theo chuẩn Spotify<br/>- Xuất tệp sạch ra `data/processed/` | Tệp `data/processed/whs_clean.csv` (~0.1 MB, 1,510 dòng) | 🔴 Cao nhất |
+| **1** | **Bổ sung Module 7 vào `01_preprocess.ipynb`:**<br/>- Nạp và khám phá `whs_years_updated.csv`<br/>- Chuẩn hóa 8 cột cốt lõi (`country`, `year`, `score`, 6 nhân tố)<br/>- Map 6 alias quốc gia theo chuẩn Spotify<br/>- Xuất tệp sạch ra `data/processed/` | Tệp `data/processed/whs_clean.csv` (~0.1 MB, 1,510 dòng) | 🔴 Cao nhất |
 | **2** | **Xây dựng bảng tổng hợp ghép nối (Enriched Table):**<br/>- Ghép nối `charts_clean` + `covid_weekly` + `whs_clean` + `gdp_data`<br/>- Tổng hợp bảng chỉ số cấp quốc gia theo tuần và theo năm | Tệp `data/processed/country_weekly_enriched.csv` phục vụ trực quan hóa web | 🔴 Cao nhất |
 | **3** | **Xây dựng mô hình hóa & phân tích tương quan:**<br/>- Tính toán biến mục tiêu `pop_score` cho 39,190 bài hát duy nhất<br/>- Tính ma trận tương quan Pearson/Spearman giữa Valence vs. Happiness Score | Notebook `03_join_and_feature.ipynb` & `04_model.ipynb` | 🟡 Cao |
 | **4** | **Phát triển giao diện Web Dashboard tương tác:**<br/>- Thiết kế layout dark mode sang trọng<br/>- Tích hợp Hans Rosling Scatter Plot, Biểu đồ kép thời gian và Bản đồ Choropleth | Ứng dụng web tương tác tại thư mục `dashboard/` | 🟡 Trung bình |
 
 ---
-*Báo cáo được hoàn thiện và lưu trữ chính thức tại:* [`BAO_CAO_KHAO_SAT_DU_LIEU.md`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/BAO_CAO_KHAO_SAT_DU_LIEU.md)
+*Báo cáo được hoàn thiện và lưu trữ chính thức tại:* [`BAO_CAO_KHAO_SAT_DU_LIEU.md`](BAO_CAO_KHAO_SAT_DU_LIEU.md)

@@ -1,29 +1,30 @@
 # TỪ ĐIỂN DỮ LIỆU ĐỒ ÁN IDVI (DATA DICTIONARY)
 
-**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh và tương quan với các vấn đề xã hội. Phân tích dự đoán xu hướng bài hát thịnh hành trên Spotify  
-**Thời gian cập nhật:** Tháng 10/2026  
-**Phạm vi tài liệu:** Ghi nhận cấu trúc chi tiết của 5 tập tin dữ liệu thô tại [`data/raw/`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/data/raw), 5 tập tin dữ liệu sạch cốt lõi (Tầng Silver) và 4 tập tin Data Marts tinh gọn (Tầng Gold) tại [`data/processed/`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/data/processed) phục vụ trực tiếp 3 Dashboard và bài toán Machine Learning, được xử lý đồng bộ từ notebook [`notebooks/01_preprocess.ipynb`](file:///d:/uni/hk1nam3/idvi/idvi-final_project/project-indv/notebooks/01_preprocess.ipynb).
+**Đề tài:** Nghiên cứu và trực quan hóa các đặc trưng âm thanh và tương quan với các vấn đề xã hội. Phân tích dự đoán xu hướng bài hát thịnh hành trên Spotify
+**Thời gian cập nhật:** Tháng 10/2026
+**Phạm vi tài liệu:** Ghi nhận cấu trúc chi tiết của 5 tập tin dữ liệu thô tại [`data/raw/`](../data/raw/), 5 tập tin dữ liệu sạch cốt lõi (Tầng Silver) và 4 tập tin Data Marts tinh gọn (Tầng Gold) tại [`data/processed/`](../data/processed/) phục vụ trực tiếp 3 Dashboard và bài toán Machine Learning, được xử lý đồng bộ từ notebook [`notebooks/01_preprocess.ipynb`](../notebooks/01_preprocess.ipynb).
 
 ---
 
 ## MỤC LỤC
-1. [Dữ Liệu Thô (Raw Data - data/raw/)](#1-dữ-liệu-thô-raw-data---dataraw)
-   - [1.1. spotify-weekly-charts.csv](#11-spotify-weekly-chartscsv)
-   - [1.2. global_deaths.csv](#12-global_deathscsv)
-   - [1.3. gdp_data.csv](#13-gdp_datacsv)
-   - [1.4. country_codes.csv](#14-country_codescsv)
-   - [1.5. whs_years_updated.csv](#15-whs_years_updatedcsv)
-2. [Dữ Liệu Sạch Cốt Lõi (Core Processed Data - data/processed/)](#2-dữ-liệu-sạch-cốt-lõi-core-processed-data---dataprocessed)
-   - [2.1. charts_clean.parquet](#21-charts_cleanparquet)
-   - [2.2. tracks_dimension.csv](#22-tracks_dimensioncsv)
-   - [2.3. country_lookup.csv](#23-country_lookupcsv)
-   - [2.4. covid_weekly_clean.csv](#24-covid_weekly_cleancsv)
-   - [2.5. whs_clean.csv](#25-whs_cleancsv)
+
+1. [Dữ Liệu Thô (Raw Data - `data/raw/`)](#1-dữ-liệu-thô-raw-data---dataraw)
+   - [1.1. `spotify-weekly-charts.csv`](#11-spotify-weekly-chartscsv)
+   - [1.2. `global_deaths.csv`](#12-global_deathscsv)
+   - [1.3. `gdp_data.csv`](#13-gdp_datacsv)
+   - [1.4. `country_codes.csv`](#14-country_codescsv)
+   - [1.5. `whs_years_updated.csv`](#15-whs_years_updatedcsv)
+2. [Dữ Liệu Sạch Cốt Lõi (Core Processed Data - `data/processed/`)](#2-dữ-liệu-sạch-cốt-lõi-core-processed-data---dataprocessed)
+   - [2.1. `charts_clean.parquet` (Bảng Sự Kiện Trung Tâm - Fact Table)](#21-charts_cleanparquet-bảng-sự-kiện-trung-tâm---fact-table)
+   - [2.2. `tracks_dimension.csv` (Bảng Chiều Bài Hát - Dimension Table)](#22-tracks_dimensioncsv-bảng-chiều-bài-hát---dimension-table)
+   - [2.3. `country_lookup.csv` (Bảng Cầu Nối Quốc Gia - Bridge Table)](#23-country_lookupcsv-bảng-cầu-nối-quốc-gia---bridge-table)
+   - [2.4. `covid_weekly_clean.csv` (Bảng Dịch Tễ COVID-19 Tuần)](#24-covid_weekly_cleancsv-bảng-dịch-tễ-covid-19-tuần)
+   - [2.5. `whs_clean.csv` (Bảng Báo Cáo Hạnh Phúc Thế Giới Sạch)](#25-whs_cleancsv-bảng-báo-cáo-hạnh-phúc-thế-giới-sạch)
 3. [Dữ Liệu Data Marts (Dashboard & Machine Learning)](#3-dữ-liệu-data-marts-dashboard--machine-learning)
-   - [3.1. mart_audio_trend_weekly.parquet (Dashboard 1 & 3)](#31-mart_audio_trend_weeklyparquet-dashboard-1--3)
-   - [3.2. mart_artist_chart.parquet (Dashboard 1 - 0% NaN)](#32-mart_artist_chartparquet-dashboard-1---0-nan)
-   - [3.3. mart_country_year.parquet (Dashboard 2)](#33-mart_country_yearparquet-dashboard-2)
-   - [3.4. ml_tracks.parquet & ml_tracks.csv (Machine Learning - 0% NaN)](#34-ml_tracksparquet--ml_trackscsv-machine-learning---0-nan)
+   - [3.1. `mart_audio_trend_weekly.parquet` (Dashboard 1 & 3)](#31-mart_audio_trend_weeklyparquet-dashboard-1--3)
+   - [3.2. `mart_artist_chart.parquet` (Dashboard 1 - Xếp Hạng Nghệ Sĩ)](#32-mart_artist_chartparquet-dashboard-1---xếp-hạng-nghệ-sĩ)
+   - [3.3. `mart_country_year.parquet` (Dashboard 2 - Hạnh Phúc & Âm Nhạc)](#33-mart_country_yearparquet-dashboard-2---hạnh-phúc--âm-nhạc)
+   - [3.4. `ml_tracks.parquet` & `ml_tracks.csv` (Dashboard 4 & Machine Learning)](#34-ml_tracksparquet--ml_trackscsv-dashboard-4--machine-learning)
 4. [Bảng Khóa Ghép Nối & Quan Hệ Thực Thể](#4-bảng-khóa-ghép-nối--quan-hệ-thực-thể)
 5. [Chú Thích Nghiệp Vụ & Kỹ Thuật Chuyên Sâu](#5-chú-thích-nghiệp-vụ--kỹ-thuật-chuyên-sâu)
 
@@ -32,6 +33,7 @@
 ## 1. DỮ LIỆU THÔ (RAW DATA - `data/raw/`)
 
 ### 1.1. `spotify-weekly-charts.csv`
+
 - **Dung lượng:** 796.63 MB | **Kích thước:** 1,787,999 dòng, 36 cột.
 - **Mô tả:** Bảng xếp hạng Top 200 ca khúc hàng tuần trên 73 quốc gia và thị trường Global từ ngày 29/12/2016 đến ngày 14/07/2022.
 
@@ -50,14 +52,14 @@
 | `artist_id` | `object` | Mã định danh nghệ sĩ Spotify URI dạng `spotify:artist:ID` (tách 22 ký tự ID). |
 | `artist_img` | `object` | Đường dẫn URL ảnh đại diện của nghệ sĩ (loại bỏ do nhiều ô trống). |
 | `album_cover` | `object` | Đường dẫn URL ảnh bìa album (loại bỏ do nhiều ô trống). |
-| `album_num_tracks`| `float64` | Tổng số lượng bài hát có trong album chứa ca khúc. |
+| `album_num_tracks` | `float64` | Tổng số lượng bài hát có trong album chứa ca khúc. |
 | `release_date` | `object` | Ngày phát hành ban đầu của ca khúc (định dạng YYYY-MM-DD, YYYY-MM hoặc YYYY). |
 | `country` | `object` | Mã hoặc tên quốc gia của bảng xếp hạng (73 nước và Global). |
 | `region` | `object` | Khu vực địa lý của quốc gia theo phân loại của Spotify. |
 | `language` | `object` | Ngôn ngữ chiếm ưu thế của quốc gia xếp hạng. |
 | `collab` | `int64` | Cờ nhị phân biểu thị ca khúc hợp tác (1 nếu có nhiều nghệ sĩ, 0 nếu đơn ca). |
 | `pivot` | `int64` | Cột kỹ thuật nội bộ sinh ra khi crawl dữ liệu gốc (loại bỏ). |
-| `artist_individual`| `object` | Tên của từng nghệ sĩ riêng lẻ tương ứng 1:1 với `artist_id` (được giữ lại phục vụ nhận diện chính xác cá nhân nghệ sĩ). |
+| `artist_individual` | `object` | Tên của từng nghệ sĩ riêng lẻ tương ứng 1:1 với `artist_id` (được giữ lại phục vụ nhận diện chính xác cá nhân nghệ sĩ). |
 | `artists_num` | `int64` | Số lượng nghệ sĩ tham gia biểu diễn trong ca khúc (từ 1 đến 12). |
 | `artist_genre` | `object` | Thể loại âm nhạc chính của bài hát / nghệ sĩ. |
 | `source` | `object` | Nhà phát hành hoặc hãng thu âm phát hành ca khúc. |
@@ -68,7 +70,7 @@
 | `loudness` | `float64` | Âm lượng tổng thể trung bình của bản thu tính bằng Decibel (dB, từ -60 đến 0 dB). |
 | `speechiness` | `float64` | Mức độ xuất hiện của từ ngữ nói / lời rap trong ca khúc (thang đo 0.0 - 1.0). |
 | `acousticness` | `float64` | Mức độ âm thanh mộc, không dùng nhạc cụ điện tử (thang đo 0.0 - 1.0). |
-| `instrumentalness`| `float64` | Đo lường mức độ không có giọng hát trong ca khúc (thang đo 0.0 - 1.0). |
+| `instrumentalness` | `float64` | Đo lường mức độ không có giọng hát trong ca khúc (thang đo 0.0 - 1.0). |
 | `liveness` | `float64` | Phát hiện sự hiện diện của khán giả, bản thu trực tiếp live (thang đo 0.0 - 1.0). |
 | `valence` | `float64` | Cảm xúc tích cực của âm nhạc (0.0 = buồn bã/tiêu cực, 1.0 = vui tươi/hân hoan). |
 | `tempo` | `float64` | Tốc độ nhịp ước tính của ca khúc tính bằng BPM (nhịp trên phút). |
@@ -77,6 +79,7 @@
 ---
 
 ### 1.2. `global_deaths.csv`
+
 - **Dung lượng:** 2.05 MB | **Kích thước:** 289 dòng (thực thể/tỉnh bang), 1,144 cột.
 - **Mô tả:** Số ca tử vong tích lũy do COVID-19 toàn cầu từ Đại học Johns Hopkins (JHU CSSE).
 
@@ -91,6 +94,7 @@
 ---
 
 ### 1.3. `gdp_data.csv`
+
 - **Dung lượng:** 350.77 KB | **Kích thước:** 11,508 dòng, 4 cột.
 - **Mô tả:** Tổng sản phẩm quốc nội (GDP danh nghĩa theo USD hiện giá) từ World Bank giai đoạn 1960–2022.
 
@@ -104,6 +108,7 @@
 ---
 
 ### 1.4. `country_codes.csv`
+
 - **Dung lượng:** 14.16 KB | **Kích thước:** 218 dòng, 3 cột.
 - **Mô tả:** Siêu dữ liệu phân loại địa lý và thu nhập quốc gia của World Bank.
 
@@ -116,6 +121,7 @@
 ---
 
 ### 1.5. `whs_years_updated.csv`
+
 - **Dung lượng:** 241.13 KB | **Kích thước:** 1,511 dòng, 47 cột.
 - **Mô tả:** Dữ liệu Báo cáo Hạnh phúc Thế giới (World Happiness Report) qua 10 ấn bản (2015–2024).
 
@@ -127,7 +133,7 @@
 | `Explained by: Log GDP per capita` | `float64` | Mức đóng góp của năng lực kinh tế vào điểm số hạnh phúc. |
 | `Explained by: Social support` | `float64` | Mức đóng góp của hỗ trợ xã hội và tình thân khi gặp khó khăn. |
 | `Explained by: Healthy life expectancy` | `float64` | Mức đóng góp của kỳ vọng sống khỏe mạnh. |
-| `Explained by: Freedom to make life choices`| `float64` | Mức đóng góp của quyền tự do lựa chọn cuộc sống. |
+| `Explained by: Freedom to make life choices` | `float64` | Mức đóng góp của quyền tự do lựa chọn cuộc sống. |
 | `Explained by: Generosity` | `float64` | Mức đóng góp của lòng hảo tâm và hoạt động thiện nguyện. |
 | `Explained by: Perceptions of corruption` | `float64` | Mức đóng góp từ niềm tin vào sự trong sạch của chính phủ và doanh nghiệp. |
 | `Dystopia + residual` | `float64` | Giá trị điểm sàn Dystopia cộng với phần dư mô hình hồi quy. |
@@ -137,6 +143,7 @@
 ## 2. DỮ LIỆU SẠCH CỐT LÕI (CORE PROCESSED DATA - `data/processed/`)
 
 ### 2.1. `charts_clean.parquet` (Bảng Sự Kiện Trung Tâm - Fact Table)
+
 - **Dung lượng:** 64.2 MB | **Kích thước:** 1,787,531 dòng, 35 cột.
 - **Cấp độ hạt (Grain):** `(track_id, artist_id, chart_country, week)` duy nhất 100%.
 
@@ -172,7 +179,7 @@
 | `loudness` | `float32` | Âm lượng tổng thể bản thu tính bằng Decibel (dB, phổ biến -12 đến -3 dB). |
 | `speechiness` | `float32` | Mức độ hiện diện của lời nói / đọc rap (thang đo 0.0 - 1.0). |
 | `acousticness` | `float32` | Mức độ âm thanh mộc cơ học (thang đo 0.0 - 1.0). |
-| `instrumentalness`| `float32` | Đo lường mức độ không có giọng hát trong bài (thang đo 0.0 - 1.0). |
+| `instrumentalness` | `float32` | Đo lường mức độ không có giọng hát trong bài (thang đo 0.0 - 1.0). |
 | `liveness` | `float32` | Phát hiện âm thanh biểu diễn trực tiếp trước khán giả (thang đo 0.0 - 1.0). |
 | `valence` | `float32` | Cảm xúc tích cực, tươi vui của âm nhạc (thang đo 0.0 - 1.0). |
 | `tempo` | `float32` | Tốc độ nhịp ước tính của bài hát tính bằng BPM (nhịp/phút). |
@@ -181,6 +188,7 @@
 ---
 
 ### 2.2. `tracks_dimension.csv` (Bảng Chiều Bài Hát - Dimension Table)
+
 - **Dung lượng:** 7.20 MB | **Kích thước:** 39,190 dòng, 21 cột.
 - **Độ đầy đủ:** **100.0% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `track_id` duy nhất 100%.
@@ -203,7 +211,7 @@
 | `loudness` | `float64` | Âm lượng tổng thể tính bằng Decibel (dB). |
 | `speechiness` | `float64` | Mức độ xuất hiện của từ ngữ nói (0.0 - 1.0). |
 | `acousticness` | `float64` | Mức độ âm thanh mộc (0.0 - 1.0). |
-| `instrumentalness`| `float64` | Mức độ không có giọng hát (0.0 - 1.0). |
+| `instrumentalness` | `float64` | Mức độ không có giọng hát (0.0 - 1.0). |
 | `liveness` | `float64` | Bản thu trực tiếp có khán giả (0.0 - 1.0). |
 | `valence` | `float64` | Mức độ tích cực, tươi vui của âm nhạc (0.0 - 1.0). |
 | `tempo` | `float64` | Tốc độ nhịp bài hát (BPM). |
@@ -212,6 +220,7 @@
 ---
 
 ### 2.3. `country_lookup.csv` (Bảng Cầu Nối Quốc Gia - Bridge Table)
+
 - **Dung lượng:** 6.06 KB | **Kích thước:** 73 dòng, 8 cột.
 - **Độ đầy đủ:** **100.0% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `chart_country` duy nhất 100%.
@@ -230,6 +239,7 @@
 ---
 
 ### 2.4. `covid_weekly_clean.csv` (Bảng Dịch Tễ COVID-19 Tuần)
+
 - **Dung lượng:** 341 KB | **Kích thước:** 12,136 dòng, 4 cột.
 - **Độ đầy đủ:** **100.0% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `(country, week)` duy nhất 100%.
@@ -239,11 +249,12 @@
 | `country` | `object` | Tên quốc gia hoặc thực thể phân tích (73 quốc gia và `Global`). |
 | `week` | `object` | Ngày bắt đầu tuần dịch tễ (đồng bộ 100% vào thứ Năm theo Spotify). |
 | `weekly_deaths` | `float64` | Tổng số ca tử vong ghi nhận mới trong chu kỳ 7 ngày tuần đó. |
-| `cumulative_deaths`| `int64` | Tổng số ca tử vong do COVID-19 tích lũy từ đầu đại dịch đến tuần đó. |
+| `cumulative_deaths` | `int64` | Tổng số ca tử vong do COVID-19 tích lũy từ đầu đại dịch đến tuần đó. |
 
 ---
 
 ### 2.5. `whs_clean.csv` (Bảng Báo Cáo Hạnh Phúc Thế Giới Sạch)
+
 - **Dung lượng:** 145 KB | **Kích thước:** 1,510 dòng, 10 cột.
 - **Cấp độ hạt (Grain):** `(country, year)` duy nhất 100%.
 
@@ -265,6 +276,7 @@
 ## 3. DỮ LIỆU DATA MARTS (DASHBOARD & MACHINE LEARNING)
 
 ### 3.1. `mart_audio_trend_weekly.parquet` (Dashboard 1 & 3)
+
 - **Dung lượng:** 1.08 MB | **Kích thước:** 5,548 dòng, 29 cột | **Độ đầy đủ: 100% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `(chart_country, week)`.
 
@@ -284,25 +296,26 @@
 | `mode_mean` | `float32` | Tỷ lệ bài hát cung Trưởng (Major mode ratio) trong tuần. |
 | `mode_weighted` | `float64` | Tỷ lệ bài hát cung Trưởng có trọng số lượt nghe. |
 | `loudness_mean` | `float32` | Âm lượng trung bình cộng đều (Decibel). |
-| `loudness_weighted`| `float64` | Âm lượng trung bình có trọng số lượt nghe (Decibel). |
+| `loudness_weighted` | `float64` | Âm lượng trung bình có trọng số lượt nghe (Decibel). |
 | `speechiness_mean` | `float32` | Trung bình cộng độ nói/rap của Top 200 bài hát. |
-| `speechiness_weighted`| `float64` | Trung bình có trọng số lượt nghe độ nói/rap. |
-| `acousticness_mean`| `float32` | Trung bình cộng độ mộc âm thanh của Top 200 bài hát. |
-| `acousticness_weighted`| `float64` | Trung bình có trọng số lượt nghe độ mộc âm thanh. |
-| `instrumentalness_mean`| `float32` | Trung bình cộng độ không lời của Top 200 bài hát. |
-| `instrumentalness_weighted`| `float64` | Trung bình có trọng số lượt nghe độ không lời. |
+| `speechiness_weighted` | `float64` | Trung bình có trọng số lượt nghe độ nói/rap. |
+| `acousticness_mean` | `float32` | Trung bình cộng độ mộc âm thanh của Top 200 bài hát. |
+| `acousticness_weighted` | `float64` | Trung bình có trọng số lượt nghe độ mộc âm thanh. |
+| `instrumentalness_mean` | `float32` | Trung bình cộng độ không lời của Top 200 bài hát. |
+| `instrumentalness_weighted` | `float64` | Trung bình có trọng số lượt nghe độ không lời. |
 | `liveness_mean` | `float32` | Trung bình cộng tỷ lệ bản thu trực tiếp. |
-| `liveness_weighted`| `float64` | Trung bình có trọng số lượt nghe bản thu trực tiếp. |
+| `liveness_weighted` | `float64` | Trung bình có trọng số lượt nghe bản thu trực tiếp. |
 | `valence_mean` | `float32` | Trung bình cộng cảm xúc tích cực (chỉ số tâm trạng sản xuất âm nhạc). |
 | `valence_weighted` | `float64` | Trung bình có trọng số lượt nghe cảm xúc tích cực (thị hiếu nghe thực tế). |
 | `tempo_mean` | `float32` | Nhịp độ trung bình cộng đều của bài hát (BPM). |
 | `tempo_weighted` | `float64` | Nhịp độ trung bình có trọng số lượt nghe (BPM). |
 | `duration_mean` | `float32` | Thời lượng phát trung bình cộng đều (mili-giây). |
-| `duration_weighted`| `float64` | Thời lượng phát trung bình có trọng số lượt nghe (mili-giây). |
+| `duration_weighted` | `float64` | Thời lượng phát trung bình có trọng số lượt nghe (mili-giây). |
 
 ---
 
 ### 3.2. `mart_artist_chart.parquet` (Dashboard 1 - Xếp Hạng Nghệ Sĩ)
+
 - **Dung lượng:** 820 KB | **Kích thước:** 15,254 dòng, 10 cột | **Độ đầy đủ: 100% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `artist_id` duy nhất 100%.
 - **Ghi chú nghiệp vụ:** Tên nghệ sĩ được trích xuất từ `artist_individual` (100% tên nghệ sĩ độc lập cá nhân, triệt tiêu lỗi chuỗi hợp tác). Lượt streams và thành tích được phân tách độc lập giữa bảng xếp hạng `Global` và 73 bảng xếp hạng quốc gia (`Country`) để tránh hiện tượng cộng dồn hai lần (double-counting). Lượt streams của các ca khúc hợp tác được quy gán cho từng nghệ sĩ tham gia và mang tính định danh theo nghệ sĩ (không cộng dồn qua lại giữa các nghệ sĩ).
@@ -323,6 +336,7 @@
 ---
 
 ### 3.3. `mart_country_year.parquet` (Dashboard 2 - Hạnh Phúc & Âm Nhạc)
+
 - **Dung lượng:** 63 KB | **Kích thước:** 141 dòng, 42 cột | **Độ đầy đủ: 100% (0 Nulls).**
 - **Cấp độ hạt (Grain):** `(chart_country, year)` — Khớp trọn vẹn 141 cặp quốc gia - năm của Spotify (2021 và 2022).
 
@@ -339,8 +353,8 @@
 | `mode_mean / _weighted` | `float64` | Tỷ lệ bài hát cung Trưởng trung bình năm (Unweighted và Streams-Weighted). |
 | `loudness_mean / _weighted` | `float64` | Âm lượng Decibel trung bình năm (Unweighted và Streams-Weighted). |
 | `speechiness_mean / _weighted` | `float64` | Mức độ lời nói/rap trung bình năm (Unweighted và Streams-Weighted). |
-| `acousticness_mean / _weighted`| `float64` | Mức độ âm thanh mộc trung bình năm (Unweighted và Streams-Weighted). |
-| `instrumentalness_mean / _weighted`| `float64` | Mức độ không lời trung bình năm (Unweighted và Streams-Weighted). |
+| `acousticness_mean / _weighted` | `float64` | Mức độ âm thanh mộc trung bình năm (Unweighted và Streams-Weighted). |
+| `instrumentalness_mean / _weighted` | `float64` | Mức độ không lời trung bình năm (Unweighted và Streams-Weighted). |
 | `liveness_mean / _weighted` | `float64` | Tỷ lệ bản thu trực tiếp live trung bình năm (Unweighted và Streams-Weighted). |
 | `valence_mean / _weighted` | `float64` | Mức độ tích cực, tươi vui trung bình năm (Unweighted và Streams-Weighted). |
 | `tempo_mean / _weighted` | `float64` | Tốc độ nhịp BPM trung bình năm (Unweighted và Streams-Weighted). |
@@ -362,6 +376,7 @@
 ---
 
 ### 3.4. `ml_tracks.parquet` & `ml_tracks.csv` (Dashboard 4 & Machine Learning)
+
 - **Dung lượng:** 4.07 MB (Parquet) / 9.06 MB (CSV) | **Kích thước:** 39,190 dòng, 30 cột.
 - **Độ đầy đủ:** **100.0% (Nulls = 0 trên toàn bộ 30 cột).**
 - **Cấp độ hạt (Grain):** `track_id` duy nhất 100%.
@@ -385,7 +400,7 @@
 | `loudness` | `float64` | **Đặc trưng ($X$)** | Âm lượng tổng thể Decibel (dB). |
 | `speechiness` | `float64` | **Đặc trưng ($X$)** | Mức độ lời nói / đọc rap (thang 0.0 - 1.0). |
 | `acousticness` | `float64` | **Đặc trưng ($X$)** | Mức độ âm thanh mộc cơ học (thang 0.0 - 1.0). |
-| `instrumentalness`| `float64` | **Đặc trưng ($X$)** | Mức độ không có giọng hát (thang 0.0 - 1.0). |
+| `instrumentalness` | `float64` | **Đặc trưng ($X$)** | Mức độ không có giọng hát (thang 0.0 - 1.0). |
 | `liveness` | `float64` | **Đặc trưng ($X$)** | Bản thu trực tiếp có khán giả (thang 0.0 - 1.0). |
 | `valence` | `float64` | **Đặc trưng ($X$)** | Cảm xúc tích cực, tươi vui (thang 0.0 - 1.0). |
 | `tempo` | `float64` | **Đặc trưng ($X$)** | Tốc độ nhịp bài hát tính bằng BPM. |
@@ -421,6 +436,7 @@
 > Phần chú thích này cung cấp nền tảng toán học, cơ sở lý thuyết âm nhạc và các ràng buộc dữ liệu thực tế giúp đảm bảo độ chuẩn xác khi xây dựng biểu đồ trực quan và mô hình hóa.
 
 ### 5.1. Chú thích 12 Đặc Trưng Âm Học Spotify
+
 Spotify sử dụng các thuật toán phân tích tín hiệu âm thanh kỹ thuật số (Echo Nest Audio Engine) để tính toán 12 chỉ số nội tại cho từng bài hát:
 
 | Biến âm học | Thang đo | Ý nghĩa âm nhạc & cảm xúc | Phân phối & Lưu ý |
@@ -441,6 +457,7 @@ Spotify sử dụng các thuật toán phân tích tín hiệu âm thanh kỹ th
 ---
 
 ### 5.2. Chú thích Công Thức Tính `pop_score` & Cân Bằng Nhãn ML
+
 Do dữ liệu bảng xếp hạng không có sẵn một chỉ số duy nhất đo lường thành công toàn diện của bài hát, `pop_score` được xây dựng bằng cách kết hợp 4 khía cạnh:
 
 $$\text{pop\_score} = \left( 0.30 \times s_{\text{rank}} + 0.25 \times s_{\text{weeks}} + 0.20 \times s_{\text{countries}} + 0.25 \times s_{\text{streams}} \right) \times 100$$
@@ -458,39 +475,43 @@ $$\text{pop\_score} = \left( 0.30 \times s_{\text{rank}} + 0.25 \times s_{\text{
    $$s_{\text{streams}} = \frac{\log(1 + \text{total\_streams}) - \min(\log)}{\max(\log) - \min(\log)}$$
    Áp dụng biến đổi Logarit trước khi chuẩn hóa Min-Max để đưa phân bố lượt nghe (vốn lệch phải cực nặng theo luật lũy thừa - Power Law) về phân bố đối xứng cân bằng.
 
-* **Chiến lược cân bằng nhãn mục tiêu trong Machine Learning:**
-  * **Nhãn `is_hit` ($\ge 50$ điểm):** Chiếm **13.94%** (5,463 bài hát), tương ứng các ca khúc thuộc nhóm Popular và Mega Hit. Tỷ lệ này tạo độ cân bằng tốt cho mô hình Logistic Regression (không bị mất cân bằng cực đoan 1.5%).
-  * **Nhãn `is_mega_hit` ($\ge 70$ điểm):** Chiếm **1.59%** (625 bài hát), dành cho bài toán phát hiện ngoại lệ hiện tượng toàn cầu.
-  * **Phân loại 4 mức (`hit_tier`):**
-    * `[0, 25]`: **Niche** (35.0% - 13,716 bài).
-    * `(25, 50]`: **Moderate** (51.1% - 20,011 bài).
-    * `(50, 75]`: **Popular** (13.0% - 5,102 bài).
-    * `(75, 100]`: **Mega Hit** (0.9% - 361 bài).
+- **Chiến lược cân bằng nhãn mục tiêu trong Machine Learning:**
+  - **Nhãn `is_hit` ($\ge 50$ điểm):** Chiếm **13.94%** (5,463 bài hát), tương ứng các ca khúc thuộc nhóm Popular và Mega Hit. Tỷ lệ này tạo độ cân bằng tốt cho mô hình Logistic Regression (không bị mất cân bằng cực đoan 1.5%).
+  - **Nhãn `is_mega_hit` ($\ge 70$ điểm):** Chiếm **1.59%** (625 bài hát), dành cho bài toán phát hiện ngoại lệ hiện tượng toàn cầu.
+  - **Phân loại 4 mức (`hit_tier`):**
+    - `[0, 25]`: **Niche** (35.0% - 13,716 bài).
+    - `(25, 50]`: **Moderate** (51.1% - 20,011 bài).
+    - `(50, 75]`: **Popular** (13.0% - 5,102 bài).
+    - `(75, 100]`: **Mega Hit** (0.9% - 361 bài).
 
 ---
 
 ### 5.3. Chú thích Phòng Chống Rò Rỉ Dữ Liệu (Data Leakage)
+
 > [!CAUTION]
 > **Ranh giới sống còn trong Machine Learning**:
-> * **Biến mục tiêu ($Y$):** `pop_score`, `is_hit`, `is_mega_hit`, `hit_tier`.
-> * **Biến hậu nghiệm (Post-hoc metrics):** `peak_rank`, `nweek`, `total_streams`, `n_countries`, `rank`, `previous_rank`, `weeks_on_chart`.
-> * **CẤM TUYỆT ĐỐI** đưa các biến hậu nghiệm vào tập $X$. Nếu một mô hình được cung cấp `total_streams` hay `peak_rank` để dự đoán `pop_score`, mô hình sẽ đạt $R^2 = 1.0$ giả tạo nhưng hoàn toàn vô giá trị trong ứng dụng thực tế.
-> * **Tập $X$ chuẩn xác:** Chỉ gồm những thông tin đã biết trước/tại thời điểm phát hành (12 Audio Features, số lượng nghệ sĩ hợp tác `artists_num`, thể loại nhạc `artist_genre`, năm phát hành `release_year`, tháng phát hành `release_month`).
+>
+> - **Biến mục tiêu ($Y$):** `pop_score`, `is_hit`, `is_mega_hit`, `hit_tier`.
+> - **Biến hậu nghiệm (Post-hoc metrics):** `peak_rank`, `nweek`, `total_streams`, `n_countries`, `rank`, `previous_rank`, `weeks_on_chart`.
+> - **CẤM TUYỆT ĐỐI** đưa các biến hậu nghiệm vào tập $X$. Nếu một mô hình được cung cấp `total_streams` hay `peak_rank` để dự đoán `pop_score`, mô hình sẽ đạt $R^2 = 1.0$ giả tạo nhưng hoàn toàn vô giá trị trong ứng dụng thực tế.
+> - **Tập $X$ chuẩn xác:** Chỉ gồm những thông tin đã biết trước/tại thời điểm phát hành (12 Audio Features, số lượng nghệ sĩ hợp tác `artists_num`, thể loại nhạc `artist_genre`, năm phát hành `release_year`, tháng phát hành `release_month`).
 
 ---
 
 ### 5.4. Chú thích Bước Nhảy Thang Đo Báo Cáo Hạnh Phúc WHS
-* **Vấn đề phát hiện:** Khi phân tích 6 nhân tố phân rã của Báo cáo Hạnh phúc Thế giới (`gdp_factor`, `social_support`, `healthy_life`, `freedom`, `generosity`, `corruption`), số liệu cho thấy các bước nhảy bất thường:
-  * `gdp_factor` nhảy từ **0.977** (2021) lên **1.410** (2022) do WHR cập nhật phương trình baseline Dystopia.
-  * `social_support` nhảy từ **1.156** (2020) xuống **0.793** (2021).
-  * `healthy_life` thay đổi từ số năm tuổi thọ sang điểm Cantril phân rã.
-* **Hướng dẫn phân tích:**
-  * **Dashboard 2 bắt buộc sử dụng `happiness_score`** (thang Cantril Ladder 0–10) làm biến tương quan chính qua các năm, vì điểm số khảo sát từ Gallup hoàn toàn nhất quán.
-  * Nếu phân tích 6 nhân tố thành phần, chỉ thực hiện so sánh cắt ngang trong từng năm riêng biệt hoặc chuẩn hóa Z-score theo từng năm trước khi so sánh liên thời gian.
+
+- **Vấn đề phát hiện:** Khi phân tích 6 nhân tố phân rã của Báo cáo Hạnh phúc Thế giới (`gdp_factor`, `social_support`, `healthy_life`, `freedom`, `generosity`, `corruption`), số liệu cho thấy các bước nhảy bất thường:
+  - `gdp_factor` nhảy từ **0.977** (2021) lên **1.410** (2022) do WHR cập nhật phương trình baseline Dystopia.
+  - `social_support` nhảy từ **1.156** (2020) xuống **0.793** (2021).
+  - `healthy_life` thay đổi từ số năm tuổi thọ sang điểm Cantril phân rã.
+- **Hướng dẫn phân tích:**
+  - **Dashboard 2 bắt buộc sử dụng `happiness_score`** (thang Cantril Ladder 0–10) làm biến tương quan chính qua các năm, vì điểm số khảo sát từ Gallup hoàn toàn nhất quán.
+  - Nếu phân tích 6 nhân tố thành phần, chỉ thực hiện so sánh cắt ngang trong từng năm riêng biệt hoặc chuẩn hóa Z-score theo từng năm trước khi so sánh liên thời gian.
 
 ---
 
 ### 5.5. Chú thích Đồng Bộ Thời Gian COVID-19 & Số Ca Tử Vong Âm
+
 1. **Chu kỳ tuần thứ Năm:** Spotify chốt dữ liệu Top 200 vào thứ Năm hàng tuần. Do đó, dữ liệu COVID-19 được gom nhóm từ thứ Sáu tuần trước đến thứ Năm tuần này để đảm bảo đồng pha thời gian 100%.
 2. **160 tuần Global trước dịch:** Giai đoạn từ `2017-01-05` đến `2020-01-23` là giai đoạn chuẩn đối chứng (Baseline). Toàn bộ 160 dòng `left_only` khi ghép nối bảng xếp hạng với COVID đều thuộc thị trường Global trước khi đại dịch bùng phát.
 3. **33 tuần có số ca tử vong âm:** Trong dữ liệu Johns Hopkins CSSE, có 33 dòng ghi nhận `weekly_deaths < 0` tại các quốc gia như Bỉ, Áo, Andorra... Đây không phải lỗi code mà là do cơ quan y tế các nước này tiến hành **điều chỉnh hồi tố (retrospective revision)** số liệu tử vong bị thống kê dư thừa trong các tuần trước đó.
@@ -498,5 +519,6 @@ $$\text{pop\_score} = \left( 0.30 \times s_{\text{rank}} + 0.25 \times s_{\text{
 ---
 
 ### 5.6. Chú thích Về Hiện Tượng Collab & Hai Dòng Mismatch Bodø Domkor
-* **Hệ số nhân Collab 1.61:** Trong dữ liệu bảng xếp hạng, một bài hát có nhiều nghệ sĩ biểu diễn sẽ có số dòng đúng bằng số lượng nghệ sĩ (`group_size == artists_num`).
-* **Trường hợp ngoại lệ duy nhất (2 dòng mismatch):** Ca khúc *"Ja, Vi Elsker Dette Landet"* (ID: `0GEeVI8Wa1KXGTStgBUerG`) xuất hiện tại 2 tuần `2021-05-20` và `2022-05-19` trên BXH Na Uy. Chuỗi nghệ sĩ gốc là `'N/A, Bodø Domkor'` (`artists_num = 2`), nhưng nghệ sĩ thứ nhất bị khuyết mã ID hợp lệ nên chỉ có 1 dòng đại diện cho dàn hợp xướng Bodø Domkor (`group_size = 1`). Việc kiểm tra xác nhận 100% các bài hát còn lại đều khớp tuyệt đối với số lượng nghệ sĩ tham gia.
+
+- **Hệ số nhân Collab 1.61:** Trong dữ liệu bảng xếp hạng, một bài hát có nhiều nghệ sĩ biểu diễn sẽ có số dòng đúng bằng số lượng nghệ sĩ (`group_size == artists_num`).
+- **Trường hợp ngoại lệ duy nhất (2 dòng mismatch):** Ca khúc *"Ja, Vi Elsker Dette Landet"* (ID: `0GEeVI8Wa1KXGTStgBUerG`) xuất hiện tại 2 tuần `2021-05-20` và `2022-05-19` trên BXH Na Uy. Chuỗi nghệ sĩ gốc là `'N/A, Bodø Domkor'` (`artists_num = 2`), nhưng nghệ sĩ thứ nhất bị khuyết mã ID hợp lệ nên chỉ có 1 dòng đại diện cho dàn hợp xướng Bodø Domkor (`group_size = 1`). Việc kiểm tra xác nhận 100% các bài hát còn lại đều khớp tuyệt đối với số lượng nghệ sĩ tham gia.
