@@ -4,12 +4,10 @@ Module nạp dữ liệu gọn nhẹ cho Đồ án IDVI (Tương tác dữ liệ
 
 Chỉ đảm nhiệm:
 1. Cấu hình cột giữ/bỏ cho từng bảng thô (COLUMNS_TO_KEEP).
-2. Hằng số tham chiếu (AUDIO_FEATURE_COLS, COUNTRY_ALIAS_MAP, GDP_AGGREGATE_NAMES).
+2. Hằng số tham chiếu (AUDIO_FEATURE_COLS, AUDIO_FEATURES, COUNTRY_ALIAS_MAP, GDP_AGGREGATE_NAMES).
 3. Kiểm tra file tồn tại (check_raw_files_exist).
 4. Nạp từng bảng CSV thô ra DataFrame (load_charts_raw, load_covid_raw, load_gdp_raw, ...).
-
-KHÔNG chứa logic làm sạch sâu, join bảng, hay xuất file.
-Toàn bộ logic xử lý đặt trong notebook tương ứng.
+5. Nạp dữ liệu processed/master chuẩn hóa (load_master_data, load_ml_data).
 """
 
 import os
@@ -65,6 +63,11 @@ COLUMNS_TO_KEEP: Dict[str, Dict[str, Union[List[str], Dict[str, str]]]] = {
 AUDIO_FEATURE_COLS: List[str] = [
     "danceability", "energy", "key", "mode", "loudness", "speechiness",
     "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration"
+]
+
+AUDIO_FEATURES: List[str] = [
+    "danceability", "energy", "loudness", "speechiness",
+    "acousticness", "instrumentalness", "liveness", "valence", "tempo"
 ]
 
 # Ánh xạ tên quốc gia Spotify → tên quốc gia World Bank (7 trường hợp khác biệt)
@@ -152,13 +155,7 @@ def load_charts_raw(
     chunksize: int = 500_000,
     usecols: Optional[List[str]] = None
 ) -> pd.DataFrame:
-    """
-    Nạp spotify-weekly-charts.csv theo chunk, loại bỏ dòng header rác,
-    ép kiểu cơ bản (streams → int64, rank/peak_rank/weeks_on_chart → int32,
-    audio features → float32, week → datetime).
-
-    Trả về DataFrame thô đã lọc cấu trúc, CHƯA làm sạch nghiệp vụ.
-    """
+    """Nạp spotify-weekly-charts.csv theo chunk, loại bỏ dòng header rác."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Không tìm thấy file charts tại: {path}")
 
@@ -173,14 +170,11 @@ def load_charts_raw(
 
     for i, chunk in enumerate(pd.read_csv(path, chunksize=chunksize, usecols=usecols, low_memory=False)):
         total_raw += len(chunk)
-
-        # Lọc dòng header rác: rank == 'rank' hoặc streams == 'streams'
         junk = (chunk["rank"].astype(str) == "rank") | (chunk["streams"].astype(str) == "streams")
         junk_n = int(junk.sum())
         total_junk += junk_n
         clean = chunk[~junk].copy()
 
-        # Ép kiểu an toàn sau khi loại dòng rác
         clean["streams"] = pd.to_numeric(clean["streams"], errors="coerce").fillna(0).astype(np.int64)
 
         for col in ["rank", "peak_rank", "weeks_on_chart"]:
@@ -200,49 +194,118 @@ def load_charts_raw(
     df = pd.concat(chunks, ignore_index=True)
     print(f"[LOAD HOÀN THÀNH] Tổng thô: {total_raw:,} | Loại rác: {total_junk} | Còn lại: {len(df):,} dòng, {len(df.columns)} cột")
 
-    if total_junk != 73:
-        print(f"  [CẢNH BÁO] Số dòng rác thực tế ({total_junk}) khác kỳ vọng (73).")
-
     return df
 
 
 def load_covid_raw(path: str) -> pd.DataFrame:
-    """Nạp global_deaths.csv (JHU CSSE COVID-19 Deaths). Trả về DataFrame thô bảng ngang."""
+    """Nạp global_deaths.csv (JHU CSSE COVID-19 Deaths)."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Không tìm thấy file COVID tại: {path}")
-
-    df = pd.read_csv(path)
-    print(f"[LOAD] COVID: {len(df):,} dòng (thực thể/tỉnh bang), {len(df.columns)} cột (ngày)")
-    return df
+    return pd.read_csv(path)
 
 
 def load_gdp_raw(path: str) -> pd.DataFrame:
-    """Nạp gdp_data.csv. Trả về DataFrame thô (bao gồm cả aggregates)."""
+    """Nạp gdp_data.csv."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Không tìm thấy file GDP tại: {path}")
-
-    usecols = COLUMNS_TO_KEEP["gdp_data.csv"]["keep"]
-    df = pd.read_csv(path, usecols=usecols)
-    print(f"[LOAD] GDP: {len(df):,} dòng, {len(df.columns)} cột")
-    return df
+    return pd.read_csv(path, usecols=COLUMNS_TO_KEEP["gdp_data.csv"]["keep"])
 
 
 def load_country_codes_raw(path: str) -> pd.DataFrame:
-    """Nạp country_codes.csv. Trả về DataFrame thô."""
+    """Nạp country_codes.csv."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Không tìm thấy file country_codes tại: {path}")
-
-    usecols = COLUMNS_TO_KEEP["country_codes.csv"]["keep"]
-    df = pd.read_csv(path, usecols=usecols)
-    print(f"[LOAD] country_codes: {len(df):,} dòng, {len(df.columns)} cột")
-    return df
+    return pd.read_csv(path, usecols=COLUMNS_TO_KEEP["country_codes.csv"]["keep"])
 
 
 def load_whs_raw(path: str) -> pd.DataFrame:
-    """Nạp whs_years_updated.csv (World Happiness Report 2015-2024). Trả về DataFrame thô."""
+    """Nạp whs_years_updated.csv."""
     if not os.path.exists(path):
         raise FileNotFoundError(f"Không tìm thấy file WHS tại: {path}")
+    return pd.read_csv(path)
 
-    df = pd.read_csv(path)
-    print(f"[LOAD] WHS: {len(df):,} dòng, {len(df.columns)} cột")
-    return df
+
+# ==============================================================================
+# HÀM NẠP DỮ LIỆU ĐÃ XỬ LÝ (LOAD PROCESSED / MASTER)
+# ==============================================================================
+
+def load_master_data(project_root: Optional[str] = None) -> pd.DataFrame:
+    """Nạp dữ liệu master hợp nhất từ data/processed/ (merged_spotify_data.csv hoặc charts_clean.parquet)."""
+    if project_root is None:
+        cwd = os.getcwd()
+        project_root = os.path.dirname(cwd) if os.path.basename(cwd) == "notebooks" else cwd
+
+    csv_path = os.path.join(project_root, "data", "processed", "merged_spotify_data.csv")
+    pq_path = os.path.join(project_root, "data", "processed", "charts_clean.parquet")
+
+    if os.path.exists(csv_path):
+        print(f"⚡ Nạp dữ liệu master từ CSV: {csv_path}...")
+        df_loaded = pd.read_csv(csv_path, low_memory=False)
+    elif os.path.exists(pq_path):
+        print(f"⚡ Nạp dữ liệu master từ Parquet: {pq_path}...")
+        df_loaded = pd.read_parquet(pq_path)
+    else:
+        raise FileNotFoundError(f"Không tìm thấy file master data tại {csv_path} hoặc {pq_path}")
+
+    # Chuẩn hóa cột week, year, month
+    if "week" in df_loaded.columns:
+        df_loaded["week"] = pd.to_datetime(df_loaded["week"], errors="coerce")
+    elif "chart_week" in df_loaded.columns:
+        df_loaded["week"] = pd.to_datetime(df_loaded["chart_week"], errors="coerce")
+
+    if "year" not in df_loaded.columns or df_loaded["year"].isna().any():
+        df_loaded["year"] = df_loaded["week"].dt.year
+    if "month" not in df_loaded.columns or df_loaded["month"].isna().any():
+        df_loaded["month"] = df_loaded["week"].dt.month
+
+    # Chuẩn hóa tên cột quốc gia và nghệ sĩ
+    if "chart_country" in df_loaded.columns and "country" not in df_loaded.columns:
+        df_loaded["country"] = df_loaded["chart_country"]
+    if "artist_individual" in df_loaded.columns:
+        df_loaded["artists"] = df_loaded["artist_individual"]
+    elif "artist_names" in df_loaded.columns and "artists" not in df_loaded.columns:
+        df_loaded["artists"] = df_loaded["artist_names"]
+
+    # covid_phase
+    if "covid_phase" not in df_loaded.columns:
+        phase_map = {2020: "Lockdown & Shock", 2021: "Vaccine & Escapism", 2022: "Reopening & New Normal"}
+        df_loaded["covid_phase"] = df_loaded["year"].map(phase_map).fillna("Unknown")
+
+    # is_latin, is_kpop
+    if "is_latin" not in df_loaded.columns:
+        df_loaded["is_latin"] = df_loaded["language"].astype(str).str.lower().str.contains("spanish|latin").astype(int)
+    if "is_kpop" not in df_loaded.columns:
+        df_loaded["is_kpop"] = df_loaded["language"].astype(str).str.lower().str.contains("korean|k-pop").astype(int)
+
+    # duration_min
+    if "duration_min" not in df_loaded.columns and "duration" in df_loaded.columns:
+        df_loaded["duration_min"] = df_loaded["duration"] / 60000.0
+
+    # mood_category
+    if "mood_category" not in df_loaded.columns or (df_loaded["mood_category"] == "Unknown").all():
+        has_audio = df_loaded["valence"].notna() & df_loaded["energy"].notna()
+        v_hi = df_loaded["valence"] >= 0.5
+        e_hi = df_loaded["energy"] >= 0.5
+        df_loaded["mood_category"] = "Unknown"
+        df_loaded.loc[has_audio & v_hi & e_hi, "mood_category"] = "Happy Energetic"
+        df_loaded.loc[has_audio & v_hi & ~e_hi, "mood_category"] = "Peaceful Positive"
+        df_loaded.loc[has_audio & ~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
+        df_loaded.loc[has_audio & ~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
+
+    return df_loaded
+
+
+def load_ml_data(project_root: Optional[str] = None) -> Optional[pd.DataFrame]:
+    """Nạp dữ liệu huấn luyện ML từ data/processed/ (ml_tracks.parquet hoặc ml_tracks.csv)."""
+    if project_root is None:
+        cwd = os.getcwd()
+        project_root = os.path.dirname(cwd) if os.path.basename(cwd) == "notebooks" else cwd
+
+    ml_pq = os.path.join(project_root, "data", "processed", "ml_tracks.parquet")
+    ml_csv = os.path.join(project_root, "data", "processed", "ml_tracks.csv")
+
+    if os.path.exists(ml_pq):
+        return pd.read_parquet(ml_pq)
+    elif os.path.exists(ml_csv):
+        return pd.read_csv(ml_csv)
+    return None

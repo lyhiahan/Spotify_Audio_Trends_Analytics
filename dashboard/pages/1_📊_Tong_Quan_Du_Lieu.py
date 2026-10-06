@@ -16,12 +16,12 @@ st.set_page_config(
 # He thong CSS phong cach Spotify Bento Grid
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&family=Be+Vietnam+Pro:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap');
 
     html, body, .stApp {
-        font-family: 'Times New Roman', Times, Georgia, serif !important;
-        background-color: #0d0d0d !important;
-        color: #ffffff !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        background-color: #F7F4EF !important;
+        color: #24211E !important;
     }
 
     [data-testid="stIconMaterial"],
@@ -53,8 +53,8 @@ st.markdown("""
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: #141414 !important;
-        border: 1px solid #282828 !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D8D0C7 !important;
         border-radius: 12px !important;
         padding: 14px 18px !important;
         margin-bottom: 20px !important;
@@ -69,39 +69,39 @@ st.markdown("""
     }
 
     h1, h2, h3 {
-        font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif !important;
+        font-family: 'Montserrat', 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        letter-spacing: -0.6px !important;
-        color: #ffffff !important;
+        letter-spacing: -0.5px !important;
+        color: #24211E !important;
     }
 
     p, span, label {
-        font-family: 'Times New Roman', Times, serif !important;
-        color: #b3b3b3;
+        font-family: 'Inter', sans-serif !important;
+        color: #625C54;
     }
 
     .bento-card {
-        background-color: #161616;
-        border: 1px solid #242424;
+        background-color: #FFFFFF;
+        border: 1px solid #D8D0C7;
         border-radius: 14px;
         padding: 18px 20px;
         margin-bottom: 16px;
         transition: all 0.2s ease;
     }
     .bento-card:hover {
-        border-color: #333333;
+        border-color: #D8D0C7;
     }
 
     .slot-card {
-        background-color: #161616;
-        border: 1px dashed #2f2f2f;
+        background-color: #1D2422;
+        border: 1px dashed #D8D0C7;
         border-radius: 14px;
         padding: 16px 18px;
         margin-bottom: 16px;
         transition: border-color 0.2s;
     }
     .slot-card:hover {
-        border-color: #1DB954;
+        border-color: #7A3E65;
     }
 
     .metric-item {
@@ -113,13 +113,13 @@ st.markdown("""
         transition: transform 0.15s, border-color 0.15s;
     }
     .metric-item:hover {
-        border-color: #1DB954;
+        border-color: #7A3E65;
         transform: translateX(3px);
     }
     .metric-num {
         font-size: 1.45rem;
         font-weight: 800;
-        color: #1DB954;
+        color: #7A3E65;
         line-height: 1.2;
     }
     .metric-label {
@@ -132,7 +132,7 @@ st.markdown("""
 
     .player-card {
         background: linear-gradient(135deg, #0e2a18 0%, #161616 100%);
-        border: 1px solid #1DB954;
+        border: 1px solid #7A3E65;
         border-radius: 14px;
         padding: 20px;
         position: relative;
@@ -141,7 +141,7 @@ st.markdown("""
     .player-title {
         font-size: 1.15rem;
         font-weight: 800;
-        color: #ffffff;
+        color: #24211E;
         margin-bottom: 2px;
         white-space: nowrap;
         overflow: hidden;
@@ -149,7 +149,7 @@ st.markdown("""
     }
     .player-artist {
         font-size: 0.85rem;
-        color: #1DB954;
+        color: #7A3E65;
         font-weight: 600;
         margin-bottom: 14px;
     }
@@ -161,7 +161,7 @@ st.markdown("""
         overflow: hidden;
     }
     .player-progress-bar {
-        background: #1DB954;
+        background: #7A3E65;
         height: 100%;
         border-radius: 3px;
     }
@@ -171,7 +171,7 @@ st.markdown("""
         align-items: center;
         gap: 18px;
         font-size: 1.25rem;
-        color: #ffffff;
+        color: #24211E;
     }
 
     .member-card {
@@ -184,12 +184,12 @@ st.markdown("""
     .member-name {
         font-size: 0.88rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #24211E;
     }
     .member-id {
         font-size: 0.78rem;
         font-weight: 600;
-        color: #1DB954;
+        color: #7A3E65;
     }
     .member-role {
         font-size: 0.72rem;
@@ -205,7 +205,7 @@ PLOTLY_THEME = dict(
     font=dict(family="Inter, sans-serif", color="#b3b3b3", size=11),
     hoverlabel=dict(
         bgcolor="#181818",
-        bordercolor="#1DB954",
+        bordercolor="#7A3E65",
         font=dict(family="Inter, sans-serif", color="#ffffff", size=12)
     )
 )
@@ -223,6 +223,11 @@ def load_data():
         "popularity", "income_group", "region_wb", "track_genre"
     ]
     df = pd.read_csv(path, usecols=lambda c: c in needed_cols, low_memory=False)
+    for col in ["streams", "rank", "danceability", "energy", "valence", "duration_min", "popularity"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+    if "explicit" in df.columns:
+        df["explicit"] = df["explicit"].fillna(False).astype(bool)
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
     df = df.dropna(subset=["track_name", "artist_individual", "week"])
     return df
@@ -286,14 +291,17 @@ with col_left:
     sel_track_name = selected_track_str.split(" — ")[0]
     sel_artist_name = selected_track_str.split(" — ")[1]
     
-    # Lay thong tin chi tiet ca khuc dang chon
-    sel_track_data = df_view[(df_view["track_name"] == sel_track_name) & (df_view["artist_individual"] == sel_artist_name)].iloc[0]
+    # Lay thong tin chi tiet ca khuc dang chon qua gom nhom
+    sel_track_sub = df_view[(df_view["track_name"] == sel_track_name) & (df_view["artist_individual"] == sel_artist_name)]
+    track_rank = int(sel_track_sub["rank"].min()) if not sel_track_sub["rank"].dropna().empty else 1
+    track_streams = int(sel_track_sub["streams"].sum()) if not sel_track_sub["streams"].dropna().empty else 0
+    track_genre_val = sel_track_sub["track_genre"].dropna().iloc[0] if not sel_track_sub["track_genre"].dropna().empty else "Pop"
     
     st.markdown(f"""
         <hr style='border-color:#242424; margin:12px 0;'>
-        <p style='font-size:0.75rem; color:#888888;'>Thể loại: <b style='color:#ffffff;'>{sel_track_data.get('track_genre', 'Pop')}</b></p>
-        <p style='font-size:0.75rem; color:#888888;'>Tổng stream: <b style='color:#1DB954;'>{sel_track_data['streams']:,.0f}</b></p>
-        <p style='font-size:0.75rem; color:#888888;'>Thứ hạng đỉnh cao: <b style='color:#ffffff;'>#{sel_track_data['rank']}</b></p>
+        <p style='font-size:0.75rem; color:#888888;'>Thể loại: <b style='color:#ffffff;'>{track_genre_val}</b></p>
+        <p style='font-size:0.75rem; color:#888888;'>Tổng stream: <b style='color:#7A3E65;'>{track_streams:,.0f}</b> lượt</p>
+        <p style='font-size:0.75rem; color:#888888;'>Thứ hạng đỉnh cao: <b style='color:#ffffff;'>#{track_rank}</b></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -301,6 +309,7 @@ with col_left:
 with col_mid:
     # 4 The KPI xep doc
     kpi_col1, kpi_col2 = st.columns(2)
+    avg_pop = df_view['popularity'].dropna().mean() if not df_view['popularity'].dropna().empty else 80.0
     with kpi_col1:
         st.markdown(f"""
         <div class="metric-item">
@@ -324,18 +333,22 @@ with col_mid:
         st.markdown(f"""
         <div class="metric-item">
             <div class="metric-label">ĐỘ PHỔ BIẾN TB</div>
-            <div class="metric-num">{df_view['popularity'].mean():.0f}/100</div>
+            <div class="metric-num">{avg_pop:.0f}/100</div>
         </div>
         """, unsafe_allow_html=True)
     
     # Widget Now Playing Card
-    dance_pct = int(sel_track_data.get('danceability', 0.7) * 100)
-    energy_pct = int(sel_track_data.get('energy', 0.6) * 100)
-    valence_pct = int(sel_track_data.get('valence', 0.5) * 100)
+    d_val = float(sel_track_sub["danceability"].mean()) if "danceability" in sel_track_sub and not sel_track_sub["danceability"].dropna().empty else 0.7
+    e_val = float(sel_track_sub["energy"].mean()) if "energy" in sel_track_sub and not sel_track_sub["energy"].dropna().empty else 0.6
+    v_val = float(sel_track_sub["valence"].mean()) if "valence" in sel_track_sub and not sel_track_sub["valence"].dropna().empty else 0.5
+    
+    dance_pct = max(0, min(100, int(round(d_val * 100 if d_val <= 1.0 else d_val))))
+    energy_pct = max(0, min(100, int(round(e_val * 100 if e_val <= 1.0 else e_val))))
+    valence_pct = max(0, min(100, int(round(v_val * 100 if v_val <= 1.0 else v_val))))
     
     st.markdown(f"""
     <div class="player-card">
-        <p style='font-size:0.7rem; color:#1DB954; font-weight:700; text-transform:uppercase; margin-bottom:6px;'>ĐANG KHẢO SÁT (NOW PLAYING)</p>
+        <p style='font-size:0.7rem; color:#7A3E65; font-weight:700; text-transform:uppercase; margin-bottom:6px;'>ĐANG KHẢO SÁT (NOW PLAYING)</p>
         <div class="player-title">{sel_track_name}</div>
         <div class="player-artist">{sel_artist_name}</div>
         
@@ -344,14 +357,14 @@ with col_mid:
         </div>
         
         <div style="font-size:0.75rem; color:#888888; display:flex; justify-content:space-between; margin-bottom:12px;">
-            <span>Dance: {dance_pct}%</span>
-            <span>Energy: {energy_pct}%</span>
-            <span>Valence: {valence_pct}%</span>
+            <span style="color:#4C9AFF; font-weight:600;">Dance: {dance_pct}%</span>
+            <span style="color:#FFB547; font-weight:600;">Energy: {energy_pct}%</span>
+            <span style="color:#B794F4; font-weight:600;">Valence: {valence_pct}%</span>
         </div>
         
         <div class="player-controls">
             <span>⏮</span>
-            <span style="font-size:1.6rem; color:#1DB954;">▶</span>
+            <span style="font-size:1.6rem; color:#7A3E65;">▶</span>
             <span>⏭</span>
         </div>
     </div>
@@ -376,7 +389,7 @@ with col_right:
                 explicit_counts, values="Count", names="Type",
                 hole=0.68,
                 color="Type",
-                color_discrete_map={"Explicit": "#1DB954", "Clean": "#2a2a2a"}
+                color_discrete_map={"Explicit": "#7A3E65", "Clean": "#2a2a2a"}
             )
             fig_donut1.update_layout(
                 **PLOTLY_THEME,
@@ -401,7 +414,7 @@ with col_right:
             fig_donut2 = px.pie(
                 income_counts, values="Count", names="Income",
                 hole=0.68,
-                color_discrete_sequence=["#1DB954", "#8e44ad", "#34495e"]
+                color_discrete_sequence=["#7A3E65", "#8e44ad", "#34495e"]
             )
             fig_donut2.update_layout(
                 **PLOTLY_THEME,
@@ -432,7 +445,7 @@ with col_right:
         height=180,
         margin=dict(t=15, b=20, l=20, r=20),
         xaxis=dict(title="", showgrid=False),
-        yaxis=dict(title="", showgrid=True, gridcolor="#222222")
+        yaxis=dict(title="", showgrid=True, gridcolor="#EEE9E1")
     )
     fig_month.update_traces(marker=dict(line=dict(width=0), opacity=0.9))
     st.plotly_chart(fig_month, width="stretch")
@@ -464,8 +477,8 @@ with col_b1:
         **PLOTLY_THEME,
         height=280,
         margin=dict(t=20, b=20, l=30, r=20),
-        xaxis=dict(gridcolor="#1f1f1f"),
-        yaxis=dict(gridcolor="#1f1f1f")
+        xaxis=dict(gridcolor="#EEE9E1"),
+        yaxis=dict(gridcolor="#EEE9E1")
     )
     st.plotly_chart(fig_trend, width="stretch")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -482,13 +495,13 @@ with col_b2:
         x=top_songs["streams"],
         y=top_songs["track_name"],
         orientation="h",
-        marker=dict(color="#1DB954", line=dict(width=0))
+        marker=dict(color="#7A3E65", line=dict(width=0))
     ))
     fig_top.update_layout(
         **PLOTLY_THEME,
         height=280,
         margin=dict(t=20, b=20, l=10, r=20),
-        xaxis=dict(gridcolor="#1f1f1f"),
+        xaxis=dict(gridcolor="#EEE9E1"),
         yaxis=dict(gridcolor="rgba(0,0,0,0)")
     )
     st.plotly_chart(fig_top, width="stretch")

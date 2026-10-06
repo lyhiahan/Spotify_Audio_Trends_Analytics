@@ -19,12 +19,12 @@ st.set_page_config(
 # Hệ thống Design System cao cấp phong cách Spotify Dark Theme
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&family=Be+Vietnam+Pro:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap');
 
     html, body, .stApp {
-        font-family: 'Times New Roman', Times, Georgia, serif !important;
-        background-color: #0d0d0d !important;
-        color: #ffffff !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        background-color: #F7F4EF !important;
+        color: #24211E !important;
     }
 
     [data-testid="stIconMaterial"],
@@ -56,8 +56,8 @@ st.markdown("""
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: #141414 !important;
-        border: 1px solid #282828 !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D8D0C7 !important;
         border-radius: 12px !important;
         padding: 14px 18px !important;
         margin-bottom: 20px !important;
@@ -72,16 +72,16 @@ st.markdown("""
     }
 
     h1, h2, h3 {
-        font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif !important;
+        font-family: 'Montserrat', 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        letter-spacing: -0.6px !important;
-        color: #ffffff !important;
+        letter-spacing: -0.5px !important;
+        color: #24211E !important;
     }
     
     p, span, label {
-        font-family: 'Times New Roman', Times, serif !important;
+        font-family: 'Inter', sans-serif !important;
         font-weight: 400 !important;
-        color: #b3b3b3;
+        color: #625C54;
     }
 
     .section-header {
@@ -96,7 +96,7 @@ st.markdown("""
     .section-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #24211E;
         letter-spacing: -0.3px;
         margin: 0;
     }
@@ -107,14 +107,14 @@ st.markdown("""
     }
 
     .metric-card {
-        background-color: #181818;
+        background-color: #FFFFFF;
         border: 1px solid #282828;
         border-radius: 12px;
         padding: 16px 20px;
         transition: all 0.2s ease-in-out;
     }
     .metric-card:hover {
-        border-color: #1DB954;
+        border-color: #7A3E65;
         background-color: #1e1e1e;
         transform: translateY(-2px);
     }
@@ -130,7 +130,7 @@ st.markdown("""
         font-size: 1.65rem;
         font-weight: 800;
         letter-spacing: -0.5px;
-        color: #1DB954;
+        color: #7A3E65;
         line-height: 1.2;
     }
     .metric-sub {
@@ -140,7 +140,7 @@ st.markdown("""
     }
 
     .surface-card {
-        background-color: #161616;
+        background-color: #1D2422;
         border: 1px solid #262626;
         border-radius: 14px;
         padding: 20px;
@@ -156,17 +156,17 @@ st.markdown("""
         transition: border-color 0.2s;
     }
     .member-card:hover {
-        border-color: #1DB954;
+        border-color: #7A3E65;
     }
     .member-name {
         font-size: 0.88rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #24211E;
     }
     .member-id {
         font-size: 0.78rem;
         font-weight: 600;
-        color: #1DB954;
+        color: #7A3E65;
     }
     .member-role {
         font-size: 0.72rem;
@@ -174,7 +174,7 @@ st.markdown("""
     }
 
     div[role="radiogroup"] {
-        background-color: #161616;
+        background-color: #1D2422;
         padding: 4px;
         border-radius: 30px;
         border: 1px solid #282828;
@@ -202,7 +202,7 @@ st.markdown("""
     }
     div[role="radiogroup"] > label[data-checked="true"],
     div[role="radiogroup"] > label:has(input:checked) {
-        background-color: #1DB954 !important;
+        background-color: #7A3E65 !important;
     }
     div[role="radiogroup"] > label:has(input:checked) [data-testid="stMarkdownContainer"] p {
         color: #000000 !important;
@@ -230,7 +230,7 @@ st.markdown("""
     }
     div[data-baseweb="select"]:hover,
     div[data-baseweb="select"]:focus-within {
-        border-color: #1DB954 !important;
+        border-color: #7A3E65 !important;
     }
     div[data-baseweb="select"] * {
         color: #ffffff !important;
@@ -251,30 +251,30 @@ st.markdown("""
     li[role="option"][aria-selected="true"] {
         background-color: #242424 !important;
         background: #242424 !important;
-        color: #1DB954 !important;
+        color: #7A3E65 !important;
     }
     div[data-baseweb="select"] svg {
-        fill: #1DB954 !important;
+        fill: #7A3E65 !important;
     }
 
     /* DONG NHAT MAU NHAN SPOTIFY GREEN CHO SLIDER (Khong dung do/hong) */
     div[data-testid="stSlider"] div[role="slider"] {
-        background-color: #1DB954 !important;
-        border: 2px solid #1DB954 !important;
+        background-color: #7A3E65 !important;
+        border: 2px solid #7A3E65 !important;
         box-shadow: 0 0 10px rgba(29, 185, 84, 0.5) !important;
     }
     div[data-testid="stSlider"] div[data-baseweb="slider"] div[style*="background"] {
-        background: #1DB954 !important;
+        background: #7A3E65 !important;
     }
     div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div:first-child {
-        background: #1DB954 !important;
+        background: #7A3E65 !important;
     }
     div[data-testid="stSlider"] [data-testid="stThumbValue"] {
-        color: #1DB954 !important;
+        color: #7A3E65 !important;
         font-weight: 700 !important;
     }
     div[data-baseweb="slider"] div {
-        background-color: #1DB954 !important;
+        background-color: #7A3E65 !important;
     }
 
     /* DONG NHAT TAB ACTIVE SANG SPOTIFY GREEN */
@@ -283,8 +283,8 @@ st.markdown("""
         font-weight: 600 !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        border-bottom-color: #1DB954 !important;
-        color: #1DB954 !important;
+        border-bottom-color: #7A3E65 !important;
+        color: #7A3E65 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -296,7 +296,7 @@ PLOTLY_THEME = dict(
     font=dict(family="Inter, -apple-system, sans-serif", color="#b3b3b3", size=11),
     hoverlabel=dict(
         bgcolor="#181818",
-        bordercolor="#1DB954",
+        bordercolor="#7A3E65",
         font=dict(family="Inter, sans-serif", color="#ffffff", size=12)
     ),
     legend=dict(
@@ -314,12 +314,12 @@ SPOTIFY_CONTINUOUS_COLOR = [
     [0.0, "#101010"],
     [0.25, "#0b3318"],
     [0.65, "#14833b"],
-    [1.0, "#1DB954"]
+    [1.0, "#7A3E65"]
 ]
 
 # Hàm nạp dữ liệu cache
 @st.cache_data(show_spinner="Đang nạp dữ liệu phân tích...")
-def load_dataset():
+def load_dataset(_cache_id="v3_clean"):
     processed_path = os.path.join("data", "processed", "merged_spotify_data.csv")
     sample_path = os.path.join("data", "sample", "spotify_sample_merged.csv")
     path = processed_path if os.path.exists(processed_path) else sample_path
@@ -331,6 +331,9 @@ def load_dataset():
         "region_wb", "is_trending", "mood_category"
     ]
     df = pd.read_csv(path, usecols=lambda c: c in needed_cols, low_memory=False)
+    for col in ["streams", "rank", "danceability", "energy", "loudness", "valence", "acousticness", "speechiness", "liveness", "tempo"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
     df["week"] = pd.to_datetime(df["week"], errors="coerce")
     df = df.dropna(subset=["week", "artist_individual", "country"])
     df["year_month"] = df["week"].dt.to_period("M").astype(str)
@@ -341,7 +344,7 @@ df_full = load_dataset()
 # 1. TIEU DE NOI BAT, CO KHONG GIAN THOANG, BO HAN PHU DE
 st.markdown("""
 <div style="margin: 28px 0 22px 0;">
-    <h1 style="font-size: 2.4rem; font-weight: 900; letter-spacing: -0.8px; color: #ffffff; margin: 0; padding: 0; line-height: 1.15;">
+    <h1 style="font-size: 2.4rem; font-weight: 900; letter-spacing: -0.8px; color: #24211E; margin: 0; padding: 0; line-height: 1.15;">
         Hồ Sơ Đặc Trưng Âm Thanh & Nghệ Sĩ
     </h1>
 </div>
@@ -363,7 +366,9 @@ st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # GÓC NHÌN 1: HỒ SƠ ÂM THANH & NGHỆ SĨ
 if view_mode == "🎧 Hồ Sơ Âm Thanh & Nghệ Sĩ":
-    all_months = sorted(df_full["year_month"].unique())
+    all_months = sorted([m for m in df_full["year_month"].dropna().unique() if str(m).strip() and str(m) != "NaT"])
+    if not all_months:
+        all_months = ["2021-01", "2022-07"]
     
     # 2. HANG BO LOC PHA VO DOI XUNG (Moc thoi gian rong gap 2.7 lan hai o kia)
     with st.container(border=True):
@@ -375,11 +380,15 @@ if view_mode == "🎧 Hồ Sơ Âm Thanh & Nghệ Sĩ":
             genres = ["Tất cả thể loại"] + sorted([g for g in df_full["track_genre"].dropna().unique() if str(g).strip()][:30])
             selected_genre = st.selectbox("Thể loại âm nhạc:", genres)
         with af_c3:
-            time_range = st.select_slider(
-                "Mốc thời gian khảo sát (Tháng):",
-                options=all_months,
-                value=(all_months[0], all_months[-1])
-            )
+            if len(all_months) > 1:
+                time_range = st.select_slider(
+                    "Mốc thời gian khảo sát (Tháng):",
+                    options=all_months,
+                    value=(all_months[0], all_months[-1])
+                )
+            else:
+                time_range = (all_months[0], all_months[0])
+                st.markdown(f"<div style='padding-top:22px;'><span style='font-size:0.8rem; color:#A7A7A7;'>Mốc thời gian:</span> <b style='color:#7A3E65;'>{all_months[0]}</b></div>", unsafe_allow_html=True)
             
     df_filtered = df_full.copy()
     if selected_region != "Tất cả khu vực":
@@ -459,7 +468,7 @@ if view_mode == "🎧 Hồ Sơ Âm Thanh & Nghệ Sĩ":
     
     st.markdown(f"""
     <div class="section-header" style="margin-top:28px;">
-        <span class="section-title">3. Hồ Sơ Âm Thanh Liên Kết (Linked Views): <span style="color:#1DB954;">{selected_artist}</span></span>
+        <span class="section-title">3. Hồ Sơ Âm Thanh Liên Kết (Linked Views): <span style="color:#7A3E65;">{selected_artist}</span></span>
         <span class="section-desc">Đối chiếu hồ sơ âm học của nghệ sĩ với chuẩn Top 50 Trending toàn cầu</span>
     </div>
     """, unsafe_allow_html=True)
@@ -536,14 +545,14 @@ if view_mode == "🎧 Hồ Sơ Âm Thanh & Nghệ Sĩ":
             theta=categories,
             fill="toself",
             name=selected_artist,
-            line=dict(color="#1DB954", width=3),
+            line=dict(color="#7A3E65", width=3),
             fillcolor="rgba(29, 185, 84, 0.35)"
         ))
         fig_radar.update_layout(
             **PLOTLY_THEME,
             polar=dict(
-                radialaxis=dict(visible=True, range=[0, 1], tickfont=dict(color="#666666", size=8), gridcolor="#222222"),
-                angularaxis=dict(tickfont=dict(color="#b3b3b3", size=10), gridcolor="#222222")
+                radialaxis=dict(visible=True, range=[0, 1], tickfont=dict(color="#666666", size=8), gridcolor="#EEE9E1"),
+                angularaxis=dict(tickfont=dict(color="#b3b3b3", size=10), gridcolor="#EEE9E1")
             ),
             height=370,
             margin=dict(t=35, b=25, l=35, r=35)
@@ -581,7 +590,7 @@ if view_mode == "🎧 Hồ Sơ Âm Thanh & Nghệ Sĩ":
             y=this_artist_tracks[y_axis],
             mode="markers",
             name=selected_artist,
-            marker=dict(color="#1DB954", size=11, line=dict(color="#ffffff", width=1.5)),
+            marker=dict(color="#7A3E65", size=11, line=dict(color="#ffffff", width=1.5)),
             text=this_artist_tracks["track_name"],
             hovertemplate=f"<b>%{{text}}</b><br>Nghệ sĩ: {selected_artist}<br>" + f"{x_axis}: %{{x:.2f}}<br>{y_axis}: %{{y:.2f}}<extra></extra>"
         ))
@@ -629,7 +638,7 @@ else:
     # 1. TIEU DE NOI BAT, BO PHU DE, CO KHOANG TRONG THOANG
     st.markdown("""
     <div style="margin: 28px 0 20px 0;">
-        <h1 style="font-size: 2.35rem; font-weight: 900; letter-spacing: -0.8px; color: #ffffff; margin: 0; padding: 0; line-height: 1.15;">
+        <h1 style="font-size: 2.35rem; font-weight: 900; letter-spacing: -0.8px; color: #24211E; margin: 0; padding: 0; line-height: 1.15;">
             Mạng Lưới Đồng Xuất Hiện Qua Thị Trường Quốc Gia (Network Science)
         </h1>
     </div>
@@ -697,7 +706,7 @@ else:
         except Exception:
             communities = [set(G.nodes())]
             
-        CLUSTER_COLORS = ["#1DB954", "#ff793f", "#a29bfe", "#00cec9", "#f1c40f", "#fd79a8"]
+        CLUSTER_COLORS = ["#7A3E65", "#ff793f", "#a29bfe", "#00cec9", "#f1c40f", "#fd79a8"]
         CLUSTER_NAMES = ["Pop Core / Mainstream", "Latin Wave / Urbano", "Hip-Hop / Global Rap", "Asian / Regional Wave", "Dance / Electro", "Indie / Alt"]
         
         node_cluster = {}
@@ -708,7 +717,7 @@ else:
         st.markdown("""
         <div style="display:flex; align-items:center; gap:16px; margin: 4px 0 8px 0; font-size:0.78rem; flex-wrap:wrap;">
             <span style="color:#888888; font-weight:700;">PHÂN CỤM CỘNG ĐỒNG:</span>
-            <span style="color:#1DB954; font-weight:700;">● Cụm 1: Pop Core</span>
+            <span style="color:#7A3E65; font-weight:700;">● Cụm 1: Pop Core</span>
             <span style="color:#ff793f; font-weight:700;">● Cụm 2: Latin Wave</span>
             <span style="color:#a29bfe; font-weight:700;">● Cụm 3: Hip-Hop / Rap</span>
             <span style="color:#00cec9; font-weight:700;">● Cụm 4: Asian / Regional</span>
@@ -896,10 +905,10 @@ else:
             mode="gauge+number",
             value=prob_trending,
             domain={'x': [0, 1], 'y': [0, 1]},
-            number={'suffix': "%", 'font': {'color': "#1DB954", 'size': 36, 'family': "Inter"}},
+            number={'suffix': "%", 'font': {'color': "#7A3E65", 'size': 36, 'family': "Inter"}},
             gauge={
                 'axis': {'range': [0, 100], 'tickcolor': "#444444", 'tickwidth': 1},
-                'bar': {'color': "#1DB954", 'thickness': 0.3},
+                'bar': {'color': "#7A3E65", 'thickness': 0.3},
                 'bgcolor': "#1c1c1c",
                 'borderwidth': 0,
                 'steps': [
@@ -935,7 +944,7 @@ else:
         "Hệ số (Coefficient)": clf.coef_[0]
     }).sort_values(by="Hệ số (Coefficient)", ascending=True)
     
-    colors = ["#1DB954" if c >= 0 else "#e91e63" for c in coef_df["Hệ số (Coefficient)"]]
+    colors = ["#7A3E65" if c >= 0 else "#e91e63" for c in coef_df["Hệ số (Coefficient)"]]
     
     fig_coef = go.Figure(go.Bar(
         x=coef_df["Hệ số (Coefficient)"],
@@ -947,7 +956,7 @@ else:
         **PLOTLY_THEME,
         height=280,
         margin=dict(t=15, b=20, l=10, r=10),
-        xaxis=dict(gridcolor="#222222", zerolinecolor="#444444"),
+        xaxis=dict(gridcolor="#EEE9E1", zerolinecolor="#444444"),
         yaxis=dict(gridcolor="rgba(0,0,0,0)")
     )
     st.plotly_chart(fig_coef, width="stretch")
