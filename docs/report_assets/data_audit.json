@@ -1,0 +1,401 @@
+{
+  "weekly": {
+    "shape": [
+      5548,
+      29
+    ],
+    "duplicates": 0,
+    "nulls": {}
+  },
+  "annual": {
+    "shape": [
+      141,
+      42
+    ],
+    "duplicates": 0,
+    "nulls": {}
+  },
+  "ml": {
+    "shape": [
+      39190,
+      30
+    ],
+    "duplicates": 0,
+    "nulls": {}
+  },
+  "covid": {
+    "shape": [
+      12136,
+      4
+    ],
+    "duplicates": 0,
+    "nulls": {}
+  },
+  "charts": {
+    "shape": [
+      1787531,
+      35
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "previous_rank": 167519
+    }
+  },
+  "whs": {
+    "shape": [
+      1510,
+      10
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "gdp_factor": 3,
+      "social_support": 3,
+      "healthy_life": 4,
+      "freedom": 3,
+      "generosity": 3,
+      "corruption": 4
+    }
+  },
+  "slots": 1109375,
+  "hit_counts": {
+    "0": 33727,
+    "1": 5463
+  },
+  "mega_hits": 625,
+  "cap_weeks": 76.0,
+  "distributions": {
+    "loudness": {
+      "count": 39190.0,
+      "mean": -7.0259480476379395,
+      "std": 2.738044500350952,
+      "min": -41.40999984741211,
+      "25%": -8.390999794006348,
+      "50%": -6.6620001792907715,
+      "75%": -5.2270002365112305,
+      "max": 1.906000018119812
+    },
+    "energy": {
+      "count": 39190.0,
+      "mean": 0.632765531539917,
+      "std": 0.16771459579467773,
+      "min": 0.003160000080242753,
+      "25%": 0.5260000228881836,
+      "50%": 0.6449999809265137,
+      "75%": 0.7540000081062317,
+      "max": 1.0
+    },
+    "speechiness": {
+      "count": 39190.0,
+      "mean": 0.13068294525146484,
+      "std": 0.12101971358060837,
+      "min": 0.022299999371170998,
+      "25%": 0.04280000180006027,
+      "50%": 0.07590000331401825,
+      "75%": 0.18700000643730164,
+      "max": 0.9660000205039978
+    },
+    "valence": {
+      "count": 39190.0,
+      "mean": 0.5201870799064636,
+      "std": 0.22137685120105743,
+      "min": 9.999999747378752e-06,
+      "25%": 0.3479999899864197,
+      "50%": 0.5199999809265137,
+      "75%": 0.6909999847412109,
+      "max": 0.9919999837875366
+    },
+    "duration": {
+      "count": 39190.0,
+      "mean": 200441.859375,
+      "std": 55749.92578125,
+      "min": 30133.0,
+      "25%": 167432.75,
+      "50%": 193519.0,
+      "75%": 224500.75,
+      "max": 1787030.0
+    }
+  },
+  "skew": {
+    "loudness": -1.3922775983810425,
+    "energy": -0.43508291244506836,
+    "speechiness": 1.6346044540405273,
+    "valence": 0.018162084743380547,
+    "duration": 2.8925411701202393
+  },
+  "correlations": {
+    "pearson_energy_loudness": 0.7035553106589714,
+    "spearman_energy_loudness": 0.6901789591108125
+  },
+  "hit_means": {
+    "0": {
+      "loudness": -7.092954635620117,
+      "energy": 0.632736325263977,
+      "speechiness": 0.13404180109500885,
+      "valence": 0.5187980532646179,
+      "duration": 199452.0625
+    },
+    "1": {
+      "loudness": -6.61226749420166,
+      "energy": 0.6329455375671387,
+      "speechiness": 0.10994629561901093,
+      "valence": 0.5287630558013916,
+      "duration": 206552.65625
+    }
+  },
+  "global_yearly_week_means": {
+    "2016": {
+      "danceability_weighted": 0.6607101918198023,
+      "energy_weighted": 0.6389785774369126,
+      "valence_weighted": 0.5219703542962085,
+      "acousticness_weighted": 0.23297845490199467,
+      "loudness_weighted": -6.596183773009953,
+      "duration_weighted": 218278.59845721495
+    },
+    "2017": {
+      "danceability_weighted": 0.6971595363011621,
+      "energy_weighted": 0.6568766758773772,
+      "valence_weighted": 0.5195536911652027,
+      "acousticness_weighted": 0.18430056626812544,
+      "loudness_weighted": -5.771510511093837,
+      "duration_weighted": 217960.23017008902
+    },
+    "2018": {
+      "danceability_weighted": 0.7070099850462204,
+      "energy_weighted": 0.6454530106495697,
+      "valence_weighted": 0.47496896426877416,
+      "acousticness_weighted": 0.20400614277710483,
+      "loudness_weighted": -5.924625019757006,
+      "duration_weighted": 209157.76888685112
+    },
+    "2019": {
+      "danceability_weighted": 0.7063924510832784,
+      "energy_weighted": 0.6167146348673245,
+      "valence_weighted": 0.5033083542069027,
+      "acousticness_weighted": 0.2592359043278172,
+      "loudness_weighted": -6.178506483987505,
+      "duration_weighted": 201189.30134653038
+    },
+    "2020": {
+      "danceability_weighted": 0.7064301717372143,
+      "energy_weighted": 0.6172180336480078,
+      "valence_weighted": 0.525588525081976,
+      "acousticness_weighted": 0.25537819504001213,
+      "loudness_weighted": -6.252566790272324,
+      "duration_weighted": 198495.77246724238
+    },
+    "2021": {
+      "danceability_weighted": 0.6773766292518995,
+      "energy_weighted": 0.6318862868438051,
+      "valence_weighted": 0.5275042131363781,
+      "acousticness_weighted": 0.2636947034059954,
+      "loudness_weighted": -6.1602248078053155,
+      "duration_weighted": 200122.57983522178
+    },
+    "2022": {
+      "danceability_weighted": 0.6732387658405425,
+      "energy_weighted": 0.6568430415854548,
+      "valence_weighted": 0.5087512462910346,
+      "acousticness_weighted": 0.23978227269938,
+      "loudness_weighted": -5.98248736274734,
+      "duration_weighted": 205705.0477183415
+    }
+  },
+  "global_weeks": 290,
+  "country_weeks": {
+    "Argentina": 76,
+    "Australia": 76,
+    "Austria": 76,
+    "Belarus": 22,
+    "Belgium": 76,
+    "Bolivia": 76,
+    "Brazil": 76,
+    "Bulgaria": 76,
+    "Canada": 76,
+    "Chile": 76,
+    "Colombia": 76,
+    "Costa Rica": 76,
+    "Cyprus": 76,
+    "Czech Republic": 76,
+    "Denmark": 76,
+    "Dominican Republic": 76,
+    "Ecuador": 76,
+    "Egypt": 76,
+    "El Salvador": 76,
+    "Estonia": 76,
+    "Finland": 76,
+    "France": 76,
+    "Germany": 76,
+    "Greece": 76,
+    "Guatemala": 76,
+    "Honduras": 76,
+    "Hong Kong": 76,
+    "Hungary": 76,
+    "Iceland": 76,
+    "India": 76,
+    "Indonesia": 76,
+    "Ireland": 76,
+    "Israel": 76,
+    "Italy": 76,
+    "Japan": 76,
+    "Kazakhstan": 22,
+    "Korea": 76,
+    "Latvia": 76,
+    "Lithuania": 76,
+    "Luxembourg": 76,
+    "Malaysia": 76,
+    "Mexico": 76,
+    "Morocco": 76,
+    "Netherlands": 76,
+    "New Zealand": 76,
+    "Nicaragua": 76,
+    "Nigeria": 22,
+    "Norway": 75,
+    "Pakistan": 10,
+    "Panama": 76,
+    "Paraguay": 76,
+    "Peru": 76,
+    "Philippines": 75,
+    "Poland": 76,
+    "Portugal": 76,
+    "Romania": 76,
+    "Saudi Arabia": 76,
+    "Singapore": 76,
+    "Slovakia": 76,
+    "South Africa": 76,
+    "Spain": 76,
+    "Sweden": 76,
+    "Switzerland": 76,
+    "Taiwan": 76,
+    "Thailand": 76,
+    "Turkey": 76,
+    "Ukraine": 76,
+    "United Arab Emirates": 75,
+    "United Kingdom": 76,
+    "United States": 76,
+    "Uruguay": 76,
+    "Venezuela": 17,
+    "Vietnam": 76
+  },
+  "short_week_count": 221,
+  "country_year_counts": {
+    "2021": 68,
+    "2022": 73
+  },
+  "regions": [
+    {
+      "year": 2021,
+      "wb_region": "East Asia & Pacific",
+      "valence_weighted": 0.4927624078622867,
+      "energy_weighted": 0.5922479409540288,
+      "danceability_weighted": 0.6275563447647272
+    },
+    {
+      "year": 2021,
+      "wb_region": "Europe & Central Asia",
+      "valence_weighted": 0.5293324392772287,
+      "energy_weighted": 0.64977444248807,
+      "danceability_weighted": 0.6863464101437667
+    },
+    {
+      "year": 2021,
+      "wb_region": "Latin America & Caribbean",
+      "valence_weighted": 0.6267451577875414,
+      "energy_weighted": 0.6736467967719136,
+      "danceability_weighted": 0.7300581385877356
+    },
+    {
+      "year": 2021,
+      "wb_region": "Middle East & North Africa",
+      "valence_weighted": 0.5248291278052463,
+      "energy_weighted": 0.6169812148829686,
+      "danceability_weighted": 0.6859043103170931
+    },
+    {
+      "year": 2021,
+      "wb_region": "North America",
+      "valence_weighted": 0.4880536410006151,
+      "energy_weighted": 0.6072955266788429,
+      "danceability_weighted": 0.6650469283707878
+    },
+    {
+      "year": 2021,
+      "wb_region": "South Asia",
+      "valence_weighted": 0.5039537754128152,
+      "energy_weighted": 0.6287851245614151,
+      "danceability_weighted": 0.6576975044627286
+    },
+    {
+      "year": 2021,
+      "wb_region": "Sub-Saharan Africa",
+      "valence_weighted": 0.47392141450799957,
+      "energy_weighted": 0.5945307779612693,
+      "danceability_weighted": 0.7037055004813351
+    },
+    {
+      "year": 2022,
+      "wb_region": "East Asia & Pacific",
+      "valence_weighted": 0.4902286703867969,
+      "energy_weighted": 0.6033270904339799,
+      "danceability_weighted": 0.621365737543713
+    },
+    {
+      "year": 2022,
+      "wb_region": "Europe & Central Asia",
+      "valence_weighted": 0.52267084425787,
+      "energy_weighted": 0.6638112162011812,
+      "danceability_weighted": 0.6892583678490316
+    },
+    {
+      "year": 2022,
+      "wb_region": "Latin America & Caribbean",
+      "valence_weighted": 0.5824810021335874,
+      "energy_weighted": 0.6755440906717232,
+      "danceability_weighted": 0.7292412605175018
+    },
+    {
+      "year": 2022,
+      "wb_region": "Middle East & North Africa",
+      "valence_weighted": 0.5092330677477428,
+      "energy_weighted": 0.6200925401663887,
+      "danceability_weighted": 0.6704127084177847
+    },
+    {
+      "year": 2022,
+      "wb_region": "North America",
+      "valence_weighted": 0.489265515156613,
+      "energy_weighted": 0.6354715342093429,
+      "danceability_weighted": 0.6710448693932631
+    },
+    {
+      "year": 2022,
+      "wb_region": "South Asia",
+      "valence_weighted": 0.4813333197847585,
+      "energy_weighted": 0.5988832380762807,
+      "danceability_weighted": 0.6694276082045871
+    },
+    {
+      "year": 2022,
+      "wb_region": "Sub-Saharan Africa",
+      "valence_weighted": 0.542199173792129,
+      "energy_weighted": 0.6215601785764167,
+      "danceability_weighted": 0.7260427549138326
+    }
+  ],
+  "covid_negative": 18,
+  "covid_global_sum": 6881785,
+  "covid_country_sum": 5829466,
+  "join_covid": {
+    "both": 5388,
+    "left_only": 160,
+    "right_only": 0
+  },
+  "anomalies": {
+    "negative_days_to_chart": 1873,
+    "positive_loudness_tracks": 25,
+    "duration_gt_10min_tracks": 29,
+    "unknown_genre_tracks": 2074
+  },
+  "formula_max_error": 2.842170943040401e-14,
+  "is_hit_errors": 0,
+  "is_mega_errors": 0
+}
