@@ -136,6 +136,15 @@ streamlit run dashboard/app.py
 ```
 Sau khi khởi chạy thành công, truy cập giao diện dashboard tại địa chỉ: `http://localhost:8501`.
 
+### Story tương tác của Gia Hân (3 dashboard / 9 biểu đồ)
+```powershell
+./start_story.ps1
+```
+Hoặc chạy `python -m streamlit run dashboard/story_app.py --server.port 8502 --server.address 127.0.0.1`, rồi mở `http://localhost:8502`.
+
+Mỗi story point hiển thị một dashboard gồm các biểu đồ cùng chủ đề trên một màn hình, có bộ lọc đa cấp, drill-down, tooltip và lọc chéo. Xem [hướng dẫn và phạm vi dữ liệu](docs/story_studio.md), hoặc tải [bản HTML tương tác độc lập](docs/spotify_data_story.html). Bản đồ cần mạng để tải địa giới.
+
+
 ---
 
 ## 👥 5. Phân công Trách nhiệm Nhóm (Theo Barem 10 Điểm)
