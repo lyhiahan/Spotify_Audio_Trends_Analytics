@@ -136,6 +136,14 @@ streamlit run dashboard/app.py
 ```
 Sau khi khởi chạy thành công, truy cập giao diện dashboard tại địa chỉ: `http://localhost:8501`.
 
+Để mở trực tiếp bộ **3 dashboard kể chuyện dữ liệu** dạng một màn hình mỗi trang, chạy:
+
+```bash
+streamlit run dashboard/story_app.py
+```
+
+Các trang cũng có trong menu của `dashboard/app.py`. Bộ lọc cập nhật biểu đồ và thẻ insight theo dữ liệu hiện có; các giải thích về TikTok, thể loại và COVID được trình bày như giả thuyết khi dữ liệu chưa kiểm định quan hệ nhân quả.
+
 ---
 
 ## 👥 5. Phân công Trách nhiệm Nhóm (Theo Barem 10 Điểm)
