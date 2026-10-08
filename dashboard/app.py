@@ -1,7 +1,5 @@
 import os
 import base64
-import sys
-from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
@@ -11,11 +9,6 @@ import plotly.graph_objects as go
 import networkx as nx
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-from dashboard.story_dashboards import STORY_PAGES, render_story_dashboard
 
 # Cau hinh trang Streamlit (Mo sidebar theo chuan Dashboard)
 st.set_page_config(
@@ -2145,7 +2138,6 @@ with st.sidebar:
         "Mục chức năng:",
         options=[
             "Trang Chủ",
-            *STORY_PAGES,
             "Bảng Dữ Liệu & Bộ Lọc",
             "Thống Kê Thị Trường",
             "So Sánh Thị Hiếu (Taste Radar)",
@@ -2159,9 +2151,7 @@ with st.sidebar:
         key="sb_cat_mode"
     )
     
-    if cat_mode in STORY_PAGES:
-        current_view = cat_mode
-    elif "Trang Chủ" in cat_mode or "Home" in cat_mode:
+    if "Trang Chủ" in cat_mode or "Home" in cat_mode:
         current_view = "Trang Chủ"
     elif "Thị Hiếu" in cat_mode or "Taste Radar" in cat_mode:
         current_view = "So Sánh Thị Hiếu"
@@ -2207,9 +2197,7 @@ with st.sidebar:
         current_view = cat_mode
 
 # 0. MÀN HÌNH 0: TRANG CHỦ (HOME SHOWCASE EDITORIAL)
-if current_view in STORY_PAGES:
-    render_story_dashboard(current_view)
-elif "Trang Chủ" in current_view:
+if "Trang Chủ" in current_view:
     covers = get_hero_album_covers()
 
     # TẦNG 1: HERO HEADER CÓ CHIỀU SÂU & CỤM ẢNH BÌA NGHỆ SĨ SINH ĐỘNG
