@@ -135,14 +135,19 @@ python src/data_loader.py
 streamlit run dashboard/app.py
 ```
 Sau khi khởi chạy thành công, truy cập giao diện dashboard tại địa chỉ: `http://localhost:8501`.
-
+### Bước 5: Story tương tác của Gia Hân (3 dashboard / 9 biểu đồ)
 Để mở trực tiếp bộ **3 dashboard kể chuyện dữ liệu** dạng một màn hình mỗi trang, chạy:
 
 ```bash
 streamlit run dashboard/story_app.py
 ```
+Hoặc khởi chạy cổng riêng bằng lệnh:
+```powershell
+./start_story.ps1
+```
+(Mở tại `http://localhost:8502`).
 
-Các trang cũng có trong menu của `dashboard/app.py`. Bộ lọc cập nhật biểu đồ và thẻ insight theo dữ liệu hiện có; các giải thích về TikTok, thể loại và COVID được trình bày như giả thuyết khi dữ liệu chưa kiểm định quan hệ nhân quả.
+Mỗi story point hiển thị một dashboard gồm các biểu đồ cùng chủ đề trên một màn hình, có bộ lọc đa cấp, drill-down, tooltip và lọc chéo. Các trang cũng có sẵn trong menu chính của `dashboard/app.py`. Xem thêm [hướng dẫn và phạm vi dữ liệu](docs/story_studio.md), hoặc tải [bản HTML tương tác độc lập](docs/spotify_data_story.html). (Lưu ý: Bản đồ cần kết nối mạng để tải địa giới quốc gia).
 
 ---
 
