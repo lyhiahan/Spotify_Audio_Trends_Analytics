@@ -1,0 +1,1023 @@
+﻿table,column,dtype,role,availability,missing_count,grain,unit,description
+charts_clean,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,uri
+charts_clean,rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",vị trí 1–200,rank
+charts_clean,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,artist_names
+charts_clean,artists_num,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,artists_num
+charts_clean,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,artist_individual
+charts_clean,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,artist_id
+charts_clean,artist_genre,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,artist_genre
+charts_clean,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,collab
+charts_clean,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,track_name
+charts_clean,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,release_date
+charts_clean,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,peak_rank
+charts_clean,previous_rank,Int16,provenance,metadata/descriptive; not automatically usable in X,167519,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,previous_rank
+charts_clean,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,weeks_on_chart
+charts_clean,streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",lượt nghe trong chart,streams
+charts_clean,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,week
+charts_clean,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,danceability
+charts_clean,energy,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,energy
+charts_clean,key,int8,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,key
+charts_clean,mode,int8,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,mode
+charts_clean,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",dB,loudness
+charts_clean,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,speechiness
+charts_clean,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,acousticness
+charts_clean,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,instrumentalness
+charts_clean,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,liveness
+charts_clean,valence,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",0–1,valence
+charts_clean,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",BPM,tempo
+charts_clean,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",ms,duration
+charts_clean,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,country
+charts_clean,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,region
+charts_clean,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,language
+charts_clean,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+charts_clean,year,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,year
+charts_clean,month,int8,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,month
+charts_clean,chart_country,category,id,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+charts_clean,chart_region,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,chart_region
+charts_clean,chart_language,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,chart_language
+charts_clean,previous_rank_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,previous_rank_status
+charts_clean,is_new_entry,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,is_new_entry
+charts_clean,release_date_precision,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,mức chính xác ngày/tháng/năm của chuỗi ngày phát hành
+charts_clean,release_date_clean,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,release_date_clean
+charts_clean,release_year,Int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,release_year
+charts_clean,days_to_chart,Int32,provenance,metadata/descriptive; not automatically usable in X,17363,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,days_to_chart
+charts_clean,release_after_chart,boolean,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,release_after_chart
+charts_clean,genre_missing,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,genre_missing
+charts_clean,audio_review_flag,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id, chart_country, week",xem nguồn hoặc cấu hình trường,audio_review_flag
+chart_slots,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,uri
+chart_slots,rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",vị trí 1–200,rank
+chart_slots,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_names
+chart_slots,artists_num,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artists_num
+chart_slots,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_individual
+chart_slots,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_id
+chart_slots,artist_genre,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_genre
+chart_slots,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,collab
+chart_slots,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,track_name
+chart_slots,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,release_date
+chart_slots,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,peak_rank
+chart_slots,previous_rank,Int16,provenance,metadata/descriptive; not automatically usable in X,108836,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,previous_rank
+chart_slots,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,weeks_on_chart
+chart_slots,streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",lượt nghe trong chart,streams
+chart_slots,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,week
+chart_slots,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,danceability
+chart_slots,energy,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,energy
+chart_slots,key,int8,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,key
+chart_slots,mode,int8,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,mode
+chart_slots,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",dB,loudness
+chart_slots,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,speechiness
+chart_slots,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,acousticness
+chart_slots,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,instrumentalness
+chart_slots,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,liveness
+chart_slots,valence,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",0–1,valence
+chart_slots,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",BPM,tempo
+chart_slots,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",ms,duration
+chart_slots,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,country
+chart_slots,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,region
+chart_slots,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,language
+chart_slots,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+chart_slots,year,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,year
+chart_slots,month,int8,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,month
+chart_slots,chart_country,category,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+chart_slots,chart_region,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,chart_region
+chart_slots,chart_language,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,chart_language
+chart_slots,previous_rank_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,previous_rank_status
+chart_slots,is_new_entry,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,is_new_entry
+chart_slots,release_date_precision,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,mức chính xác ngày/tháng/năm của chuỗi ngày phát hành
+chart_slots,release_date_clean,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,release_date_clean
+chart_slots,release_year,Int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,release_year
+chart_slots,days_to_chart,Int32,provenance,metadata/descriptive; not automatically usable in X,15113,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,days_to_chart
+chart_slots,release_after_chart,boolean,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,release_after_chart
+chart_slots,genre_missing,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,genre_missing
+chart_slots,audio_review_flag,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,audio_review_flag
+chart_slots_observed,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,uri
+chart_slots_observed,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",vị trí 1–200,rank
+chart_slots_observed,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_names
+chart_slots_observed,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artists_num
+chart_slots_observed,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_individual
+chart_slots_observed,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_id
+chart_slots_observed,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,artist_genre
+chart_slots_observed,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,collab
+chart_slots_observed,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,track_name
+chart_slots_observed,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,release_date
+chart_slots_observed,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,peak_rank
+chart_slots_observed,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,previous_rank
+chart_slots_observed,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,weeks_on_chart
+chart_slots_observed,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",lượt nghe trong chart,streams
+chart_slots_observed,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,week
+chart_slots_observed,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,danceability
+chart_slots_observed,energy,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,energy
+chart_slots_observed,key,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,key
+chart_slots_observed,mode,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,mode
+chart_slots_observed,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",dB,loudness
+chart_slots_observed,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,speechiness
+chart_slots_observed,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,acousticness
+chart_slots_observed,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,instrumentalness
+chart_slots_observed,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,liveness
+chart_slots_observed,valence,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",0–1,valence
+chart_slots_observed,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",BPM,tempo
+chart_slots_observed,duration,float64,provenance,metadata/descriptive; not automatically usable in X,145,"chart_country, week, rank",ms,duration
+chart_slots_observed,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,country
+chart_slots_observed,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,region
+chart_slots_observed,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,language
+chart_slots_observed,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+chart_slots_observed,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,year
+chart_slots_observed,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,month
+chart_slots_observed,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+chart_slots_observed,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,chart_region
+chart_slots_observed,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,chart_language
+chart_slots_observed,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week, rank",xem nguồn hoặc cấu hình trường,slot_conflict_join
+tracks_dimension,track_id,object,id,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,ID Spotify của bài
+tracks_dimension,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,track_name
+tracks_dimension,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,artist_id
+tracks_dimension,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,artist_names
+tracks_dimension,artists_num,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,artists_num
+tracks_dimension,artist_genre,category,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,artist_genre
+tracks_dimension,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,release_date
+tracks_dimension,release_date_clean,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,release_date_clean
+tracks_dimension,release_year,Int16,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,release_year
+tracks_dimension,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,danceability
+tracks_dimension,energy,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,energy
+tracks_dimension,key,int8,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,key
+tracks_dimension,mode,int8,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,mode
+tracks_dimension,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,dB,loudness
+tracks_dimension,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,speechiness
+tracks_dimension,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,acousticness
+tracks_dimension,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,instrumentalness
+tracks_dimension,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,liveness
+tracks_dimension,valence,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,0–1,valence
+tracks_dimension,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,BPM,tempo
+tracks_dimension,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,ms,duration
+tracks_dimension,release_date_precision,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,mức chính xác ngày/tháng/năm của chuỗi ngày phát hành
+tracks_dimension,genre_missing,bool,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,genre_missing
+tracks_dimension,audio_review_flag,bool,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,audio_review_flag
+tracks_dimension,artist_metadata_policy,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,artist_metadata_policy
+track_artist_bridge,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+track_artist_bridge,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id",xem nguồn hoặc cấu hình trường,artist_id
+track_artist_bridge,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id",xem nguồn hoặc cấu hình trường,artist_individual
+track_artist_bridge,artist_genre,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, artist_id",xem nguồn hoặc cấu hình trường,artist_genre
+market_week_quality,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+market_week_quality,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,week
+market_week_quality,rank_count,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,rank_count
+market_week_quality,streams_count,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,streams_count
+market_week_quality,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,3,"chart_country, week",xem nguồn hoặc cấu hình trường,chart_streams_total
+market_week_quality,calendar_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,calendar_join
+market_week_quality,top50_rank_count,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,top50_rank_count
+market_week_quality,chart_observed,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,chart_observed
+market_week_quality,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,top200_complete
+market_week_quality,top50_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,top50_complete
+market_week_quality,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,streams_total_complete
+market_week_quality,missing_ranks,object,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,missing_ranks
+market_week_quality,missing_top50_ranks,object,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,missing_top50_ranks
+market_first_observed,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+market_first_observed,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+market_first_observed,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+market_first_observed,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+market_first_observed,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+market_first_observed,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+market_first_observed,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+market_first_observed,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+market_first_observed,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+market_first_observed,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+market_first_observed,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+market_first_observed,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+market_first_observed,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+market_first_observed,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+market_first_observed,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+market_first_observed,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,danceability
+market_first_observed,energy,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,energy
+market_first_observed,key,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+market_first_observed,mode,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+market_first_observed,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",dB,loudness
+market_first_observed,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,speechiness
+market_first_observed,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,acousticness
+market_first_observed,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,instrumentalness
+market_first_observed,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,liveness
+market_first_observed,valence,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",0–1,valence
+market_first_observed,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",BPM,tempo
+market_first_observed,duration,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",ms,duration
+market_first_observed,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+market_first_observed,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+market_first_observed,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+market_first_observed,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+market_first_observed,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+market_first_observed,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+market_first_observed,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+market_first_observed,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+market_first_observed,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+market_first_observed,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+market_first_observed,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+market_first_observed,rank_first_week,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+market_first_observed,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+market_first_observed,log_streams_first_week,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+market_first_observed,duration_min,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",phút,duration_min
+market_first_observed,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+market_first_observed,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+market_first_observed,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+market_first_observed,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+market_first_observed,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+market_first_observed,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+market_first_observed,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+market_first_observed,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+market_first_observed,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,103194,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+market_first_observed,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+market_first_observed,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+market_first_observed,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+market_first_observed,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+market_first_observed,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+market_first_observed,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+market_first_observed,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+market_first_observed,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+market_first_observed,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+market_first_observed,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+market_first_observed,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+market_first_observed,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+market_first_observed,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+market_first_observed,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+market_first_observed,stream_share_first_week,Float64,provenance,metadata/descriptive; not automatically usable in X,1637,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+market_followup_grid,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+market_followup_grid,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+market_followup_grid,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+market_followup_grid,horizon_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,horizon_week
+market_followup_grid,future_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,future_week
+market_followup_grid,rank_future,float64,outcome_audit,future/source coverage; excluded from X,443287,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,rank_future
+market_followup_grid,top50_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,top50_complete
+market_followup_grid,chart_observed,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,chart_observed
+market_followup_grid,future_quality_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,future_quality_join
+market_followup_grid,within_source_calendar,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,within_source_calendar
+market_followup_grid,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country, horizon_week",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_first_week,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_first_week,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_first_week,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_first_week,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_first_week,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_first_week,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_first_week,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_first_week,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_first_week,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_first_week,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_first_week,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_first_week,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_first_week,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_first_week,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_first_week,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_first_week,danceability,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,danceability
+ml_market_first_week,energy,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,energy
+ml_market_first_week,key,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_first_week,mode,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_first_week,loudness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",dB,loudness
+ml_market_first_week,speechiness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,speechiness
+ml_market_first_week,acousticness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,acousticness
+ml_market_first_week,instrumentalness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,instrumentalness
+ml_market_first_week,liveness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,liveness
+ml_market_first_week,valence,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,valence
+ml_market_first_week,tempo,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",BPM,tempo
+ml_market_first_week,duration,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",ms,duration
+ml_market_first_week,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_first_week,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_first_week,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_first_week,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_first_week,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_first_week,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_first_week,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_first_week,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_first_week,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_first_week,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_first_week,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_first_week,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_first_week,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_first_week,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_first_week,duration_min,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",phút,duration_min
+ml_market_first_week,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_first_week,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_first_week,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_first_week,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_first_week,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_first_week,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_first_week,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_first_week,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_first_week,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,103194,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_first_week,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_first_week,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_first_week,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_first_week,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_first_week,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_first_week,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_first_week,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_first_week,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_first_week,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_first_week,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_first_week,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_first_week,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_first_week,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_first_week,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_first_week,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,1637,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_first_week,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_first_week,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_first_week,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_first_week,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_first_week,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_first_week,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_first_week,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_first_week,hit_next_8_weeks,Int8,outcome,future; excluded from X,26227,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_first_week,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_first_week,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_first_week,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_labeled,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_labeled,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_labeled,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_labeled,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_labeled,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_labeled,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_labeled,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_labeled,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_labeled,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_labeled,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_labeled,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_labeled,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_labeled,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_labeled,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_labeled,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_labeled,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+ml_market_labeled,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+ml_market_labeled,key,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_labeled,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_labeled,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+ml_market_labeled,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+ml_market_labeled,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+ml_market_labeled,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+ml_market_labeled,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+ml_market_labeled,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+ml_market_labeled,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+ml_market_labeled,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",ms,duration
+ml_market_labeled,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_labeled,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_labeled,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_labeled,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_labeled,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_labeled,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_labeled,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_labeled,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_labeled,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_labeled,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_labeled,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_labeled,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_labeled,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_labeled,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_labeled,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+ml_market_labeled,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_labeled,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_labeled,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_labeled,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_labeled,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_labeled,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_labeled,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_labeled,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_labeled,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,76126,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_labeled,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_labeled,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_labeled,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_labeled,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_labeled,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_labeled,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_labeled,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_labeled,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_labeled,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_labeled,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_labeled,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_labeled,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_labeled,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_labeled,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_labeled,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,774,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_labeled,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_labeled,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_labeled,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_labeled,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_labeled,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_labeled,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_labeled,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_labeled,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_labeled,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_labeled,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_labeled,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_labeled,candidate_split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,candidate_split
+ml_market_labeled,split_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split_status
+ml_market_labeled,split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split
+ml_market_pending,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_pending,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_pending,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_pending,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_pending,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_pending,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_pending,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_pending,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_pending,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_pending,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_pending,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_pending,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_pending,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_pending,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_pending,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_pending,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+ml_market_pending,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+ml_market_pending,key,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_pending,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_pending,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+ml_market_pending,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+ml_market_pending,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+ml_market_pending,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+ml_market_pending,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+ml_market_pending,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+ml_market_pending,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+ml_market_pending,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",ms,duration
+ml_market_pending,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_pending,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_pending,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_pending,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_pending,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_pending,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_pending,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_pending,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_pending,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_pending,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_pending,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_pending,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_pending,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_pending,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_pending,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+ml_market_pending,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_pending,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_pending,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_pending,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_pending,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_pending,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_pending,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_pending,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_pending,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,8431,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_pending,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_pending,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_pending,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_pending,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_pending,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_pending,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_pending,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_pending,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_pending,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_pending,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_pending,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_pending,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_pending,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_pending,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_pending,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,18,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_pending,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_pending,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_pending,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_pending,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_pending,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_pending,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_pending,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_pending,hit_next_8_weeks,Int8,outcome,future; excluded from X,8431,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_pending,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_pending,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_pending,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_excluded,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_excluded,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_excluded,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_excluded,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_excluded,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_excluded,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_excluded,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_excluded,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_excluded,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_excluded,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_excluded,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_excluded,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_excluded,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_excluded,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_excluded,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_excluded,danceability,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,danceability
+ml_market_excluded,energy,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,energy
+ml_market_excluded,key,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_excluded,mode,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_excluded,loudness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",dB,loudness
+ml_market_excluded,speechiness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,speechiness
+ml_market_excluded,acousticness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,acousticness
+ml_market_excluded,instrumentalness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,instrumentalness
+ml_market_excluded,liveness,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,liveness
+ml_market_excluded,valence,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",0–1,valence
+ml_market_excluded,tempo,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",BPM,tempo
+ml_market_excluded,duration,float64,provenance,metadata/descriptive; not automatically usable in X,16,"track_id, chart_country",ms,duration
+ml_market_excluded,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_excluded,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_excluded,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_excluded,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_excluded,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_excluded,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_excluded,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_excluded,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_excluded,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_excluded,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_excluded,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_excluded,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_excluded,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_excluded,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_excluded,duration_min,float64,feature,t0; audio stability assumed,16,"track_id, chart_country",phút,duration_min
+ml_market_excluded,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_excluded,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_excluded,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_excluded,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_excluded,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_excluded,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_excluded,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_excluded,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_excluded,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,18637,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_excluded,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_excluded,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_excluded,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_excluded,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_excluded,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_excluded,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_excluded,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_excluded,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_excluded,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_excluded,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_excluded,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_excluded,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_excluded,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_excluded,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_excluded,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,845,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_excluded,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_excluded,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_excluded,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_excluded,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_excluded,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_excluded,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_excluded,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_excluded,hit_next_8_weeks,Int8,outcome,future; excluded from X,17796,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_excluded,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_excluded,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_excluded,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_train,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_train,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_train,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_train,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_train,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_train,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_train,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_train,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_train,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_train,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_train,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_train,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_train,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_train,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_train,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_train,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+ml_market_train,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+ml_market_train,key,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_train,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_train,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+ml_market_train,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+ml_market_train,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+ml_market_train,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+ml_market_train,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+ml_market_train,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+ml_market_train,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+ml_market_train,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",ms,duration
+ml_market_train,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_train,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_train,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_train,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_train,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_train,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_train,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_train,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_train,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_train,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_train,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_train,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_train,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_train,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_train,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+ml_market_train,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_train,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_train,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_train,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_train,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_train,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_train,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_train,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_train,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,35452,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_train,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_train,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_train,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_train,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_train,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_train,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_train,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_train,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_train,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_train,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_train,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_train,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_train,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_train,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_train,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,557,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_train,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_train,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_train,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_train,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_train,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_train,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_train,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_train,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_train,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_train,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_train,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_train,candidate_split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,candidate_split
+ml_market_train,split_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split_status
+ml_market_train,split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split
+ml_market_validation,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_validation,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_validation,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_validation,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_validation,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_validation,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_validation,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_validation,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_validation,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_validation,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_validation,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_validation,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_validation,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_validation,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_validation,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_validation,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+ml_market_validation,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+ml_market_validation,key,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_validation,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_validation,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+ml_market_validation,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+ml_market_validation,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+ml_market_validation,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+ml_market_validation,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+ml_market_validation,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+ml_market_validation,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+ml_market_validation,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",ms,duration
+ml_market_validation,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_validation,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_validation,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_validation,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_validation,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_validation,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_validation,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_validation,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_validation,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_validation,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_validation,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_validation,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_validation,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_validation,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_validation,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+ml_market_validation,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_validation,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_validation,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_validation,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_validation,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_validation,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_validation,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_validation,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_validation,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,6696,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_validation,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_validation,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_validation,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_validation,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_validation,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_validation,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_validation,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_validation,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_validation,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_validation,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_validation,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_validation,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_validation,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_validation,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_validation,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,117,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_validation,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_validation,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_validation,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_validation,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_validation,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_validation,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_validation,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_validation,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_validation,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_validation,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_validation,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_validation,candidate_split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,candidate_split
+ml_market_validation,split_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split_status
+ml_market_validation,split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split
+ml_market_test,uri,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,uri
+ml_market_test,rank,int16,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",vị trí 1–200,rank
+ml_market_test,artist_names,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_names
+ml_market_test,artists_num,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artists_num
+ml_market_test,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+ml_market_test,artist_id,object,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+ml_market_test,artist_genre,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,artist_genre
+ml_market_test,collab,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,collab
+ml_market_test,track_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,track_name
+ml_market_test,release_date,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,release_date
+ml_market_test,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+ml_market_test,previous_rank,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank
+ml_market_test,weeks_on_chart,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart
+ml_market_test,streams,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe trong chart,streams
+ml_market_test,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,week
+ml_market_test,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+ml_market_test,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+ml_market_test,key,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,key
+ml_market_test,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,mode
+ml_market_test,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+ml_market_test,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+ml_market_test,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+ml_market_test,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+ml_market_test,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+ml_market_test,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+ml_market_test,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+ml_market_test,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",ms,duration
+ml_market_test,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,country
+ml_market_test,region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,region
+ml_market_test,language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,language
+ml_market_test,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+ml_market_test,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,year
+ml_market_test,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,month
+ml_market_test,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+ml_market_test,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_region
+ml_market_test,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_language
+ml_market_test,slot_conflict_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,slot_conflict_join
+ml_market_test,t0_market,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,tuần đầu quan sát trong nguồn của đúng thị trường; không xác nhận debut
+ml_market_test,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+ml_market_test,streams_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",lượt nghe cùng thị trường tuần đầu,streams_first_week
+ml_market_test,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+ml_market_test,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+ml_market_test,source_first_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_first_week
+ml_market_test,source_last_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_last_week
+ml_market_test,observed_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_weeks
+ml_market_test,primary_market,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,primary_market
+ml_market_test,window_start,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_start
+ml_market_test,window_end,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_end
+ml_market_test,left_censored,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,left_censored
+ml_market_test,right_censored,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,right_censored
+ml_market_test,prediction_time,"datetime64[ns, UTC]",provenance,metadata/descriptive; not automatically usable in X,14607,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"timestamp công bố thực tế chưa có bằng chứng, giữ thiếu"
+ml_market_test,prediction_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"t0 UTC + 4 ngày, giả định công bố dùng để chia tập"
+ml_market_test,label_ready_time_proxy,"datetime64[us, UTC]",provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,"window_end UTC + 4 ngày, dùng purge theo cùng giả định"
+ml_market_test,time_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,time_availability_status
+ml_market_test,audio_availability_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,audio_availability_status
+ml_market_test,previous_rank_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,previous_rank_first_week
+ml_market_test,weeks_on_chart_first_week,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,weeks_on_chart_first_week
+ml_market_test,entry_history_uncertain,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,entry_history_uncertain
+ml_market_test,has_valid_first_week_audio,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_audio
+ml_market_test,has_valid_first_week_streams,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_first_week_streams
+ml_market_test,has_valid_features,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,has_valid_features
+ml_market_test,chart_streams_total,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total
+ml_market_test,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top200_complete
+ml_market_test,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,streams_total_complete
+ml_market_test,chart_streams_total_first_week,Int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,chart_streams_total_first_week
+ml_market_test,stream_share_first_week,Float64,optional_feature,t0; audio stability assumed,5,"track_id, chart_country",0–1; mẫu số chỉ dùng chart đủ Top 200,stream_share_first_week
+ml_market_test,followup_rows,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,followup_rows
+ml_market_test,observed_future_hit,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_future_hit
+ml_market_test,top50_complete_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,top50_complete_weeks
+ml_market_test,source_calendar_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,source_calendar_weeks
+ml_market_test,observed_chart_weeks,int64,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,observed_chart_weeks
+ml_market_test,window_complete,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,window_complete
+ml_market_test,label_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_eligible
+ml_market_test,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+ml_market_test,label_status,str,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,label_status
+ml_market_test,training_eligible,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,training_eligible
+ml_market_test,positive_evidence_in_incomplete_window,bool,outcome_audit,future/source coverage; excluded from X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,positive_evidence_in_incomplete_window
+ml_market_test,candidate_split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,candidate_split
+ml_market_test,split_status,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split_status
+ml_market_test,split,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,split
+track_week_performance_descriptive,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+track_week_performance_descriptive,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,week
+track_week_performance_descriptive,global_streams,float64,provenance,metadata/descriptive; not automatically usable in X,400628,"track_id, week",xem nguồn hoặc cấu hình trường,global_streams
+track_week_performance_descriptive,country_streams,float64,provenance,metadata/descriptive; not automatically usable in X,42801,"track_id, week",xem nguồn hoặc cấu hình trường,country_streams
+track_week_performance_descriptive,country_count,float64,provenance,metadata/descriptive; not automatically usable in X,42801,"track_id, week",xem nguồn hoặc cấu hình trường,country_count
+track_week_performance_descriptive,_merge,category,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,_merge
+track_week_performance_descriptive,streams_selected,int64,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,streams_selected
+track_week_performance_descriptive,stream_source,str,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,stream_source
+track_week_performance_descriptive,is_global_week,bool,provenance,metadata/descriptive; not automatically usable in X,0,"track_id, week",xem nguồn hoặc cấu hình trường,is_global_week
+track_performance_descriptive,track_id,str,id,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,ID Spotify của bài
+track_performance_descriptive,total_streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,lượt nghe; kiểm tra phạm vi bảng,total_streams
+track_performance_descriptive,nweek,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,nweek
+track_performance_descriptive,global_week_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,global_week_count
+track_performance_descriptive,first_chart_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,first_chart_week
+track_performance_descriptive,last_chart_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,last_chart_week
+track_performance_descriptive,country_week_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,country_week_count
+track_performance_descriptive,global_week_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,global_week_share
+track_performance_descriptive,stream_scope,str,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,phạm vi tổng streams ưu tiên Global theo bài-tuần; chỉ mô tả
+track_performance_descriptive,n_countries,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,n_countries
+track_performance_descriptive,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,peak_rank
+track_performance_descriptive,log_streams,float64,provenance,metadata/descriptive; not automatically usable in X,0,track_id,xem nguồn hoặc cấu hình trường,log_streams
+mart_audio_trend_weekly,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+mart_audio_trend_weekly,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,week
+mart_audio_trend_weekly,total_streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",lượt nghe; kiểm tra phạm vi bảng,total_streams
+mart_audio_trend_weekly,track_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,track_count
+mart_audio_trend_weekly,new_entries,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,new_entries
+mart_audio_trend_weekly,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,danceability
+mart_audio_trend_weekly,energy,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,energy
+mart_audio_trend_weekly,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,mode
+mart_audio_trend_weekly,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",dB,loudness
+mart_audio_trend_weekly,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,speechiness
+mart_audio_trend_weekly,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,acousticness
+mart_audio_trend_weekly,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,instrumentalness
+mart_audio_trend_weekly,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,liveness
+mart_audio_trend_weekly,valence,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",0–1,valence
+mart_audio_trend_weekly,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",BPM,tempo
+mart_audio_trend_weekly,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",ms,duration
+mart_audio_trend_weekly,danceability_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,danceability_weighted
+mart_audio_trend_weekly,energy_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,energy_weighted
+mart_audio_trend_weekly,mode_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,mode_weighted
+mart_audio_trend_weekly,loudness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,loudness_weighted
+mart_audio_trend_weekly,speechiness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,speechiness_weighted
+mart_audio_trend_weekly,acousticness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,acousticness_weighted
+mart_audio_trend_weekly,instrumentalness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,instrumentalness_weighted
+mart_audio_trend_weekly,liveness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,liveness_weighted
+mart_audio_trend_weekly,valence_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,valence_weighted
+mart_audio_trend_weekly,tempo_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,tempo_weighted
+mart_audio_trend_weekly,duration_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,duration_weighted
+mart_audio_trend_weekly,key_-1_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_-1_share
+mart_audio_trend_weekly,key_0_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_0_share
+mart_audio_trend_weekly,key_1_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_1_share
+mart_audio_trend_weekly,key_2_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_2_share
+mart_audio_trend_weekly,key_3_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_3_share
+mart_audio_trend_weekly,key_4_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_4_share
+mart_audio_trend_weekly,key_5_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_5_share
+mart_audio_trend_weekly,key_6_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_6_share
+mart_audio_trend_weekly,key_7_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_7_share
+mart_audio_trend_weekly,key_8_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_8_share
+mart_audio_trend_weekly,key_9_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_9_share
+mart_audio_trend_weekly,key_10_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_10_share
+mart_audio_trend_weekly,key_11_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,key_11_share
+mart_audio_trend_weekly,year,int32,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,year
+mart_audio_trend_weekly,month,int32,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,month
+mart_audio_trend_weekly,country,str,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,country
+mart_audio_trend_weekly,weekly_deaths,float64,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,weekly_deaths
+mart_audio_trend_weekly,observed_days,float64,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,observed_days
+mart_audio_trend_weekly,has_negative_adjustment,object,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,has_negative_adjustment
+mart_audio_trend_weekly,partial_week,object,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,partial_week
+mart_audio_trend_weekly,cumulative_deaths,float64,provenance,metadata/descriptive; not automatically usable in X,160,"chart_country, week",xem nguồn hoặc cấu hình trường,cumulative_deaths
+mart_audio_trend_weekly,covid_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,covid_join
+mart_audio_trend_weekly,covid_observed,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,covid_observed
+mart_audio_trend_weekly,covid_missing_reason,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,covid_missing_reason
+mart_audio_trend_weekly,rank_count,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,rank_count
+mart_audio_trend_weekly,top50_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,top50_complete
+mart_audio_trend_weekly,top200_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,top200_complete
+mart_audio_trend_weekly,streams_total_complete,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,streams_total_complete
+mart_audio_trend_weekly,audio_slots_removed,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, week",xem nguồn hoặc cấu hình trường,audio_slots_removed
+mart_country_year,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+mart_country_year,year,int16,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,year
+mart_country_year,total_streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",lượt nghe; kiểm tra phạm vi bảng,total_streams
+mart_country_year,track_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,track_count
+mart_country_year,n_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,n_weeks
+mart_country_year,slot_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,slot_count
+mart_country_year,danceability,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,danceability
+mart_country_year,energy,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,energy
+mart_country_year,mode,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,mode
+mart_country_year,loudness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",dB,loudness
+mart_country_year,speechiness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,speechiness
+mart_country_year,acousticness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,acousticness
+mart_country_year,instrumentalness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,instrumentalness
+mart_country_year,liveness,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,liveness
+mart_country_year,valence,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",0–1,valence
+mart_country_year,tempo,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",BPM,tempo
+mart_country_year,duration,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",ms,duration
+mart_country_year,danceability_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,danceability_weighted
+mart_country_year,energy_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,energy_weighted
+mart_country_year,mode_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,mode_weighted
+mart_country_year,loudness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,loudness_weighted
+mart_country_year,speechiness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,speechiness_weighted
+mart_country_year,acousticness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,acousticness_weighted
+mart_country_year,instrumentalness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,instrumentalness_weighted
+mart_country_year,liveness_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,liveness_weighted
+mart_country_year,valence_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,valence_weighted
+mart_country_year,tempo_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,tempo_weighted
+mart_country_year,duration_weighted,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,duration_weighted
+mart_country_year,key_-1_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_-1_share
+mart_country_year,key_0_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_0_share
+mart_country_year,key_1_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_1_share
+mart_country_year,key_2_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_2_share
+mart_country_year,key_3_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_3_share
+mart_country_year,key_4_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_4_share
+mart_country_year,key_5_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_5_share
+mart_country_year,key_6_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_6_share
+mart_country_year,key_7_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_7_share
+mart_country_year,key_8_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_8_share
+mart_country_year,key_9_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_9_share
+mart_country_year,key_10_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_10_share
+mart_country_year,key_11_share,float64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,key_11_share
+mart_country_year,country_name,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,country_name
+mart_country_year,country_code,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,country_code
+mart_country_year,wb_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,wb_region
+mart_country_year,wb_income_group,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,wb_income_group
+mart_country_year,metadata_source,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,metadata_source
+mart_country_year,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,chart_region
+mart_country_year,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,chart_language
+mart_country_year,n_weeks_observed,int64,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,n_weeks_observed
+mart_country_year,metadata_ambiguous,bool,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,metadata_ambiguous
+mart_country_year,value,float64,provenance,metadata/descriptive; not automatically usable in X,3,"chart_country, year",xem nguồn hoặc cấu hình trường,value
+mart_country_year,gdp_source_value,float64,provenance,metadata/descriptive; not automatically usable in X,3,"chart_country, year",chưa xác minh đơn vị snapshot,gdp_source_value
+mart_country_year,gdp_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,gdp_join
+mart_country_year,country,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,country
+mart_country_year,happiness_score,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_score
+mart_country_year,happiness_rank,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_rank
+mart_country_year,happiness_rank_source,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_rank_source
+mart_country_year,happiness_gdp,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_gdp
+mart_country_year,happiness_gdp_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_gdp_source_column
+mart_country_year,happiness_social,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_social
+mart_country_year,happiness_social_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_social_source_column
+mart_country_year,happiness_health,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_health
+mart_country_year,happiness_health_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_health_source_column
+mart_country_year,happiness_freedom,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_freedom
+mart_country_year,happiness_freedom_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_freedom_source_column
+mart_country_year,happiness_generosity,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_generosity
+mart_country_year,happiness_generosity_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_generosity_source_column
+mart_country_year,happiness_corruption,float64,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_corruption
+mart_country_year,happiness_corruption_source_column,str,provenance,metadata/descriptive; not automatically usable in X,1,"chart_country, year",xem nguồn hoặc cấu hình trường,happiness_corruption_source_column
+mart_country_year,whr_join,category,provenance,metadata/descriptive; not automatically usable in X,0,"chart_country, year",xem nguồn hoặc cấu hình trường,whr_join
+mart_artist_chart,artist_id,str,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,artist_id
+mart_artist_chart,chart_country,category,id,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+mart_artist_chart,artist_individual,str,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,artist_individual
+mart_artist_chart,total_streams,int64,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",lượt nghe; kiểm tra phạm vi bảng,total_streams
+mart_artist_chart,track_count,int64,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,track_count
+mart_artist_chart,n_weeks,int64,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,n_weeks
+mart_artist_chart,peak_rank,int64,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,peak_rank
+mart_artist_chart,first_chart_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,first_chart_week
+mart_artist_chart,last_chart_week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,last_chart_week
+mart_artist_chart,streams_credit_policy,str,provenance,metadata/descriptive; not automatically usable in X,0,"artist_id, chart_country",xem nguồn hoặc cấu hình trường,streams_credit_policy
+country_lookup,chart_country,str,id,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+country_lookup,country_name,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,country_name
+country_lookup,country_code,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,country_code
+country_lookup,wb_region,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,wb_region
+country_lookup,wb_income_group,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,wb_income_group
+country_lookup,metadata_source,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,metadata_source
+country_lookup,chart_region,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,chart_region
+country_lookup,chart_language,str,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,chart_language
+country_lookup,n_weeks_observed,int64,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,n_weeks_observed
+country_lookup,metadata_ambiguous,bool,provenance,metadata/descriptive; not automatically usable in X,0,chart_country,xem nguồn hoặc cấu hình trường,metadata_ambiguous
+covid_weekly,country,str,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,country
+covid_weekly,week,datetime64[us],provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,week
+covid_weekly,weekly_deaths,float64,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,weekly_deaths
+covid_weekly,observed_days,int64,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,observed_days
+covid_weekly,has_negative_adjustment,bool,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,has_negative_adjustment
+covid_weekly,partial_week,bool,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,partial_week
+covid_weekly,cumulative_deaths,float64,provenance,metadata/descriptive; not automatically usable in X,0,"country, week",xem nguồn hoặc cấu hình trường,cumulative_deaths
+X_train,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+X_train,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+X_train,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+X_train,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+X_train,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+X_train,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+X_train,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+X_train,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+X_train,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+X_train,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+X_train,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+X_train,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+X_train,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+X_train,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+y_train,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+y_train,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+y_train,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+X_validation,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+X_validation,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+X_validation,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+X_validation,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+X_validation,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+X_validation,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+X_validation,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+X_validation,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+X_validation,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+X_validation,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+X_validation,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+X_validation,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+X_validation,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+X_validation,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+y_validation,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+y_validation,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+y_validation,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"
+X_test,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+X_test,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+X_test,danceability,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,danceability
+X_test,energy,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,energy
+X_test,loudness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",dB,loudness
+X_test,speechiness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,speechiness
+X_test,acousticness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,acousticness
+X_test,instrumentalness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,instrumentalness
+X_test,liveness,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,liveness
+X_test,valence,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",0–1,valence
+X_test,tempo,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",BPM,tempo
+X_test,duration_min,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",phút,duration_min
+X_test,rank_first_week,int16,feature,t0; audio stability assumed,0,"track_id, chart_country",vị trí 1–200,hạng ở t0 của chính thị trường
+X_test,log_streams_first_week,float64,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ln(1 + streams_first_week)
+y_test,track_id,object,id,metadata/descriptive; not automatically usable in X,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,ID Spotify của bài
+y_test,chart_country,str,feature,t0; audio stability assumed,0,"track_id, chart_country",xem nguồn hoặc cấu hình trường,thị trường chart; Global là thị trường riêng
+y_test,hit_next_8_weeks,Int8,outcome,future; excluded from X,0,"track_id, chart_country",0/1 hoặc thiếu,"có rank 1–50 trong t0+7 đến t0+56 ngày, chỉ gán khi đủ cửa sổ và không ở biên"

@@ -1,0 +1,10 @@
+﻿step,input,output,grain,check
+làm sạch chart,CSV chart,charts_clean,bài–nghệ sĩ–thị trường–tuần,"kiểu, miền giá trị, lý do cách ly, bảo toàn số dòng"
+lịch độc lập audio,chart trước lọc audio,chart_slots_observed,thị trường–tuần–rank,"track và streams nhất quán, khóa duy nhất"
+calendar thị trường,slot quan sát,market_week_quality,thị trường–tuần,"hạng thiếu, tuần mất toàn bộ, Top 50/200 đầy đủ"
+lấy tuần đầu,lịch quan sát,market_first_observed,bài–thị trường,"t0 min, X tuần đầu, cờ biên, timestamp proxy"
+theo dõi tương lai,tuần đầu và calendar,market_followup_grid,bài–thị trường–horizon,đúng 8 tuần lịch; không tính t0 hoặc thị trường khác
+gán nhãn,bằng chứng cửa sổ,ml_market_labeled/pending/excluded,bài–thị trường,chỉ nhãn chính khi đủ 8 tuần; pending giữ thiếu
+chia tập,cohort đủ điều kiện,"X/y train, validation, test",bài–thị trường,"thứ tự thời gian, purge 8 tuần, không chung track_id"
+mart EDA,slot sạch và GDP/WHR/COVID,mart tuần/năm/nghệ sĩ,theo từng mart,"join có validate, khóa duy nhất, đối chiếu streams"
+xuất dữ liệu,DataFrame chuẩn hóa,Parquet và quality CSV,giữ grain,"đọc lại từng cột, schema, SHA256 nguồn"

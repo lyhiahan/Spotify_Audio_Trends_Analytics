@@ -1,0 +1,36 @@
+{
+  "grain": [
+    "track_id",
+    "chart_country"
+  ],
+  "features": [
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_min",
+    "rank_first_week",
+    "log_streams_first_week",
+    "chart_country"
+  ],
+  "optional_features": [
+    "stream_share_first_week"
+  ],
+  "target": "hit_next_8_weeks",
+  "horizon_weeks": 8,
+  "threshold_rank": 50,
+  "validation_start_t0": "2021-11-04 00:00:00",
+  "test_start_t0": "2022-02-03 00:00:00",
+  "publication_lag_days_proxy": 4,
+  "actual_publication_timestamp_known": false,
+  "primary_market_minimum_observed_weeks": 75,
+  "split_policy": "chronological + label maturity purge + track-disjoint retained sets",
+  "audio_as_of_t0_verified": false,
+  "preprocessing_fit": "03_model train only",
+  "source_selection": "tracks already observed in Top 200; first observed is not verified debut"
+}
