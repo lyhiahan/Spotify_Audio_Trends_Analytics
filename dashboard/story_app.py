@@ -52,7 +52,7 @@ def build_story_canvas(source_stamp):
 
 try:
     source_stamp = tuple((Path(__file__).parent / name).stat().st_mtime_ns
-                         for name in ['story_canvas.py', 'story_canvas.html', 'story_interactions.js', 'story_data.py', 'story_analysis.py', '../notebooks/04_story.ipynb', '../data/processed/tracks_dimension.csv', '../data/processed/charts_clean.parquet', '../data/processed/mart_artist_chart.parquet', '../data/processed/mart_country_year.parquet', '../data/processed/mart_audio_trend_weekly.parquet', '../data/processed/covid_weekly_clean.csv'])
+                         for name in ['story_canvas.py', 'story_canvas.html', 'story_interactions.js', 'story_data.py', 'story_analysis.py', 'eda_data.py', '../notebooks/02_eda.ipynb', '../notebooks/04_story.ipynb', '../data/processed/tracks_dimension.csv', '../data/processed/charts_clean.parquet', '../data/processed/mart_artist_chart.parquet', '../data/processed/mart_country_year.parquet', '../data/processed/mart_audio_trend_weekly.parquet', '../data/processed/covid_weekly_clean.csv'])
     components.html(build_story_canvas(source_stamp), height=1000, scrolling=False)
 except Exception as exc:
     st.error(f"Không thể dựng Story: {exc}")

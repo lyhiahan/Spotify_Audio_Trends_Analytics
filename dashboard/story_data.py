@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 from story_analysis import track_analysis
+from eda_data import opening_summary
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data'/'processed'
 FEATURES=['danceability','energy','valence','acousticness','speechiness','instrumentalness','liveness','loudness','tempo']
@@ -58,5 +59,5 @@ def load_bundle():
     weekly.loc[~weekly.week.between('2020-01-01','2022-07-31'),'weekly_deaths']=float('nan')
     weekly['date']=weekly.week.dt.strftime('%Y-%m-%d')
     cols=['date','total_streams','track_count','duration_weighted']+[f+'_weighted' for f in FEATURES]+['weekly_deaths']
-    return dict(analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),
+    return dict(eda=opening_summary(tracks,charts),analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),
                 source=dict(notebook='04_story.ipynb',chart_rows=len(charts),chart_slots=len(slots),covid_weeks=int(weekly.weekly_deaths.notna().sum()),countries_by_year=countries.groupby('year').size().to_dict()))

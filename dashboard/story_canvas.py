@@ -17,6 +17,9 @@ REGION_SHORT = {
     'Sub-Saharan Africa': 'Châu Phi hạ Sahara'
 }
 LABELS = {
+    'eda_distribution': 'Phân phối đặc trưng âm thanh · mỗi bài một lần',
+    'eda_correlation': 'Tương quan Spearman · 10 đặc trưng',
+    'eda_rank': 'Hạng tuần đầu và khả năng đạt Top 50 · chỉ Train',
     'hit_heatmap': 'Đặc trưng âm thanh giữa các nhóm thứ hạng',
     'genre_box': 'So sánh đặc trưng âm thanh giữa các thể loại',
     'artist_tree': 'Lượt nghe ghi nhận cho 80 nghệ sĩ dẫn đầu',
@@ -32,6 +35,13 @@ LABELS = {
 
 def workbook():
     specs = [
+        (
+            'overview', 'Cái nhìn về dữ liệu',
+            'Cái nhìn về dữ liệu',
+            'Bốn hình tĩnh từ EDA: phân phối âm thanh, tương quan, nhãn Train và xu hướng theo tuần.',
+            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_labels', 'eda_static_trend'],
+            'Audio: mỗi track_id một lần trên toàn bộ mẫu chart. Nhãn: chỉ Train Global; Top 50 ở t0+7 đến t0+56 ngày, đủ tám tuần quan sát. Không suy ra quan hệ nhân quả.'
+        ),
         (
             'hits',
             'Hồ sơ âm thanh',
@@ -77,7 +87,7 @@ def workbook():
                 year=2021,
                 fromyear=2020 if key == 'hits' else 2017,
                 toyear=2022,
-                feature='danceability' if key in ['hits', 'artists'] else 'acousticness',
+                feature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',
                 boxfeature='energy',
                 region='Tất cả',
                 country='VNM',
@@ -91,10 +101,14 @@ def workbook():
                 weeks=[]
             )
         ))
-    return dict(version=5, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
+    return dict(version=6, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
 
 def data_bundle():
-    return dict(workbook=workbook(), region_short=REGION_SHORT, **importlib.reload(story_data).load_bundle())
+    from eda_data import notebook_figures
+    figures = notebook_figures()
+    book = workbook()
+    book['worksheets'].update({key: value['title'] for key, value in figures.items()})
+    return dict(workbook=book, region_short=REGION_SHORT, eda_figures=figures, **importlib.reload(story_data).load_bundle())
 
 def canvas_html():
     encoded = json.dumps(data_bundle(), ensure_ascii=False, allow_nan=False).replace('</', '<\\/')
