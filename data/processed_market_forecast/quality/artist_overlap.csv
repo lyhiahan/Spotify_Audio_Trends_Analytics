@@ -1,4 +1,0 @@
-﻿left,right,overlap_artists,policy
-train,validation,1299,diagnostic only; primary split is temporal and track-disjoint
-train,test,2339,diagnostic only; primary split is temporal and track-disjoint
-validation,test,1012,diagnostic only; primary split is temporal and track-disjoint
