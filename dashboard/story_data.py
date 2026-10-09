@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from story_analysis import track_analysis
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data'/'processed'
 FEATURES=['danceability','energy','valence','acousticness','speechiness','instrumentalness','liveness','loudness','tempo']
@@ -12,29 +13,10 @@ def records(df):
     return json.loads(df.to_json(orient='values',date_format='iso',double_precision=8))
 
 def prior_analysis(charts, index):
-    g=charts[charts.chart_country.eq('Global')].dropna(subset=['artist_id','track_id','week']).copy()
-    g['week']=pd.to_datetime(g.week)
-    g=g.drop_duplicates(['artist_id','track_id','week'])
-    first=g.groupby(['artist_id','track_id'],observed=True).week.min().reset_index()
-    new=first.groupby(['artist_id','week'],observed=True).size()
-    weekly=g.groupby(['artist_id','week'],observed=True).agg(S=('streams','sum'),R=('rank','min'))
-    weekly['N']=new.reindex(weekly.index).fillna(0); weekly['W']=1
-    grid=pd.MultiIndex.from_product([g.artist_id.unique(),sorted(g.week.unique())],names=['artist_id','week'])
-    h=weekly.reindex(grid); h[['S','N','W']]=h[['S','N','W']].fillna(0); h['R']=h.R.fillna(201)
-    h[['S','N','W']]=h.groupby(level=0)[['S','N','W']].cumsum(); h['R']=h.groupby(level=0).R.cummin()
-    h=h.groupby(level=0).shift().reset_index(); h[['S','N','W']]=h[['S','N','W']].fillna(0)
-    active=h.W.gt(0); logs=np.log1p(h.S).where(active)
-    low=logs.groupby(h.week).transform('min'); high=logs.groupby(h.week).transform('max')
-    caps={c:h[c].where(active).groupby(h.week).transform(lambda v:np.ceil(v.quantile(.95))).clip(lower=1) for c in ['N','W']}
-    h['prior']=(40*((logs-low)/(high-low).replace(0,np.nan)).fillna(0).clip(0,1)+25*(h.N/caps['N']).fillna(0).clip(0,1)+20*(h.W/caps['W']).fillna(0).clip(0,1)+np.where(h.R.between(1,200),15*(200-h.R)/199,0)).round(1)
-    entries=g.groupby('track_id',observed=True).week.min().rename('entry').reset_index()
-    slots=g.drop_duplicates(['track_id','week']).merge(entries,on='track_id',validate='many_to_one')
-    streams=slots[slots.week.lt(slots.entry+pd.Timedelta(weeks=8))].groupby('track_id',observed=True).streams.sum().rename('streams_8w')
-    t=pd.read_parquet(DATA/'ml_tracks.parquet').drop_duplicates('track_id').merge(entries,on='track_id',validate='one_to_one').merge(streams,on='track_id',validate='one_to_one')
-    t=t.merge(h[['artist_id','week','prior']],left_on=['artist_id','entry'],right_on=['artist_id','week'],how='left',validate='many_to_one')
-    t=t[t.entry.ge(g.week.min()+pd.Timedelta(weeks=52)) & (t.entry+pd.Timedelta(weeks=7)).le(g.week.max())].dropna(subset=FEATURES+['prior','streams_8w'])
-    t['i']=t.track_id.map(index); t['date']=t.entry.dt.strftime('%Y-%m-%d')
-    return records(t.dropna(subset=['i'])[['i','date','prior','streams_8w','artist_id']])
+    t=track_analysis(charts,pd.read_csv(DATA/'tracks_dimension.csv'))
+    t['i']=t.track_id.map(index)
+    t['date']=t.first_global_week.dt.strftime('%Y-%m-%d')
+    return records(t.dropna(subset=['i'])[['i','date','artist_popularity_prior','streams_first_8w','artist_id']])
 
 def load_bundle():
     tracks=pd.read_csv(DATA/'tracks_dimension.csv').drop_duplicates('track_id').reset_index(drop=True)
@@ -44,7 +26,7 @@ def load_bundle():
     slots['month']=pd.to_datetime(slots.week).dt.month
     slots['band']=pd.cut(slots['rank'],[0,10,50,100,200],labels=False)
     index={key:i for i,key in enumerate(tracks.track_id)}
-    streams=slots.groupby(['track_id','year'],observed=True).streams.sum()
+    streams=slots[slots.chart_country.eq('Global')].groupby(['track_id','year'],observed=True).streams.sum()
     by_track={}
     for (track,year),value in streams.items():
         by_track.setdefault(track,{})[str(int(year))]=int(value)

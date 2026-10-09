@@ -1,11 +1,11 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
-const bundle=JSON.parse(execFileSync('python',['-c',"import sys,json; sys.path.insert(0,'dashboard'); import story_canvas; print(json.dumps(story_canvas.data_bundle()))"],{encoding:'utf8',maxBuffer:30*1024*1024}));
+const bundle=JSON.parse(execFileSync('python',['-c',"import sys,json,pandas as pd; sys.path.insert(0,'dashboard'); import story_canvas; b=story_canvas.data_bundle(); b['_test_corr']=pd.DataFrame([[*b['tracks'][r[0]][5:14],r[2],r[3]] for r in b['analysis']]).corr(method='spearman').values.tolist(); print(json.dumps(b))"],{encoding:'utf8',maxBuffer:30*1024*1024}));
 const element=()=>({replaceChildren(){},append(){},style:{}}),elements=new Map();
-const ctx=vm.createContext({bundle,console,localStorage:{getItem(){return null}},document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element}});
-vm.runInContext(fs.readFileSync('dashboard/story_interactions.js','utf8').split('const hints=')[0],ctx);
+const ctx=vm.createContext({bundle,console,ResizeObserver:class {observe(){}},localStorage:{getItem(){return null}},document:{querySelectorAll(){return []},addEventListener(){},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element}});
+vm.runInContext(fs.readFileSync('dashboard/story_interactions.js','utf8').replace(/\ngo\(0\);\s*$/, '\n'),ctx);
 const run=s=>vm.runInContext(s,ctx);
 run('state=defaults({fromyear:2017,toyear:2022});current=buildModel()');
-const collab=run('collabStats()');assert.equal(collab.reduce((s,r)=>s+r.count,0),39190);assert.ok(collab[1].mean/collab[0].mean<1.5,'Artist-credit duplicates must not inflate Collab to three times Solo');
+const collab=run('collabStats()');assert.equal(collab.reduce((s,r)=>s+r.count,0),new Set(bundle.global_rows.map(r=>r[0])).size);assert.ok(collab[1].mean/collab[0].mean<1.5,'Artist-credit duplicates must not inflate Collab to three times Solo');
 assert.ok(collab.every(r=>r.charted>0&&r.mean>0));
 const raw=run('hitStats()');
 for(let j=0;j<9;j++){
@@ -22,4 +22,10 @@ run("state.weight='weighted';current=buildModel()");assert.equal(run('figure("ra
 run("state=defaults({month:'12'});current=buildModel()");assert.ok(run('current.covid.every(r=>Number(r[0].slice(5,7))===12)'));const covid=run('figure("covid")');assert.ok(covid.data[1].y.includes(null),'Filtered months must not draw lines across missing months');
 const counts=run('figure("seasonal").data[0].customdata');assert.equal(counts.reduce((s,n)=>s+n,0),bundle.weekly.length);
 run("state=defaults({fromyear:2022,toyear:2022,genre:'nonexistent'});current=buildModel()");assert.equal(run('figure("genre_box").data.length'),0);assert.ok(run('hitStats().z.every(r=>r.every(v=>v===null))'));
-console.log('Passed: de-duplicated Collab, nine z-scores, hierarchical filters, duration drill-down, consistent radar, month linking and empty populations.');
+run('position=1;state=defaults({fromyear:2017,toyear:2022});current=buildModel()');
+const correlation=run('correlationStats()');assert.equal(correlation.n,bundle.analysis.length);
+for(let i=0;i<11;i++)for(let j=0;j<11;j++)assert.ok(Math.abs(correlation.z[i][j]-bundle._test_corr[i][j])<1e-10,'Spearman must match pandas');
+assert.equal(run('collabStats().reduce((s,r)=>s+r.count,0)'),bundle.analysis.length);
+assert.ok(run('artistStory().every(r=>typeof r[1]==="string")'));
+run("state.genre='nonexistent';current=buildModel()");assert.equal(run('figure("correlation").data.length'),0);assert.ok(run('artistStory().every(r=>typeof r[1]==="string")'));
+console.log('Passed: de-duplicated Global Collab, nine z-scores, hierarchical filters, duration drill-down, consistent radar, month linking, empty populations and Spearman parity with pandas.');

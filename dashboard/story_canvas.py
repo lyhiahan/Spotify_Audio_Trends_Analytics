@@ -51,7 +51,7 @@ def workbook():
             'geography',
             'Bản sắc địa lý và ADN âm nhạc',
             'Hồ sơ âm thanh khác nhau thế nào giữa các quốc gia?',
-            'Mỹ Latinh sôi động và giàu năng lượng; Đông Nam Á ưa chuộng giai điệu mộc mạc; Việt Nam và Nhật Bản thể hiện hai bản sắc âm học đối lập.',
+            'Đối chiếu hồ sơ âm thanh của các BXH quốc gia trên cùng năm và cùng phương pháp tổng hợp.',
             ['map', 'radar'],
             'Bản đồ và Radar đồng bộ phương pháp tính: theo luồng nghe hoặc trung bình thường. Năm phân tích chuẩn: 2021.'
         ),
@@ -59,7 +59,7 @@ def workbook():
             'time',
             'Chu kỳ thời gian và đại dịch',
             'Xu hướng dài hạn, mùa vụ và biến động trong đại dịch',
-            'Tháng 12 tăng vọt tính mộc mạc theo mùa lễ hội; trong đại dịch, âm nhạc có xu hướng êm dịu hơn nhưng vẫn giữ sắc thái tích cực.',
+            'Phân biệt thay đổi thời lượng, chu kỳ tháng và đồng biến động với tử vong COVID-19.',
             ['duration', 'seasonal', 'covid'],
             'Phân biệt xu hướng thời lượng, mùa vụ và đồng biến động COVID. Số tử vong không trực tiếp đo phong tỏa hay tâm lý người nghe.'
         )
