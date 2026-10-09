@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1710" viewBox="0 0 1000 1710" role="img" aria-labelledby="title desc">
+  <title id="title">Quy trình xây dựng mô hình dự báo Global Top 50</title>
+  <desc id="desc">Mười một bước từ dữ liệu CSV đến dự báo bằng Hồi quy Logistic, chọn ngưỡng trên Validation và đánh giá trên Test.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#57636b"/></marker>
+    <style>
+      text { font-family: 'Times New Roman', serif; fill: #172126; }
+      .box { fill: #ffffff; stroke: #9aa5ab; stroke-width: 1.7; }
+      .label { font-size: 27px; text-anchor: middle; }
+      .number { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #ffffff; text-anchor: middle; }
+      .link { stroke: #57636b; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1000" height="1710" fill="#ffffff"/>
+  <text x="500" y="48" text-anchor="middle" font-size="31" font-weight="bold">QUY TRÌNH MÔ HÌNH DỰ BÁO</text>
+  <text x="500" y="82" text-anchor="middle" font-size="24">Dự báo đạt Global Top 50 trong 8 tuần tiếp theo</text>
+
+  <g transform="translate(90 112)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">1</text>
+    <text class="label" x="442" y="61">CSV gốc của dự án</text>
+  </g>
+  <path class="link" d="M500 220 V246"/>
+  <g transform="translate(90 252)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">2</text>
+    <text class="label" x="442" y="43">Tiền xử lý dữ liệu</text>
+    <text class="label" x="442" y="77">Tạo bảng charts_clean.parquet</text>
+  </g>
+  <path class="link" d="M500 360 V386"/>
+  <g transform="translate(90 392)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">3</text>
+    <text class="label" x="442" y="43">Lọc bảng xếp hạng Global</text>
+    <text class="label" x="442" y="77">Kiểm tra khóa bài hát theo tuần</text>
+  </g>
+  <path class="link" d="M500 500 V526"/>
+  <g transform="translate(90 532)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">4</text>
+    <text class="label" x="442" y="43">Lấy tuần đầu được quan sát</text>
+    <text class="label" x="442" y="77">của mỗi bài hát</text>
+  </g>
+  <path class="link" d="M500 640 V666"/>
+  <g transform="translate(90 672)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">5</text>
+    <text class="label" x="442" y="43">Tạo nhãn từ 8 tuần lịch tiếp theo</text>
+    <text class="label" x="442" y="77">Không tính tuần đầu được quan sát</text>
+  </g>
+  <path class="link" d="M500 780 V806"/>
+  <g transform="translate(90 812)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#376d77"/><text class="number" x="44" y="59">6</text>
+    <text class="label" x="442" y="43">Loại bài ở biên trái dữ liệu</text>
+    <text class="label" x="442" y="77">và mẫu chưa xác định nhãn</text>
+  </g>
+  <path class="link" d="M500 920 V946"/>
+  <g transform="translate(90 952)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#586775"/><text class="number" x="44" y="59">7</text>
+    <text class="label" x="442" y="43">Chia Train / Validation / Test theo thời gian</text>
+    <text class="label" x="442" y="77">Loại mẫu chồng lấn cửa sổ nhãn tại ranh giới</text>
+  </g>
+  <path class="link" d="M500 1060 V1086"/>
+  <g transform="translate(90 1092)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#586775"/><text class="number" x="44" y="59">8</text>
+    <text class="label" x="442" y="43">Học imputer, scaler và Hồi quy Logistic</text>
+    <text class="label" x="442" y="77">Chỉ sử dụng tập Train</text>
+  </g>
+  <path class="link" d="M500 1200 V1226"/>
+  <g transform="translate(90 1232)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#586775"/><text class="number" x="44" y="59">9</text>
+    <text class="label" x="442" y="43">Chọn ngưỡng trên Validation</text>
+    <text class="label" x="442" y="77">Khóa mô hình và ngưỡng trước khi đánh giá Test</text>
+  </g>
+  <path class="link" d="M500 1340 V1366"/>
+  <g transform="translate(90 1372)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#32724c"/><text class="number" x="44" y="59">10</text>
+    <text class="label" x="442" y="43">Đánh giá trên tập Test</text>
+    <text class="label" x="442" y="77">Phân tích theo nhóm hạng tuần đầu</text>
+  </g>
+  <path class="link" d="M500 1480 V1506"/>
+  <g transform="translate(90 1512)">
+    <rect class="box" width="820" height="104" rx="6"/>
+    <circle cx="44" cy="52" r="23" fill="#32724c"/><text class="number" x="44" y="59">11</text>
+    <text class="label" x="442" y="43">Diễn giải kết quả và dự báo</text>
+    <text class="label" x="442" y="77">từ đặc trưng âm thanh và thông tin tuần đầu</text>
+  </g>
+</svg>
