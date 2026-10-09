@@ -391,7 +391,7 @@ function figure(key){
    const featLabels={log_streams_first_week:'Log streams tuần 1',danceability:'Danceability (Dễ nhảy)',valence:'Valence (Tích cực)',loudness:'Loudness (Âm lượng)',duration_min:'Thời lượng (Phút)',energy:'Energy (Năng lượng)',acousticness:'Acousticness (Mộc mạc)',tempo:'Tempo (Nhịp độ)',instrumentalness:'Instrumentalness (Khí nhạc)',liveness:'Liveness (Sống động)',speechiness:'Speechiness (Lời nói)',rank_first_week:'Thứ hạng tuần 1 (Nghịch)'};
    const y=sorted.map(r=>featLabels[r.feature]||r.feature),x=sorted.map(r=>r.coefficient);
    fig.data=[{type:'bar',orientation:'h',y:y,x:x,text:sorted.map(r=>`OR = ${Number(r.odds_ratio).toFixed(2)} (β = ${r.coefficient>0?'+':''}${Number(r.coefficient).toFixed(2)})`),textposition:'outside',marker:{color:x.map(v=>v>=0?'#3B82F6':'#EF4444')},customdata:sorted.map(r=>[r.feature,r.odds_ratio,r.coefficient]),hovertemplate:'<b>%{y}</b><br>Hệ số β: <b>%{customdata[2]:+.3f}</b><br>Odds Ratio (e^β): <b>%{customdata[1]:.2f}</b><extra></extra>'}];
-   fig.layout={margin:{l:175,r:115,t:15,b:40},xaxis:{title:{text:'Hệ số hồi quy chuẩn hóa (Standardized β)',font:{size:11}},tickfont:{size:10},range:[-0.85,1.4]},yaxis:{autorange:'reversed',tickfont:{size:11}},shapes:[{type:'line',xref:'x',yref:'paper',x0:0,x1:0,y0:0,y1:1,line:{color:'#94A3B8',width:1.5}}]};
+   fig.layout={margin:{l:165,r:25,t:15,b:40},xaxis:{title:{text:'Hệ số hồi quy chuẩn hóa (Standardized β)',font:{size:11}},tickfont:{size:10},range:[-0.7,1.8]},yaxis:{autorange:'reversed',tickfont:{size:11}},shapes:[{type:'line',xref:'x',yref:'paper',x0:0,x1:0,y0:0,y1:1,line:{color:'#94A3B8',width:1.5}}]};
  }
  return fig;
 }
