@@ -17,6 +17,9 @@ REGION_SHORT = {
     'Sub-Saharan Africa': 'Châu Phi hạ Sahara'
 }
 LABELS = {
+    'eda_distribution': 'Phân phối đặc trưng âm thanh · mỗi bài một lần',
+    'eda_correlation': 'Tương quan Spearman · 10 đặc trưng',
+    'eda_rank': 'Hạng tuần đầu và khả năng đạt Top 50 · chỉ Train',
     'hit_heatmap': 'Đặc trưng âm thanh giữa các nhóm thứ hạng',
     'genre_box': 'So sánh đặc trưng âm thanh giữa các thể loại',
     'artist_tree': 'Lượt nghe ghi nhận cho 80 nghệ sĩ dẫn đầu',
@@ -37,6 +40,13 @@ LABELS = {
 def workbook():
     specs = [
         (
+            'overview', 'Cái nhìn về dữ liệu',
+            'Cái nhìn về dữ liệu',
+            'Bốn hình tĩnh từ EDA: phân phối âm thanh, tương quan, nhãn Train và xu hướng theo tuần.',
+            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_labels', 'eda_static_trend'],
+            'Audio: mỗi track_id một lần trên toàn bộ mẫu chart. Nhãn: chỉ Train Global; Top 50 ở t0+7 đến t0+56 ngày, đủ tám tuần quan sát. Không suy ra quan hệ nhân quả.'
+        ),
+        (
             'hits',
             'Hồ sơ âm thanh',
             'Bài hát thịnh hành có hồ sơ âm thanh như thế nào?',
@@ -55,7 +65,7 @@ def workbook():
             'geography',
             'Bản sắc địa lý và ADN âm nhạc',
             'Hồ sơ âm thanh khác nhau thế nào giữa các quốc gia?',
-            'Mỹ Latinh sôi động và giàu năng lượng; Đông Nam Á ưa chuộng giai điệu mộc mạc; Việt Nam và Nhật Bản thể hiện hai bản sắc âm học đối lập.',
+            'Đối chiếu hồ sơ âm thanh của các BXH quốc gia trên cùng năm và cùng phương pháp tổng hợp.',
             ['map', 'radar'],
             'Bản đồ và Radar đồng bộ phương pháp tính: theo luồng nghe hoặc trung bình thường. Năm phân tích chuẩn: 2021.'
         ),
@@ -63,7 +73,7 @@ def workbook():
             'time',
             'Chu kỳ thời gian và đại dịch',
             'Xu hướng dài hạn, mùa vụ và biến động trong đại dịch',
-            'Tháng 12 tăng vọt tính mộc mạc theo mùa lễ hội; trong đại dịch, âm nhạc có xu hướng êm dịu hơn nhưng vẫn giữ sắc thái tích cực.',
+            'Phân biệt thay đổi thời lượng, chu kỳ tháng và đồng biến động với tử vong COVID-19.',
             ['duration', 'seasonal', 'covid'],
             'Phân biệt xu hướng thời lượng, mùa vụ và đồng biến động COVID. Số tử vong không trực tiếp đo phong tỏa hay tâm lý người nghe.'
         ),
@@ -89,7 +99,7 @@ def workbook():
                 year=2021,
                 fromyear=2020 if key == 'hits' else 2017,
                 toyear=2022,
-                feature='danceability' if key in ['hits', 'artists'] else 'acousticness',
+                feature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',
                 boxfeature='energy',
                 region='Tất cả',
                 country='VNM',
@@ -109,7 +119,11 @@ def workbook():
     return dict(version=6, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
 
 def data_bundle():
-    return dict(workbook=workbook(), region_short=REGION_SHORT, **importlib.reload(story_data).load_bundle())
+    from eda_data import notebook_figures
+    figures = notebook_figures()
+    book = workbook()
+    book['worksheets'].update({key: value['title'] for key, value in figures.items()})
+    return dict(workbook=book, region_short=REGION_SHORT, eda_figures=figures, **importlib.reload(story_data).load_bundle())
 
 def canvas_html():
     encoded = json.dumps(data_bundle(), ensure_ascii=False, allow_nan=False).replace('</', '<\\/')

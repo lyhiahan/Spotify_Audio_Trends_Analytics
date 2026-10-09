@@ -1,5 +1,5 @@
 # 🎵 SPOTIFY AUDIO TRENDS & ANALYTICS
-## Nghiên cứu và trực quan hóa các đặc trưng âm thanh và dự đoán xu hướng bài hát thịnh hành trên Spotify
+## Nghiên cứu - trực quan hóa các đặc trưng âm thanh và dự đoán xu hướng bài hát thịnh hành trên Spotify.
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
@@ -45,15 +45,15 @@ PROJECT/
 │   │   ├── spotify-tracks-dataset.csv  # 114,000 dòng × 22 cột (Đặc trưng âm thanh & thể loại)
 │   │   └── spotify-weekly-charts.csv   # 1,787,999 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
 │   │
-│   └── processed/                      # Hệ thống Data Marts tối ưu hóa định dạng Parquet/CSV
-│       ├── mart_country_year.parquet   # Dữ liệu âm học & kinh tế tổng hợp 73 quốc gia (2021–2022)
-│       ├── mart_audio_trend_weekly.parquet # Chuỗi thời gian 290 tuần xu hướng âm học toàn cầu
-│       ├── mart_artist_chart.parquet   # Thống kê thị phần & lượt stream theo nghệ sĩ và thể loại
-│       ├── charts_clean.parquet        # Dữ liệu Top 200 tuần đã làm sạch và chuẩn hóa
-│       ├── tracks_dimension.csv        # 39,190 bài hát (đặc trưng âm thanh & số lượng nghệ sĩ hợp tác)
+│   └── processed/                      # Hệ sinh thái dữ liệu sạch và Data Marts chuẩn mực
+│       ├── charts_clean.parquet        # Bảng sự kiện Top 200 làm sạch (1.78M dòng × 34 cột)
+│       ├── tracks_dimension.csv        # 39,190 bài hát (12 đặc trưng âm thanh & metadata)
+│       ├── mart_audio_trend_weekly.parquet # Chuỗi thời gian 290 tuần xu hướng âm học
+│       ├── mart_artist_chart.parquet   # Thống kê thành tích & lượt stream theo nghệ sĩ
+│       ├── mart_artist_chart.csv       # Bản CSV tương thích của mart_artist_chart
+│       ├── mart_country_year.parquet   # Dữ liệu âm học & báo cáo hạnh phúc WHS (73 quốc gia)
 │       ├── covid_weekly_clean.csv      # Chuỗi thời gian số ca tử vong COVID-19 theo tuần
-│       ├── merged_spotify_data.csv     # Master Dataset hợp nhất (1,078,125 dòng × 38 cột)
-│       └── tracks_ml_data.csv          # Song-level ML Dataset (36,699 bài × 19 cột) cho Thành Tài
+│       └── country_lookup.csv          # Bảng cầu nối mã quốc gia ISO-3 và phân vùng World Bank
 │
 ├── notebooks/                          # Jupyter Notebooks nghiên cứu theo Barem đồ án
 │   ├── 01_preprocess.ipynb             # Minh họa tiền xử lý, Master Pipeline, 9 biến & EDA tĩnh
@@ -65,16 +65,18 @@ PROJECT/
 │   ├── __init__.py
 │   └── data_loader.py                  # Pipeline ETL Master Dataset & các hàm nạp dữ liệu tiện ích
 │
-├── dashboard/                          # Ứng dụng Dashboard Tương tác (Streamlit & Plotly)
-│   ├── app.py                          # Trang chủ (Homepage) của Dashboard
-│   ├── pages/                          # Các trang phân tích chuyên sâu đa chiều
-│   └── assets/                         # Hình ảnh minh họa và bìa album
+├── dashboard/                          # Ứng dụng Dashboard Story tương tác (Streamlit & Plotly)
+│   ├── story_app.py                    # Ứng dụng dashboard chính
+│   ├── story_canvas.py                 # Bộ khung dựng story canvas
+│   ├── story_charts.py                 # Các thành phần biểu đồ tương tác
+│   └── story_data.py                   # Xử lý và nạp dữ liệu cho story
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
 │   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (bảng thô, Data Marts & ML Dataset)
 │   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.5
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
-│   └── final_report.docx               # Báo cáo tổng kết đồ án theo cấu trúc chuẩn IEEE
+│   ├── story_studio.md                 # Hướng dẫn dashboard và phạm vi dữ liệu
+│   └── spotify_data_story.html         # Bản story tương tác độc lập
 │
 └── models/                             # Lưu trữ mô hình Machine Learning đã huấn luyện
     └── trend_predictor.pkl
@@ -91,13 +93,13 @@ PROJECT/
 
 | Tên tập dữ liệu | Định dạng | Quy mô (Dòng × Cột) | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
-| **`mart_country_year.parquet`** | Parquet | 146 × 42 | **Lý Gia Hân** | • Bản đồ phân bổ âm học toàn cầu & Radar Chart đối đầu Việt Nam vs. Nhật Bản. |
-| **`mart_audio_trend_weekly.parquet`** | Parquet | 19,530 × 33 | **Lý Gia Hân** | • Chuỗi thời gian 290 tuần phân tích tính mùa vụ, thời lượng bài hát & đại dịch. |
-| **`mart_artist_chart.parquet`** | Parquet | 1,000+ × 10 | **Lý Gia Hân** | • Treemap phân cấp thị phần 80 nghệ sĩ và các dòng nhạc dẫn đầu. |
-| **`tracks_dimension.csv`** | CSV | 39,190 × 24 | **Lý Gia Hân** | • Phân tích tương quan hợp tác biểu diễn (Collab vs. Solo) & Boxplot thể loại. |
-| **`covid_weekly_clean.csv`** | CSV | 164 × 5 | **Lý Gia Hân** | • Tương quan chuỗi thời gian số ca tử vong COVID-19 với 9 đặc trưng âm học. |
-| **`tracks_ml_data.csv`** | CSV | 36,699 × 19 | **Đỗ Thanh Thành Tài** | • Cấp độ bài hát (Song-level) độc nhất, chống rò rỉ dữ liệu cho mô hình hồi quy. |
-| **`merged_spotify_data.csv`** | CSV | 1,078,125 × 38 | **Toàn nhóm** | • Master Dataset tổng hợp toàn diện kinh tế - xã hội và âm học. |
+| **`charts_clean.parquet`** | Parquet | 1,787,531 × 34 | Toàn nhóm | Fact table trung tâm; phục vụ trích xuất Data Marts, EDA, Story và huấn luyện ML tại `03_model.ipynb`. |
+| **`tracks_dimension.csv`** | CSV | 39,190 × 21 | Toàn nhóm | Bảng chiều độc nhất 39,190 bài hát với 12 đặc trưng âm học nội tại và thông tin phát hành. |
+| **`mart_audio_trend_weekly.parquet`** | Parquet | 5,548 × 29 | Lý Gia Hân | Chuỗi thời gian 290 tuần phân tích xu hướng âm học, tính mùa vụ và tác động đại dịch. |
+| **`mart_artist_chart.parquet` & `.csv`** | Parquet / CSV | 15,254 × 7 | Lý Gia Hân | Tổng hợp thành tích nghệ sĩ (lượt stream, số bài, thứ hạng đỉnh cao, thể loại). |
+| **`mart_country_year.parquet`** | Parquet | 141 × 42 | Lý Gia Hân | Tích hợp đặc trưng âm học quốc gia theo năm với toàn bộ chỉ số báo cáo hạnh phúc WHS. |
+| **`covid_weekly_clean.csv`** | CSV | 12,136 × 5 | Lý Gia Hân | Chuỗi thời gian tử vong COVID-19 theo tuần cho 73 quốc gia và Global. |
+| **`country_lookup.csv`** | CSV | 73 × 8 | Toàn nhóm | Bảng cầu nối mã quốc gia ISO-3, phân vùng World Bank và ngôn ngữ bảng xếp hạng. |
 
 ---
 
@@ -132,22 +134,17 @@ python src/data_loader.py
 
 ### Bước 4: Khởi chạy Ứng dụng Dashboard Streamlit
 ```bash
-streamlit run dashboard/app.py
+python -m streamlit run dashboard/story_app.py
 ```
 Sau khi khởi chạy thành công, truy cập giao diện dashboard tại địa chỉ: `http://localhost:8501`.
-### Bước 5: Story tương tác của Gia Hân (3 dashboard / 9 biểu đồ)
-Để mở trực tiếp bộ **3 dashboard kể chuyện dữ liệu** dạng một màn hình mỗi trang, chạy:
 
-```bash
-streamlit run dashboard/story_app.py
-```
 Hoặc khởi chạy cổng riêng bằng lệnh:
 ```powershell
 ./start_story.ps1
 ```
 (Mở tại `http://localhost:8502`).
 
-Mỗi story point hiển thị một dashboard gồm các biểu đồ cùng chủ đề trên một màn hình, có bộ lọc đa cấp, drill-down, tooltip và lọc chéo. Các trang cũng có sẵn trong menu chính của `dashboard/app.py`. Xem thêm [hướng dẫn và phạm vi dữ liệu](docs/story_studio.md), hoặc tải [bản HTML tương tác độc lập](docs/spotify_data_story.html). (Lưu ý: Bản đồ cần kết nối mạng để tải địa giới quốc gia).
+Dashboard mở đầu bằng điểm “Cái nhìn về dữ liệu”, gồm bốn hình Matplotlib/Seaborn lấy trực tiếp từ `02_eda.ipynb`: phân phối audio, tương quan Spearman, phân phối nhãn Train và xu hướng âm thanh theo tuần. Bốn hình nằm trên cùng một màn hình; có thể xem lớn và tải hình gốc. Sau đó là bốn điểm về hồ sơ âm thanh, nghệ sĩ, địa lý và thời gian. Mỗi story point hiển thị một dashboard gồm các biểu đồ cùng chủ đề trên một màn hình, có bộ lọc đa cấp, drill-down, tooltip và lọc chéo. Xem thêm [hướng dẫn và phạm vi dữ liệu](docs/story_studio.md), hoặc tải [bản HTML tương tác độc lập](docs/spotify_data_story.html). (Lưu ý: Bản đồ cần kết nối mạng để tải địa giới quốc gia).
 
 ---
 
