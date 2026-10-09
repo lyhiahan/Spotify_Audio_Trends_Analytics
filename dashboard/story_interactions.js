@@ -563,22 +563,22 @@ function artistStory(){
 function forecastStory(){
  const m=current.fcMetrics||{tp:128,fp:67,fn:86,tn:660,n:941,acc:0.837,prec:0.656,rec:0.598,f1:0.626};
  const tau=Number(state.threshold)||0.79;
- const splitName={test:'tập Test độc lập (2021–2022)',validation:'tập Validation (2020–2021)',train:'tập Train (2017–2020)',all:'toàn bộ mẫu đủ điều kiện'}[state.split]||'tập Test';
+ const splitName={test:'tập Test (2021–2022)',validation:'tập Validation (2020–2021)',train:'tập Train (2017–2020)',all:'toàn bộ mẫu'}[state.split]||'tập Test';
  
- const first=`Mô hình Hồi quy Logistic ước lượng xác suất bài hát đạt Global Top 50 trong 8 tuần tiếp theo dựa trên 12 biến tuần đầu (10 âm học + thứ hạng + log lượt nghe). Trên ${splitName}, khảo sát ${num(m.n)} bài hát với ${num(m.tp+m.fn)} bài hit thực tế (tỷ lệ nền ${((m.tp+m.fn)/m.n*100).toFixed(1)}%).`;
+ const first=`Mô hình Logistic dự báo khả năng bài hát vào Global Top 50 (8 tuần tới) từ 12 biến tuần đầu (10 âm học + thứ hạng + log stream). Trên ${splitName}, khảo sát ${num(m.n)} bài, gồm ${num(m.tp+m.fn)} bài hit thực tế (tỷ lệ nền ${((m.tp+m.fn)/m.n*100).toFixed(1)}%).`;
  
- const second=`Đánh giá năng lực xếp hạng của mô hình: đạt ROC-AUC = 0.811 và PR-AUC = 0.690 trên tập Test. Điểm số xác suất p̂ phản ánh mức độ tự tin của thuật toán, cho phép người dùng phân loại rủi ro thay vì chỉ nhận quyết định cứng 0/1.`;
+ const second=`Đạt ROC-AUC = 0.811 và PR-AUC = 0.690 trên tập Test. Điểm xác suất p̂ phản ánh mức độ tự tin của mô hình, giúp phân loại cấp độ rủi ro thay vì nhận định nhị phân cứng 0/1.`;
  
- const third=`Tại ngưỡng τ = ${tau.toFixed(2)} (ngưỡng tối ưu F1 = 0.79 từ Validation): Precision = ${(m.prec*100).toFixed(1)}%, Recall = ${(m.rec*100).toFixed(1)}%, F1-Score = ${(m.f1*100).toFixed(1)}% và Accuracy = ${(m.acc*100).toFixed(1)}%. Kéo thanh trượt để chủ động chọn điểm trade-off: giảm τ để bắt trọn nhiều hit (tăng Recall), hoặc tăng τ để chỉ đầu tư vào các bài có xác suất chắc chắn nhất (tăng Precision).`;
+ const third=`Tại ngưỡng τ = ${tau.toFixed(2)} (tối ưu F1 = 0.79 từ Validation): Precision = ${(m.prec*100).toFixed(1)}%, Recall = ${(m.rec*100).toFixed(1)}%, F1 = ${(m.f1*100).toFixed(1)}%, Accuracy = ${(m.acc*100).toFixed(1)}%. Kéo thanh trượt để điều chỉnh trade-off: giảm τ giúp bắt trọn nhiều hit (tăng Recall), tăng τ giúp chọn lọc bài chắc chắn (tăng Precision).`;
  
  const sub50=current.fcSub50||{count:595,pos:9,pred_pos:20};
- const fourth=`\n• Cảnh báo nhóm thứ hạng 51–200: Các bài khởi đầu ngoài Top 50 có tỷ lệ thành công thực tế chỉ 1.5% (${sub50.pos}/${sub50.count} bài). Dù có điểm audio thuận lợi, mô hình vẫn dễ dự báo dương tính giả (FP) nếu điểm xuất phát ban đầu quá thấp.\n• Cảnh báo hiệu chuẩn (Calibration): Do chưa qua hiệu chuẩn Isotonic/Platt, điểm số p̂ phản ánh thứ bậc rủi ro tương đối (ranking score) chứ không phải xác suất tần suất tuyệt đối.`;
+ const fourth=`\n• Nhóm hạng 51–200: Khởi đầu ngoài Top 50 chỉ có 1.5% hit thực tế (${sub50.pos}/${sub50.count} bài), dễ gặp dương tính giả (FP) nếu điểm xuất phát ban đầu quá thấp.\n• Điểm xác suất p̂: Phản ánh thứ bậc xếp hạng rủi ro tương đối (ranking score), chưa hiệu chuẩn xác suất tuyệt đối.`;
  
  return [
-   ['1. Dữ liệu là gì? (Tín hiệu tuần đầu)',first],
-   ['2. Mô hình tin tới mức nào? (Phân bố xác suất p̂)',second],
-   ['3. Ngưỡng nào phù hợp? (Trade-off Precision vs Recall)',third],
-   ['4. Sai ở đâu? & Cảnh báo học thuật',fourth]
+   ['1. Dữ liệu & Tín hiệu tuần đầu',first],
+   ['2. Năng lực xếp hạng (ROC & PR-AUC)',second],
+   ['3. Đánh đổi tại ngưỡng quyết định τ',third],
+   ['4. Sai lệch & Cảnh báo học thuật',fourth]
  ];
 }
 
