@@ -7,7 +7,6 @@ data/raw/spotify-weekly-charts.csv
 data/processed/charts_clean.csv
 data/processed/charts_clean.parquet
 data/processed/tableau_global_unique.csv
-data/processed/mart_artist_chart.csv
 data/processed/mart_audio_trend_weekly.csv
 data/processed/mart_country_year.csv
 !data/processed/.gitkeep
