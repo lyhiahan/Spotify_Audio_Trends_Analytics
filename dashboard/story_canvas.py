@@ -34,7 +34,12 @@ LABELS = {
     'decision_boundary': 'Không gian quyết định 2D & Ranh giới phân loại',
     'confusion_heatmap': 'Ma trận nhầm lẫn tương tác (Confusion Matrix)',
     'tradeoff_curve': 'Đánh đổi Precision – Recall theo ngưỡng τ',
-    'model_coefficients': 'Hệ số hồi quy (Odds Ratio) của 12 biến'
+    'model_coefficients': 'Hệ số hồi quy (Odds Ratio) của 12 biến',
+    'eda_static_distribution': 'Phân phối năm đặc trưng âm thanh',
+    'eda_static_correlation': 'Tương quan giữa các đặc trưng âm thanh',
+    'eda_static_trend': 'Xu hướng âm thanh trên Global Top 200',
+    'eda_static_covid': 'Đối chiếu tử vong COVID-19 và âm thanh',
+    'eda_static_labels': 'Phân phối nhãn Top 50 trên Train'
 }
 
 def workbook():
@@ -43,9 +48,9 @@ def workbook():
             'overview',
             'Cái nhìn về dữ liệu',
             'Cái nhìn về dữ liệu',
-            'Bốn hình tĩnh từ EDA: phân phối âm thanh, tương quan, nhãn Train và xu hướng theo tuần.',
-            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_labels', 'eda_static_trend'],
-            'Audio: mỗi track_id một lần trên toàn bộ mẫu chart. Nhãn: chỉ Train Global; Top 50 ở t0+7 đến t0+56 ngày, đủ tám tuần quan sát. Không suy ra quan hệ nhân quả.'
+            'Năm biểu đồ tĩnh từ EDA: phân phối âm thanh, tương quan Spearman, xu hướng dài hạn, đại dịch COVID-19 và nhãn mục tiêu Train.',
+            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_trend', 'eda_static_covid', 'eda_static_labels'],
+            'Toàn bộ 5 biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200, đối chiếu tử vong COVID-19 và nhãn mục tiêu dự báo Top 50.'
         ),
         (
             'hits',
@@ -120,8 +125,8 @@ def workbook():
     return dict(version=6, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
 
 def data_bundle():
-    from eda_data import notebook_figures
-    figures = notebook_figures()
+    import eda_data
+    figures = importlib.reload(eda_data).notebook_figures()
     book = workbook()
     book['worksheets'].update({key: value['title'] for key, value in figures.items()})
     return dict(workbook=book, region_short=REGION_SHORT, eda_figures=figures, **importlib.reload(story_data).load_bundle())

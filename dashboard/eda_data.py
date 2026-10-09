@@ -79,7 +79,9 @@ def notebook_figures():
         'eda_static_labels': ('bar_colors =', 'Phân phối nhãn Top 50 trên Train',
             'Hai mẫu: toàn bộ Train và nhóm khởi đầu hạng 51–200. Y=1 khi đạt Top 50 trong tám tuần sau t0; không tính tuần đầu.'),
         'eda_static_trend': ("palette = {'danceability_weighted'", 'Xu hướng âm thanh trên Global Top 200',
-            'Trung bình theo stream, làm mịn bốn tuần. Vùng tô đánh dấu tháng 12; dữ liệu năm 2022 chỉ đến tháng 7.')
+            'Trung bình theo stream, làm mịn bốn tuần. Vùng tô đánh dấu tháng 12; dữ liệu năm 2022 chỉ đến tháng 7.'),
+        'eda_static_covid': ('fig, (ax1, ax2) = plt.subplots(2, 1', 'Đối chiếu tử vong COVID-19 và âm thanh',
+            'Hai tầng đối chiếu số ca tử vong COVID-19 hàng tuần và các đặc trưng âm học trên Global Top 200 giai đoạn 2020–2022.')
     }
     figures = {}
     for key, (signature, title, caption) in specs.items():

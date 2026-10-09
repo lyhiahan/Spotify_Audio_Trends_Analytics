@@ -455,7 +455,7 @@ async function render(){
    const el=document.createElement('div');el.className='eda-image-wrap';
    const image=document.createElement('img');image.src=asset.image;image.alt=asset.title;image.width=asset.width;image.height=asset.height;image.onclick=()=>showEdaImage(asset);
    el.append(image);panel.append(el);
-   const caption=document.createElement('p');caption.className='eda-caption';caption.textContent=asset.caption;panel.append(caption);
+   const caption=document.createElement('p');caption.className='eda-caption';caption.textContent=asset.caption;caption.title=asset.caption;panel.append(caption);
    host.append(panel);
    continue;
   }
