@@ -3,7 +3,7 @@
 
 > **Đồ án môn học:** Tương tác Dữ liệu (Interactive Data Visualization / Visual Analytics)  
 > **Nền tảng phát triển:** Python 3.10+, Streamlit, Plotly Interactive, Scikit-learn, Pandas, Seaborn.  
-> **Kiến trúc dữ liệu:** Master Dataset Hợp nhất 38 Cột & Hệ thống Data Marts Chuyên biệt (Version 3.5).
+> **Kiến trúc dữ liệu:** Hệ thống Data Marts Chuyên biệt — `charts_clean`, `ml_tracks`, `mart_audio_trend_weekly`, `mart_country_year`, `mart_artist_chart` (Parquet + CSV).
 
 ---
 
@@ -16,7 +16,7 @@ Trong kỷ nguyên số hóa âm nhạc trực tuyến, sự thành công của 
 2. **Khám phá insight và kể chuyện bằng dữ liệu (Data Storytelling) qua 3 Trụ cột cốt truyện:**
    * **Trụ cột 1 — Công thức tạo Hit & Xu hướng Thời đại (Hit Formula & Dynamics):**
      * *Phân tầng thứ hạng:* Ma trận z-score bóc tách sự khác biệt âm học giữa nhóm dẫn đầu (Top 1–10) và nhóm bám đuổi (Top 101–200).
-     * *Sức mạnh Hợp tác (Collab vs. Solo):* Đơn ca chiếm tới 60.8% số lượng phát hành, nhưng các dự án Hợp tác (Collab) đạt trung bình **53.7 triệu lượt stream/bài** (gấp hơn 3 lần so với 17.7 triệu của Đơn ca).
+     * *Sức mạnh Hợp tác (Collab vs. Solo):* Đơn ca chiếm tới ~59% số lượng phát hành, nhưng các dự án Hợp tác (Collab) có **trung vị lượt stream/bài cao hơn** Đơn ca (~28.5M so với ~23.5M), gợi ý hợp tác là đòn bẩy chiến lược đáng xem xét (phân tích theo bộ lọc 2020–2022, Global chart).
      * *Hiện tượng "TikTok-hóa" âm nhạc (2017 – 2022):* Thời lượng bài hát sụt giảm mạnh từ **218 giây xuống còn 198 giây** (mất 20 giây chỉ sau 3 năm) dưới tác động của cơ chế chi trả bản quyền streaming 30 giây và văn hóa video ngắn.
    * **Trụ cột 2 — Bản sắc Địa lý & Văn hóa Âm nhạc (Cultural & Geographic Audio DNA):**
      * *Bản đồ thế giới Choropleth:* Bóc tách sự phân hóa cảm xúc (*Valence* cực đại tại Mỹ Latinh) và mức độ bắt nhịp (*Danceability*).
@@ -38,21 +38,28 @@ PROJECT/
 ├── README.md                           # Giới thiệu đồ án, hướng dẫn cài đặt và tổng kết
 │
 ├── data/                               # Quản trị dữ liệu đa nguồn
-│   ├── raw/                            # 5 tập dữ liệu CSV gốc ban đầu (>1.9M dòng)
-│   │   ├── best-selling-artists.csv    # 121 dòng × 7 cột (Nghệ sĩ bán đĩa chạy nhất lịch sử)
+│   ├── raw/                            # Dữ liệu bổ trợ (⚠️ spotify-weekly-charts.csv tải từ Google Drive)
 │   │   ├── country_codes.csv           # 217 dòng × 3 cột (Mã ISO-3, vùng địa lý, nhóm thu nhập)
 │   │   ├── gdp_data.csv                # 13,365 dòng × 4 cột (Chuỗi thời gian GDP World Bank)
-│   │   ├── spotify-tracks-dataset.csv  # 114,000 dòng × 22 cột (Đặc trưng âm thanh & thể loại)
-│   │   └── spotify-weekly-charts.csv   # 1,787,999 dòng × 36 cột (Top 200 Weekly Charts 796.6 MB)
+│   │   ├── global_deaths.csv           # 1,143 dòng × 290 cột (Tử vong COVID-19 theo ngày — JHU CSSE)
+│   │   └── whs_years_updated.csv       # 1,510 dòng × 46 cột (World Happiness Report 2015–2024)
 │   │
 │   └── processed/                      # Hệ sinh thái dữ liệu sạch và Data Marts chuẩn mực
-│       ├── charts_clean.parquet        # Bảng sự kiện Top 200 làm sạch (1.78M dòng × 34 cột)
+│       ├── charts_clean.parquet        # Bảng sự kiện Top 200 làm sạch (1.787M dòng × 34 cột)
+│       ├── charts_clean.csv            # Bản CSV của charts_clean (dùng khi debug)
 │       ├── tracks_dimension.csv        # 39,190 bài hát (12 đặc trưng âm thanh & metadata)
-│       ├── mart_audio_trend_weekly.parquet # Chuỗi thời gian 290 tuần xu hướng âm học
+│       ├── ml_tracks.parquet           # 39,190 bài hát × 30 cột — tập ML chống rò rỉ dữ liệu
+│       ├── ml_tracks.csv               # Bản CSV của ml_tracks
+│       ├── ml_market_week_forecast.parquet  # Dự báo hit theo tuần đầu xuất hiện — 56MB
+│       ├── mart_audio_trend_weekly.parquet  # Chuỗi thời gian 290 tuần xu hướng âm học
+│       ├── mart_audio_trend_weekly.csv      # Bản CSV của mart_audio_trend_weekly
 │       ├── mart_artist_chart.parquet   # Thống kê thành tích & lượt stream theo nghệ sĩ
 │       ├── mart_artist_chart.csv       # Bản CSV tương thích của mart_artist_chart
+│       ├── mart_artist_popularity.parquet   # Chỉ số phổ biến nghệ sĩ
 │       ├── mart_country_year.parquet   # Dữ liệu âm học & báo cáo hạnh phúc WHS (73 quốc gia)
+│       ├── mart_country_year.csv       # Bản CSV của mart_country_year
 │       ├── covid_weekly_clean.csv      # Chuỗi thời gian số ca tử vong COVID-19 theo tuần
+│       ├── whs_clean.csv               # World Happiness Report đã làm sạch
 │       └── country_lookup.csv          # Bảng cầu nối mã quốc gia ISO-3 và phân vùng World Bank
 │
 ├── notebooks/                          # Jupyter Notebooks nghiên cứu theo Barem đồ án
@@ -65,21 +72,43 @@ PROJECT/
 │   ├── __init__.py
 │   └── data_loader.py                  # Pipeline ETL Master Dataset & các hàm nạp dữ liệu tiện ích
 │
-├── dashboard/                          # Ứng dụng Dashboard Story tương tác (Streamlit & Plotly)
-│   ├── story_app.py                    # Ứng dụng dashboard chính
-│   ├── story_canvas.py                 # Bộ khung dựng story canvas
-│   ├── story_charts.py                 # Các thành phần biểu đồ tương tác
-│   └── story_data.py                   # Xử lý và nạp dữ liệu cho story
+├── dashboard/                          # Ứng dụng Story tương tác — chạy bằng start_story.ps1
+│   ├── story_app.py                    # Entry point: streamlit run dashboard/story_app.py (cổng 8502)
+│   ├── story_canvas.py                 # Dựng workbook/payload cho từng story point
+│   ├── story_charts.py                 # Các thành phần biểu đồ Plotly tương tác
+│   ├── story_data.py                   # Đọc & khử đếm lặp dữ liệu từ data/processed/
+│   ├── story_analysis.py               # Tính toán insight tự động theo bộ lọc
+│   ├── eda_data.py                     # Đọc hình PNG tĩnh từ 02_eda.ipynb cho Story Point 1
+│   ├── story_canvas.html               # Bố cục HTML canvas no-scroll (1440×900)
+│   ├── story_interactions.js           # Logic tổng hợp, vẽ & cross-filter (Plotly events)
+│   ├── index.html                      # Build tĩnh của story canvas (dùng khi xuất HTML offline)
+│   └── pages/                          # Sub-pages phân tích chuyên sâu (EDA Dashboard)
+│       ├── 1_📊_Tong_Quan_Du_Lieu.py  # Tổng quan dữ liệu: KPI, phân phối, bản đồ
+│       └── 2_🎵_Dac_Trung_Am_Thanh.py # Đặc trưng âm thanh & Hit Simulator (ML)
 │
 ├── docs/                               # Tài liệu học thuật & Báo cáo kỹ thuật
 │   ├── data_dictionary.md              # Từ điển dữ liệu toàn diện (bảng thô, Data Marts & ML Dataset)
-│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất v3.5
+│   ├── data_processing_flow.md         # Tài liệu kiến trúc luồng dữ liệu hợp nhất
+│   ├── BAO_CAO_CUOI_KI_CO_SO_PIPELINE_EDA.md  # Báo cáo chuyên sâu: Pipeline, EDA, Data Marts
+│   ├── BAO_CAO_DU_LIEU_PROCESSED.md    # Báo cáo mô tả dữ liệu đã xử lý
+│   ├── BAO_CAO_KHAO_SAT_DU_LIEU.md     # Báo cáo khảo sát dữ liệu thô
+│   ├── BAO_CAO_DANH_GIA_REPOSITORY.md  # Báo cáo đánh giá repository
+│   ├── KICH_BAN_THUYET_TRINH_DASHBOARD.md  # Kịch bản thuyết trình chi tiết từng phút
 │   ├── team_tasks_assignment.md        # Bảng phân công trách nhiệm nhóm theo barem 10 điểm
-│   ├── story_studio.md                 # Hướng dẫn dashboard và phạm vi dữ liệu
-│   └── spotify_data_story.html         # Bản story tương tác độc lập
+│   ├── story_studio.md                 # Hướng dẫn dashboard, phạm vi & kiểm tra số liệu
+│   └── spotify_data_story.html         # Bản story tương tác độc lập (13MB, chạy offline)
 │
-└── models/                             # Lưu trữ mô hình Machine Learning đã huấn luyện
-    └── trend_predictor.pkl
+├── models/                             # Metrics & kết quả mô hình Machine Learning
+│   └── model_metrics.json              # Chỉ số đánh giá mô hình Logistic Regression
+│
+└── reports/                            # Báo cáo kết quả & mô hình đã huấn luyện
+    ├── Bao_cao_Spotify_Chuong_1_3_4.docx   # Báo cáo Word đồ án (Chương 1, 3, 4)
+    └── global_top50_first_week/        # Mô hình dự báo Global Top 50 tuần đầu
+        ├── selected_logistic.joblib    # Mô hình Logistic Regression đã huấn luyện
+        ├── model_metrics.json          # AUC=0.811, Accuracy=83.7% trên tập test
+        ├── first_week_forecast.parquet # Bảng dự báo xác suất cho từng bài
+        ├── tableau_coefficients.csv    # Hệ số hồi quy (dùng trực quan hóa)
+        └── tableau_threshold_validation.csv  # Bảng ngưỡng quyết định
 ```
 
 ---
@@ -88,13 +117,15 @@ PROJECT/
 
 > [!IMPORTANT]
 > 📂 **Kho Dữ Liệu Đồ Án Đầy Đủ (Google Drive):**  
-> Do giới hạn dung lượng 100MB của GitHub đối với các tệp dữ liệu lớn (`spotify-weekly-charts.csv` ~796 MB, `merged_spotify_data.csv` ~308 MB), toàn bộ dữ liệu thô và dữ liệu đã xử lý được lưu trữ công khai tại:  
-> 👉 **[TươngTacData - Google Drive](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi)**
+> Do giới hạn dung lượng 100MB của GitHub, các tệp lớn (`spotify-weekly-charts.csv` ~796 MB, `charts_clean.parquet` ~65 MB, `ml_market_week_forecast.parquet` ~54 MB) **không được lưu trong repo**. Tải toàn bộ dữ liệu thô và dữ liệu đã xử lý tại:  
+> 👉 **[TươngTacData - Google Drive](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi)**  
+> ⚠️ **Đặt các file vào đúng thư mục `data/raw/` và `data/processed/` trước khi chạy pipeline.**
 
 | Tên tập dữ liệu | Định dạng | Quy mô (Dòng × Cột) | Đối tượng phục vụ | Mục đích sử dụng |
 | :--- | :---: | :---: | :--- | :--- |
 | **`charts_clean.parquet`** | Parquet | 1,787,531 × 34 | Toàn nhóm | Fact table trung tâm; phục vụ trích xuất Data Marts, EDA, Story và huấn luyện ML tại `03_model.ipynb`. |
 | **`tracks_dimension.csv`** | CSV | 39,190 × 21 | Toàn nhóm | Bảng chiều độc nhất 39,190 bài hát với 12 đặc trưng âm học nội tại và thông tin phát hành. |
+| **`ml_tracks.parquet`** | Parquet | 39,190 × 30 | Thành Tài | Tập dữ liệu ML cấp bài hát (song-level), bổ sung `pop_score`, `is_hit`, `is_mega_hit` và các trường thống kê tổng hợp không rò rỉ. |
 | **`mart_audio_trend_weekly.parquet`** | Parquet | 5,548 × 29 | Lý Gia Hân | Chuỗi thời gian 290 tuần phân tích xu hướng âm học, tính mùa vụ và tác động đại dịch. |
 | **`mart_artist_chart.parquet` & `.csv`** | Parquet / CSV | 15,254 × 7 | Lý Gia Hân | Tổng hợp thành tích nghệ sĩ (lượt stream, số bài, thứ hạng đỉnh cao, thể loại). |
 | **`mart_country_year.parquet`** | Parquet | 141 × 42 | Lý Gia Hân | Tích hợp đặc trưng âm học quốc gia theo năm với toàn bộ chỉ số báo cáo hạnh phúc WHS. |
@@ -126,13 +157,19 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Bước 3: Thực thi Pipeline Tiền xử lý & Xuất dữ liệu
+### Bước 3: Tải dữ liệu từ Google Drive
+> [!WARNING]
+> Trước khi chạy pipeline, hãy tải dữ liệu từ **[Google Drive](https://drive.google.com/drive/u/0/folders/1TN3uZLE9xYq-DDukDzQRbkzJK8wCtMYi)** và đặt vào đúng thư mục:
+> - `data/raw/` — chứa: `spotify-weekly-charts.csv`, `country_codes.csv`, `gdp_data.csv`, `global_deaths.csv`, `whs_years_updated.csv`
+> - `data/processed/` — chứa các file `.parquet` và `.csv` đã xử lý sẵn (nếu muốn bỏ qua bước tiền xử lý)
+
+### Bước 4: Thực thi Pipeline Tiền xử lý & Xuất dữ liệu
 ```bash
 # Chạy toàn bộ Master Pipeline (tự động nạp thô, làm sạch và xuất hệ thống Data Marts):
 python src/data_loader.py
 ```
 
-### Bước 4: Khởi chạy Ứng dụng Dashboard Streamlit
+### Bước 5: Khởi chạy Ứng dụng Dashboard Streamlit
 ```bash
 python -m streamlit run dashboard/story_app.py
 ```
@@ -156,7 +193,7 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 | :---: | :--- | :---: | :--- | :--- |
 | 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Master Pipeline (`src/data_loader.py`).<br>• Làm sạch và kết nối 5 bảng dữ liệu (>1.9M bản ghi).<br>• Xây dựng 9 Calculated Fields và viết `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh 8–10 biểu đồ chuyên sâu trong `notebooks/02_eda.ipynb`. |
 | 2 | **Lý Gia Hân** | **24133016** | Visualization & Dashboard Dev | • Xây dựng và hoàn thiện hệ thống **9 biểu đồ tương tác chuyên sâu** trong `notebooks/04_story.ipynb` bao phủ 3 trụ cột cốt truyện (Công thức Hit & TikTok-hóa, Bản sắc văn hóa địa lý Việt Nam vs. Nhật Bản, Tính mùa vụ & Khủng hoảng COVID-19).<br>• Thiết kế toàn bộ kiến trúc giao diện bảng điều khiển tương tác đa trang Streamlit (`dashboard/`). |
-| 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Demo / Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu Song-level không rò rỉ (`notebooks/03_model.ipynb`).<br>• Xây dựng bộ công cụ tương tác dự báo xu hướng thịnh hành trên Dashboard.<br>• Soạn thảo Báo cáo tổng kết đồ án chuẩn IEEE (`docs/final_report.docx`) và quay Video Demo thuyết trình. |
+| 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Demo / Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu Song-level không rò rỉ (`notebooks/03_model.ipynb`).<br>• Xây dựng bộ công cụ tương tác dự báo xu hướng thịnh hành trên Dashboard.<br>• Soạn thảo Báo cáo tổng kết đồ án (`reports/Bao_cao_Spotify_Chuong_1_3_4.docx`) và quay Video Demo thuyết trình. |
 
 ---
 
@@ -165,5 +202,7 @@ Chi tiết kế hoạch thực hiện và ma trận đóng góp được lưu t�
 * 📖 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết các bảng thô, Data Marts và công thức tính toán.
 * 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình JOIN và luồng dữ liệu.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
-* 📹 **Link Video Demo (YouTube / Google Drive):** `[CẬP NHẬT LINK VIDEO TẠI ĐÂY]`
-* 📊 **Link Slide Thuyết trình:** `[CẬP NHẬT LINK CANVA/GOOGLE SLIDES TẠI ĐÂY]`
+* 🎬 [Kịch bản Thuyết trình Dashboard](docs/KICH_BAN_THUYET_TRINH_DASHBOARD.md): Hướng dẫn demo từng phút, Q&A dự phòng.
+* 📊 [Story Studio — Hướng dẫn & Phạm vi Số liệu](docs/story_studio.md): Mô tả 5 story points, tương tác và kiểm tra tính chính xác số liệu.
+* 📹 **Link Video Demo:** *(sẽ cập nhật sau khi hoàn thành quay)*
+* 🖼️ **Link Slide Thuyết trình:** *(sẽ cập nhật sau khi hoàn thành)*
