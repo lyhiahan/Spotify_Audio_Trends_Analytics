@@ -930,18 +930,60 @@ def get_hero_album_covers():
 
 # Ham nap du lieu
 @st.cache_data(show_spinner="Đang nạp dữ liệu Spotify Analytics...")
-def load_all_data(_cache_id="v3_clean"):
+def load_all_data(_cache_id="v4_parquet"):
     processed_path = os.path.join("data", "processed", "merged_spotify_data.csv")
     sample_path = os.path.join("data", "sample", "spotify_sample_merged.csv")
-    path = processed_path if os.path.exists(processed_path) else sample_path
-    
-    needed_cols = [
-        "track_name", "artist_individual", "streams", "rank", "week", "year", "month",
-        "danceability", "energy", "loudness", "valence", "acousticness", "speechiness",
-        "liveness", "tempo", "duration_min", "explicit", "popularity",
-        "income_group", "region_wb", "track_genre", "is_trending", "mood_category", "country", "country_code"
-    ]
-    df = pd.read_csv(path, usecols=lambda c: c in needed_cols, low_memory=False)
+    pq_path = os.path.join("data", "processed", "charts_clean.parquet")
+    lookup_path = os.path.join("data", "processed", "country_lookup.csv")
+
+    if os.path.exists(processed_path):
+        needed_cols = [
+            "track_name", "artist_individual", "streams", "rank", "week", "year", "month",
+            "danceability", "energy", "loudness", "valence", "acousticness", "speechiness",
+            "liveness", "tempo", "duration_min", "explicit", "popularity",
+            "income_group", "region_wb", "track_genre", "is_trending", "mood_category", "country", "country_code"
+        ]
+        df = pd.read_csv(processed_path, usecols=lambda c: c in needed_cols, low_memory=False)
+    elif os.path.exists(pq_path):
+        cols_to_read = [
+            "track_name", "artist_individual", "streams", "rank", "week", "year", "month",
+            "danceability", "energy", "loudness", "valence", "acousticness", "speechiness",
+            "liveness", "tempo", "duration", "artist_genre", "chart_country"
+        ]
+        df = pd.read_parquet(pq_path, columns=cols_to_read)
+        df["country"] = df["chart_country"].astype(str)
+        df["track_genre"] = df["artist_genre"].astype(str).replace({"nan": "Other", "None": "Other"})
+        df["duration_min"] = df["duration"] / 60000.0
+        df["explicit"] = False
+        df["popularity"] = np.clip(100.0 - (df["rank"] / 2.0), 0.0, 100.0)
+        df["is_trending"] = df["rank"] <= 50
+
+        has_audio = df["valence"].notna() & df["energy"].notna()
+        v_hi = df["valence"] >= 0.5
+        e_hi = df["energy"] >= 0.5
+        df["mood_category"] = "Unknown"
+        df.loc[has_audio & v_hi & e_hi, "mood_category"] = "Happy Energetic"
+        df.loc[has_audio & v_hi & ~e_hi, "mood_category"] = "Peaceful Positive"
+        df.loc[has_audio & ~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
+        df.loc[has_audio & ~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
+
+        if os.path.exists(lookup_path):
+            lookup = pd.read_csv(lookup_path)
+            df = df.merge(lookup[["chart_country", "country_code", "wb_region", "wb_income_group"]], on="chart_country", how="left")
+            df.rename(columns={"wb_region": "region_wb", "wb_income_group": "income_group"}, inplace=True)
+        else:
+            df["country_code"] = df["country"]
+            df["region_wb"] = "Global"
+            df["income_group"] = "High income"
+
+        df["region_wb"] = df["region_wb"].fillna("Global")
+        df["income_group"] = df["income_group"].fillna("High income")
+        df["country_code"] = df["country_code"].fillna(df["country"])
+    elif os.path.exists(sample_path):
+        df = pd.read_csv(sample_path, low_memory=False)
+    else:
+        raise FileNotFoundError("Không tìm thấy dữ liệu tại data/processed/charts_clean.parquet!")
+
     num_cols = ["streams", "rank", "danceability", "energy", "loudness", "valence", "acousticness", "speechiness", "liveness", "tempo", "duration_min", "popularity"]
     for col in num_cols:
         if col in df.columns:
@@ -963,11 +1005,11 @@ def get_unique_tracks_data(df):
         best_rank=("rank", "min"),
         weeks_count=("week", "nunique"),
         country_count=("country", "nunique"),
-        popularity=("popularity", lambda s: s.dropna().max() if not s.dropna().empty else 80.0),
+        popularity=("popularity", "max"),
         danceability=("danceability", "mean"),
         energy=("energy", "mean"),
         valence=("valence", "mean"),
-        track_genre=("track_genre", lambda s: s.dropna().iloc[0] if len(s.dropna()) > 0 and str(s.dropna().iloc[0]).strip() else "Pop")
+        track_genre=("track_genre", "first")
     )
     return agg_df
 
