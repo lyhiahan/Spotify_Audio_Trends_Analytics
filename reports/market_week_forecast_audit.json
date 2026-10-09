@@ -1,0 +1,202 @@
+{
+  "rows": 1051382,
+  "columns": 47,
+  "checks": [
+    {
+      "test": "unique_sample_key",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "country_only",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "source_sample_count",
+      "passed": true,
+      "checked": 1,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "source_sample_keys",
+      "passed": true,
+      "checked": 1,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "calendar_week_idx",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "rank_range",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "positive_streams",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "cohort_definition",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "rating_range",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "rating_formula",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "stream_share_sums_to_one",
+      "passed": true,
+      "checked": 5258,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "local_rank_matches_source",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "other_markets_count",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "coverage_denominator",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "future_calendar_coverage_flag",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "unknown_labels_preserved",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "future_label_from_clean_source",
+      "passed": true,
+      "checked": 929998,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "train_val_label_embargo",
+      "passed": true,
+      "checked": 1,
+      "failures": 0,
+      "detail": "2021-10-21 < 2021-10-28 (publication timestamps unavailable)"
+    },
+    {
+      "test": "val_test_label_embargo",
+      "passed": true,
+      "checked": 1,
+      "failures": 0,
+      "detail": "2022-02-24 < 2022-03-03 (publication timestamps unavailable)"
+    },
+    {
+      "test": "model_splits_have_labels",
+      "passed": true,
+      "checked": 712031,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "rank_lag_calendar",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "stream_change_exported_log_contract",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "consecutive_streak",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "historical_best_rank",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "share_mean_consecutive_streak_alignment",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "share_mean_four_calendar_weeks",
+      "passed": false,
+      "checked": 1051382,
+      "failures": 21295,
+      "detail": ""
+    },
+    {
+      "test": "artist_prior_any_credited_artist",
+      "passed": true,
+      "checked": 1051382,
+      "failures": 0,
+      "detail": ""
+    },
+    {
+      "test": "target_source_full_top200",
+      "passed": false,
+      "checked": 5258,
+      "failures": 217,
+      "detail": "Incomplete clean charts cannot certify absence; recover raw chart rows before label creation."
+    }
+  ]
+}
