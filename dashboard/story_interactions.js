@@ -162,7 +162,7 @@ function controls(){
   const visible={
     overview:[],
     hits:['fromyear','toyear','genre','band','feature'],
-    artists:['fromyear','toyear','genre','artist','collab','feature'],
+    artists:['fromyear','toyear','genre','feature'],
     geography:['year','weight','region','country','compare','feature'],
     time:['fromyear','toyear','month','feature'],
     forecast:['split','boundary_y']
@@ -170,10 +170,16 @@ function controls(){
   
   document.querySelectorAll('.filters label').forEach(el=>{
     const sel = el.querySelector('select')?.id;
-    if(sel) el.hidden = !visible.includes(sel);
+    if(sel) {
+      const show = visible.includes(sel);
+      el.hidden = !show;
+      el.style.display = show ? '' : 'none';
+    }
   });
   document.querySelectorAll('.filters .forecast-tau-slider').forEach(el => {
-    el.hidden = (k !== 'forecast');
+    const isForecast = (k === 'forecast');
+    el.hidden = !isForecast;
+    el.style.display = isForecast ? 'flex' : 'none';
   });
 
   if(k==='overview'){
@@ -181,7 +187,7 @@ function controls(){
   } else if(k==='hits'){
     state.artist='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='artists'){
-    state.band='';state.month='';state.weeks=[];
+    state.artist='';state.collab='';state.band='';state.month='';state.weeks=[];
   } else if(k==='geography'){
     state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='time'){
@@ -613,12 +619,7 @@ function getMetrics(){
     ];
   }
   if(k==='hits'){
-    const a=hitStats(), j=fi(f), band=state.band===''?0:Number(state.band), z=a.z[band][j];
-    const groupName=band===0?'Top 1–10':bands[band];
-    return [
-      [`z-score (${groupName})`, Number.isFinite(z)?(z>0?'+':'')+z.toFixed(2)+' SD':'—'],
-      ['Số bài khảo sát', num(current.tracks.length)]
-    ];
+    return [];
   }
   if(k==='artists'){
     const a=correlationStats(), rho=a.z[9][10];
