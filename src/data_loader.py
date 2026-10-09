@@ -6,8 +6,7 @@ Chỉ đảm nhiệm:
 1. Cấu hình cột giữ/bỏ cho từng bảng thô (COLUMNS_TO_KEEP).
 2. Hằng số tham chiếu (AUDIO_FEATURE_COLS, AUDIO_FEATURES, COUNTRY_ALIAS_MAP, GDP_AGGREGATE_NAMES).
 3. Kiểm tra file tồn tại (check_raw_files_exist).
-4. Nạp từng bảng CSV thô ra DataFrame (load_charts_raw, load_covid_raw, load_gdp_raw, ...).
-5. Nạp dữ liệu processed/master chuẩn hóa (load_master_data, load_ml_data).
+4. Nạp từng bảng CSV thô ra DataFrame (load_charts_raw, load_covid_raw, load_gdp_raw, load_country_codes_raw, load_whs_raw).
 """
 
 import os
@@ -16,9 +15,7 @@ from typing import Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 
-# ==============================================================================
-# CẤU HÌNH CỘT GIỮ LẠI VÀ LOẠI BỎ (COLUMNS_TO_KEEP)
-# ==============================================================================
+# Cau hinh cot giu lai va loai bo (COLUMNS_TO_KEEP)
 COLUMNS_TO_KEEP: Dict[str, Dict[str, Union[List[str], Dict[str, str]]]] = {
     "spotify-weekly-charts.csv": {
         "drop": {
@@ -55,9 +52,7 @@ COLUMNS_TO_KEEP: Dict[str, Dict[str, Union[List[str], Dict[str, str]]]] = {
     },
 }
 
-# ==============================================================================
-# HẰNG SỐ THAM CHIẾU
-# ==============================================================================
+# Hang so tham chieu
 
 # 12 đặc trưng âm học chuẩn của Spotify Audio API
 AUDIO_FEATURE_COLS: List[str] = [
@@ -114,10 +109,7 @@ GDP_AGGREGATE_NAMES: List[str] = [
 ]
 
 
-# ==============================================================================
-# HÀM KIỂM TRA TỒN TẠI FILE
-# ==============================================================================
-
+# Kiểm tra sự tồn tại của các file dữ liệu thô
 def check_raw_files_exist(raw_dir: str = "data/raw") -> bool:
     """
     Kiểm tra sự tồn tại của 5 tập tin CSV đầu vào trong thư mục raw_dir.
@@ -146,10 +138,7 @@ def check_raw_files_exist(raw_dir: str = "data/raw") -> bool:
     return True
 
 
-# ==============================================================================
-# HÀM NẠP DỮ LIỆU THÔ (LOAD RAW)
-# ==============================================================================
-
+# Các hàm nạp dữ liệu thô
 def load_charts_raw(
     path: str,
     chunksize: int = 500_000,
@@ -224,99 +213,3 @@ def load_whs_raw(path: str) -> pd.DataFrame:
         raise FileNotFoundError(f"Không tìm thấy file WHS tại: {path}")
     return pd.read_csv(path)
 
-
-# ==============================================================================
-# HÀM NẠP DỮ LIỆU ĐÃ XỬ LÝ (LOAD PROCESSED / MASTER)
-# ==============================================================================
-
-def load_master_data(project_root: Optional[str] = None) -> pd.DataFrame:
-    """Nạp dữ liệu master hợp nhất từ data/processed/ (merged_spotify_data.csv hoặc charts_clean.parquet)."""
-    if project_root is None:
-        cwd = os.getcwd()
-        project_root = os.path.dirname(cwd) if os.path.basename(cwd) == "notebooks" else cwd
-
-    csv_path = os.path.join(project_root, "data", "processed", "merged_spotify_data.csv")
-    pq_path = os.path.join(project_root, "data", "processed", "charts_clean.parquet")
-
-    if os.path.exists(csv_path):
-        print(f"⚡ Nạp dữ liệu master từ CSV: {csv_path}...")
-        df_loaded = pd.read_csv(csv_path, low_memory=False)
-    elif os.path.exists(pq_path):
-        print(f"⚡ Nạp dữ liệu master từ Parquet: {pq_path}...")
-        df_loaded = pd.read_parquet(pq_path)
-    else:
-        raise FileNotFoundError(f"Không tìm thấy file master data tại {csv_path} hoặc {pq_path}")
-
-    # Chuẩn hóa cột week, year, month
-    if "week" in df_loaded.columns:
-        df_loaded["week"] = pd.to_datetime(df_loaded["week"], errors="coerce")
-    elif "chart_week" in df_loaded.columns:
-        df_loaded["week"] = pd.to_datetime(df_loaded["chart_week"], errors="coerce")
-
-    if "year" not in df_loaded.columns or df_loaded["year"].isna().any():
-        df_loaded["year"] = df_loaded["week"].dt.year
-    if "month" not in df_loaded.columns or df_loaded["month"].isna().any():
-        df_loaded["month"] = df_loaded["week"].dt.month
-
-    # Chuẩn hóa tên cột quốc gia, khu vực, ngôn ngữ và nghệ sĩ
-    if "chart_country" in df_loaded.columns and "country" not in df_loaded.columns:
-        df_loaded["country"] = df_loaded["chart_country"]
-    if "chart_region" in df_loaded.columns and "region" not in df_loaded.columns:
-        df_loaded["region"] = df_loaded["chart_region"]
-    if "chart_language" in df_loaded.columns and "language" not in df_loaded.columns:
-        df_loaded["language"] = df_loaded["chart_language"]
-    if "artist_individual" in df_loaded.columns:
-        df_loaded["artists"] = df_loaded["artist_individual"]
-    elif "artist_names" in df_loaded.columns and "artists" not in df_loaded.columns:
-        df_loaded["artists"] = df_loaded["artist_names"]
-
-    # covid_phase
-    if "covid_phase" not in df_loaded.columns:
-        phase_map = {2020: "Lockdown & Shock", 2021: "Vaccine & Escapism", 2022: "Reopening & New Normal"}
-        df_loaded["covid_phase"] = df_loaded["year"].map(phase_map).fillna("Unknown")
-
-    # is_latin, is_kpop
-    lang_col = "language" if "language" in df_loaded.columns else ("chart_language" if "chart_language" in df_loaded.columns else None)
-    if "is_latin" not in df_loaded.columns:
-        if lang_col:
-            df_loaded["is_latin"] = df_loaded[lang_col].astype(str).str.lower().str.contains("spanish|latin").astype(int)
-        else:
-            df_loaded["is_latin"] = 0
-    if "is_kpop" not in df_loaded.columns:
-        if lang_col:
-            df_loaded["is_kpop"] = df_loaded[lang_col].astype(str).str.lower().str.contains("korean|k-pop").astype(int)
-        else:
-            df_loaded["is_kpop"] = 0
-
-    # duration_min
-    if "duration_min" not in df_loaded.columns and "duration" in df_loaded.columns:
-        df_loaded["duration_min"] = df_loaded["duration"] / 60000.0
-
-    # mood_category
-    if "mood_category" not in df_loaded.columns or (df_loaded["mood_category"] == "Unknown").all():
-        has_audio = df_loaded["valence"].notna() & df_loaded["energy"].notna()
-        v_hi = df_loaded["valence"] >= 0.5
-        e_hi = df_loaded["energy"] >= 0.5
-        df_loaded["mood_category"] = "Unknown"
-        df_loaded.loc[has_audio & v_hi & e_hi, "mood_category"] = "Happy Energetic"
-        df_loaded.loc[has_audio & v_hi & ~e_hi, "mood_category"] = "Peaceful Positive"
-        df_loaded.loc[has_audio & ~v_hi & e_hi, "mood_category"] = "Tense Aggressive"
-        df_loaded.loc[has_audio & ~v_hi & ~e_hi, "mood_category"] = "Sad Melancholic"
-
-    return df_loaded
-
-
-def load_ml_data(project_root: Optional[str] = None) -> Optional[pd.DataFrame]:
-    """Nạp dữ liệu huấn luyện ML từ data/processed/ (ml_tracks.parquet hoặc ml_tracks.csv)."""
-    if project_root is None:
-        cwd = os.getcwd()
-        project_root = os.path.dirname(cwd) if os.path.basename(cwd) == "notebooks" else cwd
-
-    ml_pq = os.path.join(project_root, "data", "processed", "ml_tracks.parquet")
-    ml_csv = os.path.join(project_root, "data", "processed", "ml_tracks.csv")
-
-    if os.path.exists(ml_pq):
-        return pd.read_parquet(ml_pq)
-    elif os.path.exists(ml_csv):
-        return pd.read_csv(ml_csv)
-    return None
