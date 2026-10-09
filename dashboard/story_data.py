@@ -36,6 +36,63 @@ def prior_analysis(charts, index):
     t['i']=t.track_id.map(index); t['date']=t.entry.dt.strftime('%Y-%m-%d')
     return records(t.dropna(subset=['i'])[['i','date','prior','streams_8w','artist_id']])
 
+def load_forecast_bundle():
+    fc_path = ROOT / 'reports' / 'global_top50_first_week' / 'first_week_forecast.parquet'
+    model_path = ROOT / 'reports' / 'global_top50_first_week' / 'selected_logistic.joblib'
+    metrics_path = ROOT / 'reports' / 'global_top50_first_week' / 'model_metrics.json'
+    coef_path = ROOT / 'reports' / 'global_top50_first_week' / 'tableau_coefficients.csv'
+    thresh_path = ROOT / 'reports' / 'global_top50_first_week' / 'tableau_threshold_validation.csv'
+    
+    if not fc_path.exists() or not model_path.exists():
+        return {}
+    
+    import joblib
+    fc = pd.read_parquet(fc_path)
+    scored = fc[fc.split_group.isin(['test', 'validation', 'train'])].copy()
+    
+    cols = ['track_id', 'track_name', 'artist_names', 'first_chart_week', 
+            'rank_first_week', 'streams_first_week', 'log_streams_first_week',
+            'p_hat', 'hit_next_8_weeks', 'split_group',
+            'danceability', 'energy', 'valence', 'loudness', 'acousticness', 'speechiness', 'tempo']
+    
+    scored['first_chart_week'] = pd.to_datetime(scored['first_chart_week']).dt.strftime('%Y-%m-%d')
+    scored['p_hat'] = scored['p_hat'].round(4)
+    scored['log_streams_first_week'] = scored['log_streams_first_week'].round(4)
+    for c in ['danceability', 'energy', 'valence', 'acousticness', 'speechiness']:
+        scored[c] = scored[c].round(4)
+    scored['loudness'] = scored['loudness'].round(2)
+    scored['tempo'] = scored['tempo'].round(1)
+    
+    samples = json.loads(scored[cols].to_json(orient='values'))
+    
+    model_dict = joblib.load(model_path)
+    pipe = model_dict['pipeline']
+    scaler = pipe.named_steps['scaler']
+    clf = pipe.named_steps['classifier']
+    
+    coefs = pd.read_csv(coef_path).to_dict(orient='records') if coef_path.exists() else []
+    
+    metrics = {}
+    if metrics_path.exists():
+        with open(metrics_path, 'r', encoding='utf-8') as f:
+            metrics = json.load(f)
+            
+    thresh_val = pd.read_csv(thresh_path).to_dict(orient='records') if thresh_path.exists() else []
+    
+    return {
+        'cols': cols,
+        'samples': samples,
+        'features': model_dict['features'],
+        'scaler_mean': scaler.mean_.tolist(),
+        'scaler_std': scaler.scale_.tolist(),
+        'coefficients': clf.coef_[0].tolist(),
+        'intercept': float(clf.intercept_[0]),
+        'coef_table': coefs,
+        'metrics': metrics,
+        'threshold_curve_val': thresh_val,
+        'default_threshold': metrics.get('threshold', 0.79)
+    }
+
 def load_bundle():
     tracks=pd.read_csv(DATA/'tracks_dimension.csv').drop_duplicates('track_id').reset_index(drop=True)
     charts=pd.read_parquet(DATA/'charts_clean.parquet')
@@ -76,5 +133,5 @@ def load_bundle():
     weekly.loc[~weekly.week.between('2020-01-01','2022-07-31'),'weekly_deaths']=float('nan')
     weekly['date']=weekly.week.dt.strftime('%Y-%m-%d')
     cols=['date','total_streams','track_count','duration_weighted']+[f+'_weighted' for f in FEATURES]+['weekly_deaths']
-    return dict(analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),
+    return dict(analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),forecast=load_forecast_bundle(),
                 source=dict(notebook='04_story.ipynb',chart_rows=len(charts),chart_slots=len(slots),covid_weeks=int(weekly.weekly_deaths.notna().sum()),countries_by_year=countries.groupby('year').size().to_dict()))

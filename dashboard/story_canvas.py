@@ -27,7 +27,11 @@ LABELS = {
     'seasonal': 'Âm thanh thay đổi theo tháng trong năm',
     'covid': 'Đặc trưng âm thanh và tử vong COVID-19 theo tuần',
     'correlation': 'Mối liên hệ giữa âm thanh, nghệ sĩ và lượt nghe',
-    'collab_box': 'Phân bố lượt nghe 8 tuần: đơn ca và hợp tác'
+    'collab_box': 'Phân bố lượt nghe 8 tuần: đơn ca và hợp tác',
+    'decision_boundary': 'Không gian quyết định 2D & Ranh giới phân loại',
+    'confusion_heatmap': 'Ma trận nhầm lẫn tương tác (Confusion Matrix)',
+    'tradeoff_curve': 'Đánh đổi Precision – Recall theo ngưỡng τ',
+    'model_coefficients': 'Hệ số hồi quy (Odds Ratio) của 12 biến'
 }
 
 def workbook():
@@ -62,6 +66,14 @@ def workbook():
             'Tháng 12 tăng vọt tính mộc mạc theo mùa lễ hội; trong đại dịch, âm nhạc có xu hướng êm dịu hơn nhưng vẫn giữ sắc thái tích cực.',
             ['duration', 'seasonal', 'covid'],
             'Phân biệt xu hướng thời lượng, mùa vụ và đồng biến động COVID. Số tử vong không trực tiếp đo phong tỏa hay tâm lý người nghe.'
+        ),
+        (
+            'forecast',
+            'Mô hình & Ngưỡng dự báo',
+            'Làm sao chuyển điểm số xác suất thành quyết định hành động?',
+            'Khám phá không gian quyết định 2D, điều chỉnh ngưỡng τ và quan sát biến động tức thời trên ma trận nhầm lẫn cùng đường trade-off.',
+            ['decision_boundary', 'confusion_heatmap', 'tradeoff_curve', 'model_coefficients'],
+            'Hồi quy Logistic 12 biến tuần đầu. Ngưỡng tối ưu F1 = 0.79 chọn trên Validation; đánh giá độc lập trên Test (2021–2022). Lưu ý cảnh báo nhóm hạng 51–200 và hiệu chuẩn xác suất.'
         )
     ]
     dashboards = {}
@@ -88,10 +100,13 @@ def workbook():
                 band='',
                 collab='',
                 month='',
-                weeks=[]
+                weeks=[],
+                threshold=0.79,
+                split='test',
+                boundary_y='rank_first_week'
             )
         ))
-    return dict(version=5, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
+    return dict(version=6, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
 
 def data_bundle():
     return dict(workbook=workbook(), region_short=REGION_SHORT, **importlib.reload(story_data).load_bundle())
