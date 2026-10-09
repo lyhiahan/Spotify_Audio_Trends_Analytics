@@ -8,8 +8,8 @@ Luồng xử lý được thiết kế theo nguyên tắc:
 2. **Notebook kiểm soát toàn diện:** Mọi logic làm sạch sâu, biến đổi cấu trúc, kiểm tra cấp độ hạt (grain verification), trích xuất đặc trưng và xuất tập tin sạch cốt lõi và các bảng Data Marts được thực hiện minh bạch từng bước, tuân thủ nghiêm ngặt quy tắc phong cách (mỗi ô một việc, có markdown giải thích, kiểm tra assertion trước/sau).
 3. **Kiến trúc dữ liệu phân tầng tinh gọn (Data Lakehouse / Medallion Pattern):**
    * **Tầng Bronze (Raw Data):** 5 tập tin dữ liệu thô ban đầu (~800MB bảng xếp hạng, dữ liệu dịch tễ, GDP, mã quốc gia, WHS).
-   * **Tầng Silver (Clean Tables):** Chỉ lưu trữ các bảng sạch cốt lõi ở định dạng tối ưu (`charts_clean.parquet`, `tracks_dimension.csv`, `country_lookup.csv`, `covid_weekly_clean.csv`, `whs_clean.csv`). Loại bỏ hoàn toàn các file CSV trùng lặp kích thước lớn hoặc bảng trung gian ngoại lai không đảm bảo độ phủ.
-   * **Tầng Gold (Data Marts):** Tổng hợp sẵn các chỉ số thống kê phục vụ trực tiếp Dashboard 1, 2, 3 và Machine Learning (`mart_audio_trend_weekly.parquet`, `mart_artist_chart.parquet`, `mart_country_year.parquet`, `ml_tracks.parquet`).
+   * **Tầng Silver (Clean Tables):** Chỉ lưu trữ các bảng sạch cốt lõi ở định dạng tối ưu (`charts_clean.parquet`, `tracks_dimension.csv`, `country_lookup.csv`, `covid_weekly_clean.csv`). Dữ liệu WHS được làm sạch trong bộ nhớ (`df_whs_clean`) để ghép nối trực tiếp sang Data Mart.
+   * **Tầng Gold (Data Marts):** Tổng hợp sẵn các chỉ số thống kê phục vụ trực tiếp Dashboard 1, 2, 3 (`mart_audio_trend_weekly.parquet`, `mart_artist_chart.parquet` / `.csv`, `mart_country_year.parquet`). Dữ liệu Machine Learning được trích xuất độc lập từ `charts_clean.parquet` tại `03_model.ipynb`.
 
 ---
 
@@ -45,8 +45,8 @@ flowchart TD
         B6["load_covid_raw()<br/>- Melt bảng ngang sang dọc (1,143 ngày)<br/>- Tách Hong Kong, gộp bang về quốc gia<br/>- Đồng bộ tuần thứ Năm theo Spotify<br/>- Tạo chuỗi Global, bảo toàn tổng 6,881,785 ca tử vong<br/>- Lọc giữ đúng 74 thực thể (73 nước + Global)<br/>- Xuất covid_weekly_clean.csv (12,136 dòng)"]
     end
 
-    subgraph S5["Module 7: Chuẩn Hóa Báo Cáo Hạnh Phúc WHS"]
-        B7["load_whs_raw()<br/>- Thống kê phân bố 10 năm (2015-2024)<br/>- Nhận diện bước nhảy thang đo nhân tố phân rã giữa 2021-2022<br/>- Sử dụng happiness_score làm biến chuẩn liên năm<br/>- Đổi tên Bắc Síp năm 2022 và ánh xạ 6 alias (60 dòng)<br/>- Xuất whs_clean.csv (1,510 dòng, 10 cột)"]
+    subgraph S5["Module 7: Chuẩn Hóa Báo Cáo Hạnh Phúc WHS (In-Memory)"]
+        B7["load_whs_raw()<br/>- Thống kê phân bố 10 năm (2015-2024)<br/>- Nhận diện bước nhảy thang đo nhân tố phân rã giữa 2021-2022<br/>- Sử dụng happiness_score làm biến chuẩn liên năm<br/>- Đổi tên Bắc Síp năm 2022 và ánh xạ 6 alias (60 dòng)<br/>- Lưu df_whs_clean trong bộ nhớ (1,510 dòng, 10 cột)"]
     end
 
     subgraph S6["Module 8: Kiểm Tra Chéo Độc Lập (Cross-Validation)"]
@@ -57,17 +57,20 @@ flowchart TD
         B7 --> B8
     end
 
-    subgraph S7["Module 9: Xây Dựng 4 Bảng Data Marts Tinh Gọn"]
+    subgraph S7["Module 9: Xây Dựng 3 Bảng Data Marts Tinh Gọn (01_preprocess)"]
         M1["mart_audio_trend_weekly.parquet<br/>(5,548 dòng, 29 cột)<br/>- Deduplicate slot vị trí xếp hạng<br/>- Tính Unweighted & Streams-Weighted Audio Means<br/>- Dùng cho Dashboard 1 & 3"]
-        M2["mart_artist_chart.parquet<br/>(15,254 dòng, 7 cột - 0% NaN)<br/>- Trích xuất 100% từ charts_clean<br/>- Tổng streams, n_tracks, peak_rank, n_weeks, genre<br/>- Dùng cho Dashboard 1"]
-        M3["mart_country_year.parquet<br/>(141 dòng, 42 cột)<br/>- Ghép audio năm với country_lookup & whs_clean<br/>- Dùng cho Dashboard 2"]
-        M4["ml_tracks.parquet & .csv<br/>(39,190 dòng, 30 cột - 0% NaN)<br/>- Biến mục tiêu pop_score (0-100), is_hit (50), is_mega_hit (70)<br/>- 12 đặc trưng audio nội tại + phát hành<br/>- Dùng cho Mô hình Hồi quy & Phân loại"]
+        M2["mart_artist_chart.parquet<br/>(15,254 dòng, 10 cột)<br/>- Trích xuất 100% từ charts_clean<br/>- Tổng streams, n_tracks, peak_rank, n_weeks, genre<br/>- Dùng cho Dashboard 1"]
+        M3["mart_country_year.parquet<br/>(141 dòng, 42 cột)<br/>- Ghép audio năm với country_lookup & df_whs_clean<br/>- Dùng cho Dashboard 2"]
         B3 --> M1
         B3 --> M2
         B3 --> M3
         B5 --> M3
         B7 --> M3
-        B3 --> M4
+    end
+
+    subgraph S8["Phân Hệ Machine Learning Độc Lập (03_model.ipynb)"]
+        ML1["Dự báo Global Top 50 trong 8 tuần<br/>- Đọc trực tiếp charts_clean.parquet<br/>- 12 biến X: 10 audio + rank_first_week + log_streams_first_week<br/>- Biến mục tiêu Y: hit_next_8_weeks<br/>- Mô hình Logistic Regression<br/>- Báo cáo: reports/global_top50_first_week/"]
+        B3 -.-> ML1
     end
 ```
 
@@ -82,15 +85,13 @@ flowchart TD
   * **Khi tính xu hướng âm thanh (Dashboard 1, 2, 3) hoặc chỉ số bài hát (ML):** Bắt buộc phải `drop_duplicates(subset=["chart_country", "week", "rank"])` trước khi `groupby`. Nếu không, các bài hát collab sẽ bị phóng đại trọng số (2x-3x) so với bài hát đơn ca, làm sai lệch phân bố âm thanh.
   * **Khi tính thành tích nghệ sĩ (`mart_artist_chart`):** Dùng toàn bộ bảng `charts_clean` để ghi nhận công bằng lượt nghe và thứ hạng cho mọi nghệ sĩ tham gia.
 
-### 2.2. Phòng chống triệt để Rò rỉ Dữ liệu (Data Leakage) trong Machine Learning
+### 2.2. Dữ liệu đầu vào của mô hình hiện tại
 
-* **Bối cảnh bài toán:** Một nghệ sĩ hoặc hãng đĩa muốn dự đoán: *"Với một bài hát mới có các đặc trưng âm thanh X và thông tin phát hành, bài hát này có tiềm năng đạt điểm phổ biến `pop_score` bao nhiêu (Hồi quy) và có trở thành Hit (`is_hit == 1`) hay không (Phân loại)?"*
-* **Phân định rạch ròi giữa X và Y:**
-  * **Biến mục tiêu ($Y$):** `pop_score` (0–100), `is_hit` (ngưỡng 50 điểm - cân bằng 13.9%), `is_mega_hit` (ngưỡng 70 điểm), `hit_tier` (4 mức).
-  * **Biến hậu nghiệm (Cấm đưa vào $X$):** `peak_rank`, `nweek`, `total_streams`, `avg_streams`, `n_countries`, `rank`, `previous_rank`, `weeks_on_chart`. Đây là các chỉ số sinh ra sau quá trình ca khúc trụ hạng trên thị trường. Nếu đưa vào $X$, mô hình sẽ bị rò rỉ dữ liệu 100% (đạt điểm số $R^2 = 1.0$ giả tạo nhưng vô dụng khi triển khai thực tế).
-  * **Đặc trưng dự báo hợp lệ ($X$):**
-    1. 12 Đặc trưng âm học nội tại (`danceability`, `energy`, `valence`, `tempo`, `key`, `mode`, `loudness`, `acousticness`, `instrumentalness`, `speechiness`, `liveness`, `duration`).
-    2. Thông tin phát hành: `artists_num` (đơn ca vs hợp tác), `artist_genre`, `release_year`, `release_month`.
+Mô hình trong `03_model.ipynb` dự báo `hit_next_8_weeks`: bài đạt Global Top 50 ít nhất một lần trong tám tuần sau tuần đầu quan sát, không tính tuần đầu. Chỉ gán nhãn khi đủ tám tuần Top 50; các trường hợp thiếu cửa sổ không được coi là nhãn âm.
+
+X gồm 10 audio liên tục (thời lượng dùng `duration_min`) cùng `rank_first_week` và `log_streams_first_week`. Các tổng thành tích cả lịch sử không thuộc X. Chia dữ liệu theo thời gian, purge cửa sổ nhãn tại biên và fit bộ xử lý trên Train. ID bài tách biệt giữa các tập, nhưng chưa đảm bảo nghệ sĩ hoặc các bản thu khác ID tách biệt.
+
+Xem [từ điển dữ liệu](data_dictionary.md#4-cohort-và-nhãn-dự-báo-trong-03_modelipynb) để biết schema, nhãn và giới hạn. Các điểm `pop_score`/`is_hit` của nhánh cũ không thuộc pipeline hiện tại.
 
 ---
 
@@ -138,55 +139,19 @@ flowchart TD
 
 ---
 
-### 3.4. Dashboard 4 & Machine Learning: Hồi Quy Tuyến Tính & Hồi Quy Logistic
+### 3.4. Phân Hệ Machine Learning Độc Lập (03_model.ipynb): Dự Báo Global Top 50 Trong 8 Tuần
 
-* **Tập tin sử dụng:** `ml_tracks.parquet` (hoặc `ml_tracks.csv`) với 39,190 bài hát độc nhất 100% và **0% giá trị khuyết thiếu**.
-* **Kiến trúc hai bài toán Machine Learning:**
-  1. **Hồi quy Tuyến tính (Ridge / Linear Regression):**
-     * **Mục tiêu:** Dự đoán điểm phổ biến liên tục $\hat{y} = \text{pop\_score} \in [0, 100]$.
-     * **Đánh giá hiệu năng:** $R^2$ Score, Mean Absolute Error (MAE), Root Mean Squared Error (RMSE).
-  2. **Hồi quy Logistic (Logistic Regression Classifier):**
-     * **Mục tiêu:** Phân loại nhị phân ca khúc có trở thành "Hit" hay không ($P(\text{is\_hit} = 1) \ge 0.5$).
-     * **Cân bằng nhãn:** Sử dụng nhãn `is_hit` ($\ge 50$ điểm) chiếm 13.9% và tham số `class_weight='balanced'`.
-     * **Đánh giá hiệu năng:** ROC-AUC, PR-AUC, F1-Score, Confusion Matrix.
-* **Code mẫu khởi tạo mô hình trong Scikit-Learn:**
-
-  ```python
-  import pandas as pd
-  from sklearn.model_selection import train_test_split
-  from sklearn.linear_model import Ridge, LogisticRegression
-  from sklearn.preprocessing import StandardScaler
-  from sklearn.metrics import r2_score, roc_auc_score
-
-  df_ml = pd.read_parquet("../data/processed/ml_tracks.parquet")
-
-  # 1. Định nghĩa tập đặc trưng dự báo X (chỉ lấy các biến trước khi ca khúc phát hành)
-  features = [
-      "danceability", "energy", "key", "mode", "loudness", 
-      "speechiness", "acousticness", "instrumentalness", 
-      "liveness", "valence", "tempo", "duration",
-      "artists_num", "release_year", "release_month"
-  ]
-  X = df_ml[features]
-
-  # 2. Huấn luyện Hồi quy pop_score
-  y_reg = df_ml["pop_score"]
-  X_train, X_test, y_train_reg, y_test_reg = train_test_split(X, y_reg, test_size=0.2, random_state=42)
-  scaler = StandardScaler()
-  X_train_scaled = scaler.fit_transform(X_train)
-  X_test_scaled = scaler.transform(X_test)
-
-  model_reg = Ridge(alpha=1.0)
-  model_reg.fit(X_train_scaled, y_train_reg)
-  print(f"R2 Test Score: {r2_score(y_test_reg, model_reg.predict(X_test_scaled)):.4f}")
-
-  # 3. Huấn luyện Phân loại is_hit
-  y_clf = df_ml["is_hit"]
-  _, _, y_train_clf, y_test_clf = train_test_split(X, y_clf, test_size=0.2, random_state=42)
-  model_clf = LogisticRegression(max_iter=1000, class_weight="balanced")
-  model_clf.fit(X_train_scaled, y_train_clf)
-  print(f"ROC-AUC Test: {roc_auc_score(y_test_clf, model_clf.predict_proba(X_test_scaled)[:, 1]):.4f}")
-  ```
+* **Tập tin sử dụng:** Đọc trực tiếp từ `charts_clean.parquet` để trích xuất trạng thái quan sát đầu tiên của bài hát trên bảng xếp hạng Global Top 200.
+* **Câu hỏi nghiên cứu:** Khi một bài hát lần đầu xuất hiện trên Global Top 200, dựa vào đặc trưng âm thanh và tín hiệu tuần đầu (thứ hạng và lượt nghe), liệu bài hát có khả năng lọt vào **Global Top 50 ít nhất một lần trong 8 tuần tiếp theo** hay không?
+* **Kiến trúc bài toán:**
+  1. **Tập dữ liệu phân tích:** Một dòng cho mỗi bài hát tại tuần đầu quan sát (`rank_first_week`, `log_streams_first_week`).
+  2. **Biến mục tiêu ($Y$):** `hit_next_8_weeks` (nhị phân: 1 nếu đạt rank $\le 50$ trong vòng 8 tuần kế tiếp, 0 nếu không).
+  3. **Tập đặc trưng dự báo ($X$ - 12 biến):**
+     * 10 đặc trưng âm học: `danceability`, `energy`, `loudness`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `duration_min`.
+     * 2 tín hiệu thị trường tuần đầu: `rank_first_week`, `log_streams_first_week`.
+  4. **Mô hình triển khai:** Logistic Regression với chuẩn hóa `StandardScaler`.
+  5. **Đánh giá hiệu năng:** ROC-AUC, PR-AUC, F1-Score, Brier Score, Odds Ratio phân tích tầm quan trọng của từng đặc trưng. Báo cáo chỉ số hiện có tại `reports/global_top50_first_week/model_metrics.json`; không coi artifact trong `models/` là cùng phiên bản nếu chưa đối chiếu.
+* *Lưu ý:* Tập dữ liệu `ml_tracks.parquet` cũ (dựa trên điểm tổng hợp `pop_score` toàn lịch sử) đã được chuyển vào `archive/superseded_ml_tracks/` để đảm bảo không rò rỉ dữ liệu tương lai và giữ `data/processed/` tinh gọn tuyệt đối.
 
 ---
 
@@ -197,8 +162,9 @@ flowchart TD
 | **Khóa hạt bảng xếp hạng** | `dup_grain_count == 0` | 0 dòng trùng lặp | Đảm bảo tính duy nhất của bộ khóa `(track_id, artist_id, chart_country, week)`. |
 | **Tính bất biến âm học** | `audio_invariance == 1` | 100% đạt chuẩn | Đảm bảo 12 đặc trưng âm học không bị thay đổi theo thời gian hay quốc gia. |
 | **Chu kỳ xếp hạng** | `dayofweek == 3` (Thứ Năm) | 100% đúng thứ Năm | Đồng bộ nhịp thời gian chốt tuần giữa Spotify và dữ liệu COVID-19. |
-| **Ghép nối Báo cáo Hạnh phúc** | `missing_whs == 0` | 141/141 cặp (100%) | Đảm bảo mọi chu kỳ năm quốc gia của Spotify đều có điểm số hạnh phúc tương ứng. |
+| **Ghép nối Báo cáo Hạnh phúc** | `missing_whs == 0` | 141/141 cặp (100%) | Đảm bảo mọi chu kỳ năm quốc gia của Spotify đều có điểm số hạnh phúc tương ứng trong bộ nhớ. |
 | **Ghép nối Dịch tễ COVID-19** | `(left_only['country'] == 'Global').all()` | Đúng 160 tuần Global | Xác nhận toàn bộ giai đoạn khuyết dữ liệu dịch tễ nằm trước khi đại dịch bùng phát. |
 | **Xử lý ngoại lệ Đài Loan** | `sc == 'Taiwan' -> code = 'TWN'` | Xử lý tường minh | World Bank không báo cáo riêng lẻ Đài Loan; bổ sung thủ công chuẩn hóa mã ISO. |
 | **Dị biệt nghệ sĩ Bodø Domkor** | `mismatch == 2` | Đúng 2 slot xác định | Ca khúc *"Ja, Vi Elsker Dette Landet"* có nghệ sĩ thứ nhất là `"N/A"`, giải thích hoàn toàn dị biệt số dòng. |
-| **Tỷ lệ đầy đủ của Data Marts** | `null_count == 0` | 100% hoàn chỉnh | Cả 4 Data Marts không còn khuyết thiếu tên nghệ sĩ hay đặc trưng mô hình. |
+| **Tỷ lệ đầy đủ của Data Marts** | `null_count == 0` | 100% hoàn chỉnh | Cả 3 Data Marts không còn khuyết thiếu tên nghệ sĩ, thuộc tính hoặc giá trị tổng hợp. |
+

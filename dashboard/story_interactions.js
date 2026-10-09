@@ -35,22 +35,22 @@ const fmt=(v,f=state.feature)=>Number.isFinite(v)?v.toFixed(f==='tempo'?1:f==='l
 const shortStreams=v=>!Number.isFinite(v)?'—':v>=1e9?(v/1e9).toLocaleString('vi-VN',{maximumFractionDigits:2})+' tỷ':(v/1e6).toLocaleString('vi-VN',{maximumFractionDigits:1})+' triệu';
 
 let book=clone(bundle.workbook),position=0,state={},generation=0,detailMode='data',statusTimer,current;
-function defaults(s={}){return {year:2021,fromyear:2017,toyear:2022,feature:'danceability',boxfeature:'danceability',region:'Tất cả',country:'VNM',compare:'JPN',weight:'weighted',genre:'',artist:'',band:'',collab:'',month:'',weeks:[],threshold:0.79,split:'test',boundary_y:'rank_first_week',...s}}
+function defaults(s={}){return {eda_tier:'',year:2021,fromyear:2017,toyear:2022,feature:'danceability',boxfeature:'danceability',region:'Tất cả',country:'VNM',compare:'JPN',weight:'weighted',genre:'',artist:'',band:'',collab:'',month:'',weeks:[],threshold:0.79,split:'test',boundary_y:'rank_first_week',...s}}
 const point=()=>book.story_points[position],dash=()=>book.dashboards[point().dashboard_id],kind=()=>dash().id;
 
 function validate(b){
-  if(!b || (b.version!==5 && b.version!==6) || !Array.isArray(b.story_points) || b.story_points.length!==5 || !b.dashboards) throw Error('Cần workbook 5 tabs hợp lệ');
+  if(!b || !Array.isArray(b.story_points) || !b.dashboards) throw Error('Cần workbook hợp lệ');
   for(const p of b.story_points){
     const d=b.dashboards[p.dashboard_id];
-    if(!d || !['hits','artists','geography','time','forecast'].includes(d.id)) throw Error('Dashboard không hợp lệ');
+    if(!d || !['overview','hits','artists','geography','time','forecast'].includes(d.id)) throw Error('Dashboard không hợp lệ');
     p.saved_state=defaults(p.saved_state);
-    d.worksheets=clone(bundle.workbook.dashboards[d.id].worksheets);
+    d.worksheets=clone(bundle.workbook.dashboards[d.id]?.worksheets||[]);
   }
   b.worksheets=clone(bundle.workbook.worksheets);
   return b;
 }
 
-const storageKey='spotify-workbook-v7-stable';
+const storageKey='spotify-workbook-v8-full';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -160,6 +160,7 @@ function controls(){
   const k=kind();
   $('hit-flow').hidden=true;
   const visible={
+    overview:[],
     hits:['fromyear','toyear','genre','band','feature'],
     artists:['fromyear','toyear','genre','artist','collab','feature'],
     geography:['year','weight','region','country','compare','feature'],
@@ -175,7 +176,9 @@ function controls(){
     el.hidden = (k !== 'forecast');
   });
 
-  if(k==='hits'){
+  if(k==='overview'){
+    state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
+  } else if(k==='hits'){
     state.artist='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='artists'){
     state.band='';state.month='';state.weeks=[];
@@ -199,8 +202,8 @@ function controls(){
   $('genre').closest('label').firstChild.nodeValue=k==='artists'?'Thể loại → nghệ sĩ':'Thể loại';
   $('band').closest('label').classList.toggle('wide',k==='hits');
   $('collab').closest('label').classList.toggle('wide',k==='artists');
-  const choices=k==='geography'?mapFeatures:bundle.features;
-  options($('feature'),choices.map(f=>[f,featureLabel(f)]));
+  const choices=k==='overview'?(bundle.eda?.features||bundle.features):k==='geography'?mapFeatures:bundle.features;
+  options($('feature'),choices.map(f=>[f,f==='duration_min'?'Duration · phút':featureLabel(f)]));
   if(!choices.includes(state.feature))state.feature=choices[0];
   const all=bundle.countries.filter(r=>r[2]===state.year),local=all.filter(r=>state.region==='Tất cả'||r[3]===state.region);
   if(!local.some(r=>r[0]===state.country))state.country=local[0]?.[0]||'';
@@ -214,7 +217,7 @@ function controls(){
     const el=$(id);
     if(el)el.value=state[id];
   }
-  $('scope').textContent=k==='hits'?`${state.fromyear}–${state.toyear} · BXH Global`:k==='artists'?`${state.fromyear}–${state.toyear} · Phân tích nghệ sĩ & collab`:k==='geography'?`${local.length} quốc gia · ${state.year} · ${state.weight==='weighted'?'theo stream':'trung bình thường'}`:`${state.fromyear}–${state.toyear} · ${current?.covid?.length||0} tuần COVID`;
+  $('scope').textContent=k==='overview'?'Toàn bộ mẫu chart & Train Global':k==='hits'?`${state.fromyear}–${state.toyear} · BXH Global`:k==='artists'?`${state.fromyear}–${state.toyear} · Phân tích nghệ sĩ & collab`:k==='geography'?`${local.length} quốc gia · ${state.year} · ${state.weight==='weighted'?'theo stream':'trung bình thường'}`:`${state.fromyear}–${state.toyear} · ${current?.covid?.length||0} tuần COVID`;
 }
 
 function hitStats(rows=current.context){const accum=Array.from({length:4},()=>bundle.features.map(()=>({n:0,s:0,q:0})));for(const r of rows){const t=bundle.tracks[r[0]];bundle.features.forEach((f,j)=>{const x=tv(t,f);if(Number.isFinite(x)){const a=accum[r[3]][j];a.n+=r[4];a.s+=x*r[4];a.q+=x*x*r[4]}})}
@@ -427,6 +430,9 @@ async function render(){
  const token=++generation;controls();current=buildModel();controls();nav();
  $('dashboard-name').textContent=dash().title;$('caption').textContent=point().caption;$('description').textContent=dash().description;$('note').textContent=dash().note;$('note').title=dash().note;
  $('counter').textContent=`${position+1} / ${book.story_points.length}`;
+ document.querySelector('.workspace').classList.toggle('overview-workspace',kind()==='overview');
+ document.body.classList.toggle('overview-screen',kind()==='overview');
+ if(kind()==='overview')$('caption').textContent='Cái nhìn về dữ liệu';
  inspector();
  const host=$('dashboard');host.querySelectorAll('.plot').forEach(el=>Plotly.purge(el));host.replaceChildren();host.className='dashboard '+(kind()==='geography'?'geo':kind());
  for(const key of dash().worksheets){
@@ -434,6 +440,19 @@ async function render(){
   const head=document.createElement('div');head.className='panel-head';
   const title=document.createElement('h2');title.textContent=chartTitle(key);title.title=title.textContent;
   const tools=document.createElement('div');
+  if(bundle.eda_figures && bundle.eda_figures[key]){
+   const asset=bundle.eda_figures[key];panel.classList.add('static-panel');tools.replaceChildren();
+   const enlarge=document.createElement('button'),save=document.createElement('button');
+   enlarge.textContent='Xem lớn';enlarge.onclick=()=>showEdaImage(asset);save.textContent='PNG';save.title='Tải hình gốc từ notebook';
+   save.onclick=async()=>download(key+'.png',await fetch(asset.image).then(r=>r.blob()),'image/png');tools.append(enlarge,save);
+   head.append(title,tools);panel.append(head);
+   const el=document.createElement('div');el.className='eda-image-wrap';
+   const image=document.createElement('img');image.src=asset.image;image.alt=asset.title;image.width=asset.width;image.height=asset.height;image.onclick=()=>showEdaImage(asset);
+   el.append(image);panel.append(el);
+   const caption=document.createElement('p');caption.className='eda-caption';caption.textContent=asset.caption;panel.append(caption);
+   host.append(panel);
+   continue;
+  }
   if(key==='genre_box'){const select=document.createElement('select');select.setAttribute('aria-label','Chỉ số boxplot');options(select,boxFeatures.map(f=>[f,featureLabel(f)]));select.value=state.boxfeature;select.onchange=()=>{state.boxfeature=select.value;render()};tools.append(select)}
   if(key==='artist_tree'&&(state.genre||state.artist)){const up=document.createElement('button');up.textContent='↑ Gốc';up.title='Quay về toàn bộ thể loại/nghệ sĩ';up.onclick=()=>{state.genre='';state.artist='';render()};tools.append(up)}
   if(key==='decision_boundary'){
@@ -630,8 +649,45 @@ function getMetrics(){
   return [];
 }
 
+function showEdaImage(asset){
+ let dialog=$('eda-image-dialog');
+ if(!dialog){dialog=document.createElement('dialog');dialog.id='eda-image-dialog';dialog.className='eda-image-dialog';document.body.append(dialog);dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()})}
+ dialog.replaceChildren();const heading=document.createElement('h2'),close=document.createElement('button'),image=document.createElement('img'),caption=document.createElement('p');
+ heading.textContent=asset.title;close.textContent='Đóng';close.onclick=()=>dialog.close();image.src=asset.image;image.alt=asset.title;caption.textContent=asset.caption+' Nguồn: '+asset.source+', ô '+asset.cell+'.';
+ dialog.append(close,heading,image,caption);dialog.showModal();
+}
+
+function openingInspector(){
+ document.querySelector('.inspector').classList.toggle('inspector-overview',true);
+ document.querySelector('.inspector h2').textContent='Dẫn nhập EDA';
+ const e=bundle.eda;
+ if(!e) return;
+ $('metrics').replaceChildren();
+ for(const [label,value] of [['Bài trong mẫu chart',num(e.tracks)],['Quốc gia + Global',num(e.markets)],['Tuần Global',num(e.weeks)],['Train Global',num(e.train?.count)]]){
+  const card=document.createElement('div'),small=document.createElement('small'),strong=document.createElement('strong');
+  card.className='metric';small.textContent=label;strong.textContent=value;card.append(small,strong);$('metrics').append(card);
+ }
+ $('insight').replaceChildren();
+ const stories=[
+  ['1. Đọc hình dạng phân phối',`Năm histogram giữ nguyên từ EDA, mỗi bài một lần. So sánh trung bình với trung vị để nhận ra độ lệch; Speechiness và Duration có đuôi dài.`],
+  ['2. Audio có thông tin chồng lấn',`Energy–Loudness: ρ = ${e.correlations?.[e.features.indexOf('energy')]?.[e.features.indexOf('loudness')]?.toFixed(3)||'0.763'}. Heatmap mô tả liên hệ giữa các đặc trưng, không phải khả năng tạo hit.`],
+  ['3. Nhãn không cân bằng',`Train có ${(100*(e.train?.rate||0)).toFixed(2)}% nhãn dương. Hình tách nhóm khởi đầu hạng 51–200 để phân biệt bài bứt phá với bài đã ở Top 50.`],
+  ['4. Đặt dữ liệu vào thời gian','Đường xu hướng dùng trọng số stream và trung bình trượt bốn tuần. Các biến động theo mùa là mô tả, cần thêm bằng chứng để giải thích nguyên nhân.'],
+  ['Phạm vi',`Audio: ${num(e.tracks)} bài từng vào chart, ${e.first_week}–${e.last_week}. Nhãn: ${num(e.train?.count)} bài Train Global; cửa sổ tám tuần sau t0, đủ Top 50. Mẫu không đại diện mọi bài trên Spotify.`]
+ ];
+ for(const [heading,text] of stories){
+  const paragraph=document.createElement('p'),strong=document.createElement('strong');
+  paragraph.className='audio-story-item';strong.textContent=heading+': ';
+  paragraph.append(strong,document.createTextNode(text));$('insight').append(paragraph);
+ }
+ $('detail').replaceChildren();
+}
+
 function inspector(){
  const k=kind();
+ if(k==='overview'){openingInspector();return}
+ document.querySelector('.inspector').classList.toggle('inspector-overview',false);
+ document.querySelector('.inspector h2').textContent='Bộ lọc & diễn giải';
  document.querySelector('.inspector').classList.toggle('inspector-hits',k==='hits');
  $('metrics').replaceChildren();
  

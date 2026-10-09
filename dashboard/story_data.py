@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from eda_data import opening_summary
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data'/'processed'
 FEATURES=['danceability','energy','valence','acousticness','speechiness','instrumentalness','liveness','loudness','tempo']
@@ -30,7 +31,7 @@ def prior_analysis(charts, index):
     entries=g.groupby('track_id',observed=True).week.min().rename('entry').reset_index()
     slots=g.drop_duplicates(['track_id','week']).merge(entries,on='track_id',validate='many_to_one')
     streams=slots[slots.week.lt(slots.entry+pd.Timedelta(weeks=8))].groupby('track_id',observed=True).streams.sum().rename('streams_8w')
-    t=pd.read_parquet(DATA/'ml_tracks.parquet').drop_duplicates('track_id').merge(entries,on='track_id',validate='one_to_one').merge(streams,on='track_id',validate='one_to_one')
+    t=pd.read_csv(DATA/'tracks_dimension.csv').drop_duplicates('track_id').merge(entries,on='track_id',validate='one_to_one').merge(streams,on='track_id',validate='one_to_one')
     t=t.merge(h[['artist_id','week','prior']],left_on=['artist_id','entry'],right_on=['artist_id','week'],how='left',validate='many_to_one')
     t=t[t.entry.ge(g.week.min()+pd.Timedelta(weeks=52)) & (t.entry+pd.Timedelta(weeks=7)).le(g.week.max())].dropna(subset=FEATURES+['prior','streams_8w'])
     t['i']=t.track_id.map(index); t['date']=t.entry.dt.strftime('%Y-%m-%d')
@@ -133,5 +134,5 @@ def load_bundle():
     weekly.loc[~weekly.week.between('2020-01-01','2022-07-31'),'weekly_deaths']=float('nan')
     weekly['date']=weekly.week.dt.strftime('%Y-%m-%d')
     cols=['date','total_streams','track_count','duration_weighted']+[f+'_weighted' for f in FEATURES]+['weekly_deaths']
-    return dict(analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),forecast=load_forecast_bundle(),
+    return dict(eda=opening_summary(tracks,charts),analysis=prior_analysis(charts,index),features=FEATURES,genres=GENRES,tracks=track_rows,global_rows=records(grouped),artists=artists,credits=records(credits),countries=records(countries[country_cols]),weekly=records(weekly[cols]),forecast=load_forecast_bundle(),
                 source=dict(notebook='04_story.ipynb',chart_rows=len(charts),chart_slots=len(slots),covid_weeks=int(weekly.weekly_deaths.notna().sum()),countries_by_year=countries.groupby('year').size().to_dict()))
