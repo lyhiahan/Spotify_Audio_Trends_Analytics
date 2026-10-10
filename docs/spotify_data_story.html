@@ -4266,7 +4266,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v16-main';
+const storageKey='spotify-workbook-v17-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -4379,7 +4379,7 @@ function controls(){
     overview:[],
     main_dashboard:[],
     hits:['fromyear','toyear','genre','band','feature'],
-    artists:['fromyear','toyear','genre','feature'],
+    artists:['fromyear','toyear','genre','artist','collab'],
     geography:['year','weight','region','country','compare','feature'],
     time:['fromyear','toyear','month','feature'],
     forecast:['split','boundary_y']
@@ -4406,7 +4406,7 @@ function controls(){
   } else if(k==='hits'){
     state.artist='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='artists'){
-    state.artist='';state.collab='';state.band='';state.month='';state.weeks=[];
+    state.band='';state.month='';state.weeks=[];
   } else if(k==='geography'){
     state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='time'){
