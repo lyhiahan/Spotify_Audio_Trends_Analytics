@@ -42,7 +42,7 @@ function validate(b){
   if(!b || !Array.isArray(b.story_points) || !b.dashboards) throw Error('Cần workbook hợp lệ');
   for(const p of b.story_points){
     const d=b.dashboards[p.dashboard_id];
-    if(!d || !['overview','hits','artists','geography','time','forecast'].includes(d.id)) throw Error('Dashboard không hợp lệ');
+    if(!d || !['overview','main_dashboard','hits','artists','geography','time','forecast'].includes(d.id)) throw Error('Dashboard không hợp lệ');
     p.saved_state=defaults(p.saved_state);
     d.worksheets=clone(bundle.workbook.dashboards[d.id]?.worksheets||[]);
   }
@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v8-full';
+const storageKey='spotify-workbook-v9-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -161,6 +161,7 @@ function controls(){
   $('hit-flow').hidden=true;
   const visible={
     overview:[],
+    main_dashboard:['year','country','compare','feature'],
     hits:['fromyear','toyear','genre','band','feature'],
     artists:['fromyear','toyear','genre','feature'],
     geography:['year','weight','region','country','compare','feature'],
@@ -183,6 +184,8 @@ function controls(){
   });
 
   if(k==='overview'){
+    state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
+  } else if(k==='main_dashboard'){
     state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='hits'){
     state.artist='';state.collab='';state.month='';state.weeks=[];
@@ -208,7 +211,7 @@ function controls(){
   $('genre').closest('label').firstChild.nodeValue=k==='artists'?'Thể loại → nghệ sĩ':'Thể loại';
   $('band').closest('label').classList.toggle('wide',k==='hits');
   $('collab').closest('label').classList.toggle('wide',k==='artists');
-  const choices=k==='overview'?(bundle.eda?.features||bundle.features):k==='geography'?mapFeatures:bundle.features;
+  const choices=k==='overview'?(bundle.eda?.features||bundle.features):['geography','main_dashboard'].includes(k)?mapFeatures:bundle.features;
   options($('feature'),choices.map(f=>[f,f==='duration_min'?'Duration · phút':featureLabel(f)]));
   if(!choices.includes(state.feature))state.feature=choices[0];
   const all=bundle.countries.filter(r=>r[2]===state.year),local=all.filter(r=>state.region==='Tất cả'||r[3]===state.region);
@@ -223,7 +226,7 @@ function controls(){
     const el=$(id);
     if(el)el.value=state[id];
   }
-  $('scope').textContent=k==='overview'?'Toàn bộ mẫu chart & Train Global':k==='hits'?`${state.fromyear}–${state.toyear} · BXH Global`:k==='artists'?`${state.fromyear}–${state.toyear} · Phân tích nghệ sĩ & collab`:k==='geography'?`${local.length} quốc gia · ${state.year} · ${state.weight==='weighted'?'theo stream':'trung bình thường'}`:`${state.fromyear}–${state.toyear} · ${current?.covid?.length||0} tuần COVID`;
+  $('scope').textContent=k==='overview'?'Toàn bộ mẫu chart & Train Global':k==='main_dashboard'?'Toàn cảnh 4 trụ cột cốt lõi':k==='hits'?`${state.fromyear}–${state.toyear} · BXH Global`:k==='artists'?`${state.fromyear}–${state.toyear} · Phân tích nghệ sĩ & collab`:k==='geography'?`${local.length} quốc gia · ${state.year} · ${state.weight==='weighted'?'theo stream':'trung bình thường'}`:`${state.fromyear}–${state.toyear} · ${current?.covid?.length||0} tuần COVID`;
 }
 
 function hitStats(rows=current.context){const accum=Array.from({length:4},()=>bundle.features.map(()=>({n:0,s:0,q:0})));for(const r of rows){const t=bundle.tracks[r[0]];bundle.features.forEach((f,j)=>{const x=tv(t,f);if(Number.isFinite(x)){const a=accum[r[3]][j];a.n+=r[4];a.s+=x*r[4];a.q+=x*x*r[4]}})}
@@ -609,6 +612,16 @@ function forecastStory(){
 
 function getMetrics(){
   const k=kind(), f=state.feature;
+  if(k==='main_dashboard'){
+    const a=current.allCountries.find(r=>r[0]===state.country), b=current.allCountries.find(r=>r[0]===state.compare);
+    const name=r=>r?({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[r[1]]||r[1]:'—';
+    return [
+      [name(a)+' · '+featureLabel(f), a?fmt(cv(a,f),f):'—'],
+      [name(b)+' · '+featureLabel(f), b?fmt(cv(b,f),f):'—'],
+      ['Collab stream trung vị', '28.5M / bài'],
+      ['Thời lượng TB (TikTok)', '198.5 giây']
+    ];
+  }
   if(k==='forecast'){
     const m=current.fcMetrics||{acc:0.837,prec:0.656,rec:0.598,f1:0.626};
     return [
@@ -700,7 +713,18 @@ function inspector(){
    box.append(small,strong);$('metrics').append(box);
  }
  
- const stories={hits:audioStory,artists:artistStory,geography:geographyStory,time:timeStory,forecast:forecastStory};
+ 
+function mainStory(){
+  const a=current.allCountries.find(r=>r[0]===state.country), b=current.allCountries.find(r=>r[0]===state.compare);
+  const name=r=>r?({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[r[1]]||r[1]:'—';
+  return [
+    ['1. Bản sắc địa lý & Đối đầu ADN', 'Bản đồ thế giới và Radar đối đầu bóc tách sự phân hóa rõ nét: ' + name(a) + ' có ' + featureLabel(state.feature) + ' đạt ' + (a?fmt(cv(a,state.feature),state.feature):'—') + ', đối lập với ' + name(b) + ' (' + (b?fmt(cv(b,state.feature),state.feature):'—') + '). Click trực tiếp trên bản đồ để chọn lại quốc gia A.'],
+    ['2. Đòn bẩy hợp tác (Collab vs Solo)', 'Đơn ca chiếm đa số (~59% số bài phát hành), nhưng các dự án Hợp tác (Collab) có trung vị lượt stream cao hơn hẳn (~28.5 triệu so với ~23.5 triệu lượt stream), chứng minh Collab là đòn bẩy tối ưu đưa bài hát vào bảng xếp hạng.'],
+    ['3. Hiện tượng \"TikTok-hóa\" âm nhạc', 'Thời lượng bài hát trung bình sụt giảm mạnh từ 218 giây (2017) xuống còn 198.5 giây (2020) — mất đúng 20 giây chỉ sau 3 năm dưới tác động của cơ chế trả bản quyền 30 giây và văn hóa video ngắn.']
+  ];
+}
+
+const stories={main_dashboard:mainStory,hits:audioStory,artists:artistStory,geography:geographyStory,time:timeStory,forecast:forecastStory};
  if(stories[k]){
    $('insight').replaceChildren();
    for(const [heading,text] of stories[k]()){

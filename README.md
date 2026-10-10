@@ -184,7 +184,13 @@ Hoặc trên Windows PowerShell:
 👉 Truy cập trực tiếp tại: **`http://localhost:8502`**
 
 #### 🌐 Cách 2: Khởi chạy Độc lập Offline (Không cần cài đặt Python)
-Mở trực tiếp tệp [`docs/spotify_data_story.html`](docs/spotify_data_story.html) bằng bất kỳ trình duyệt web hiện đại nào (Google Chrome, Microsoft Edge, Brave). Toàn bộ dữ liệu, biểu đồ Plotly và mã logic tương tác đã được đóng gói độc lập (~15MB), sẵn sàng phục vụ thuyết trình và demo offline ngay lập tức.
+Mở trực tiếp tệp [`docs/spotify_data_story.html`](docs/spotify_data_story.html) hoặc [`dashboard/main_dashboard.html`](dashboard/main_dashboard.html) bằng bất kỳ trình duyệt web hiện đại nào (Google Chrome, Microsoft Edge, Brave). Toàn bộ dữ liệu, biểu đồ Plotly và mã logic tương tác đã được đóng gói độc lập, sẵn sàng phục vụ thuyết trình và demo offline ngay lập tức.
+
+#### 🚀 Cách 3: Khởi chạy riêng Executive Main Dashboard (Single Viewport 100vh)
+```powershell
+./start_main_dashboard.ps1
+```
+👉 Truy cập trực tiếp tại: **`http://localhost:8503`**
 
 ---
 
@@ -192,21 +198,22 @@ Mở trực tiếp tệp [`docs/spotify_data_story.html`](docs/spotify_data_stor
 
 Giao diện áp dụng triết lý thiết kế **Fixed-Viewport (Tableau Story Style)** — toàn bộ bảng điều khiển được khóa cố định trong khung nhìn 100vh, **hoàn toàn không cần cuộn chuột** nhằm giảm tải nhận thức và tối ưu hóa trải nghiệm thuyết trình.
 
-#### 1. Mạch dẫn dắt 6 Story Points (Thanh điều hướng trên cùng)
+#### 1. Mạch dẫn dắt 7 Story Points (Thanh điều hướng trên cùng)
 * **Story Point 1 — Cái nhìn về dữ liệu:** Gom trọn **5 biểu đồ phân tích thực chứng** từ `02_eda.ipynb` trên 1 trang 2 hàng (12 cột):
   * *Hàng 1:* Phân phối 5 đặc trưng âm thanh chính & Nửa ma trận tương quan Spearman 10 biến.
   * *Hàng 2:* Xu hướng âm thanh Global Top 200 (2017–2022), Đối chiếu số ca tử vong COVID-19 với âm thanh, và Phân phối nhãn mục tiêu Top 50 trên tập Train.
   * *Tương tác:* Hỗ trợ nút **"Xem lớn"** (mở popup phóng to toàn màn hình xem chi tiết độ nét cao) và nút **"PNG"** (tải ảnh gốc).
-* **Story Point 2 — Hồ sơ âm thanh (Hit Formula):** Ma trận nhiệt Z-score đối chiếu 9 đặc trưng âm học giữa các tầng thứ hạng (Top 1–10 vs. Top 101–200) kết hợp biểu đồ hộp (Boxplot) bóc tách cấu trúc âm thanh giữa các thể loại âm nhạc.
-* **Story Point 3 — Nghệ sĩ & hợp tác:** Khám phá độ phân tán tương quan giữa điểm nghệ sĩ và lượt nghe 8 tuần, Treemap phân cấp lượt stream của 80 nghệ sĩ dẫn đầu, và kiểm chứng sức mạnh Đơn ca (Solo) vs. Hợp tác (Collab).
-* **Story Point 4 — Bản sắc địa lý & ADN âm nhạc:** Bản đồ thế giới Choropleth trực quan hóa các đặc trưng âm học trên 73 quốc gia, đi kèm biểu đồ Radar Chart đối đầu văn hóa 180 độ giữa Việt Nam (Pop Ballad mộc mạc) và Nhật Bản (J-Pop/J-Rock dồn dập).
-* **Story Point 5 — Chu kỳ thời gian & đại dịch:** Biểu đồ đối chiếu hiện tượng "TikTok-hóa" sụt giảm thời lượng bài hát, tính mùa vụ âm nhạc tháng 12 (nhạc Giáng sinh), và tác động tâm lý trong đại dịch COVID-19 ("êm hơn nhưng không buồn hơn").
-* **Story Point 6 — Mô hình & Ngưỡng dự báo (Machine Learning):** Trực quan hóa không gian quyết định 2D, mô phỏng đánh đổi ngưỡng quyết định $\tau$ thời gian thực trên Ma trận nhầm lẫn (Confusion Matrix) và đường cong Precision – Recall.
+* **Story Point 2 — Main Dashboard (Executive Overview):** Bảng điều khiển tinh hoa 4 góc nhìn trung tâm (Bản đồ âm học 73 quốc gia, Radar đối đầu ADN âm nhạc Việt Nam vs Nhật Bản, Hiện tượng TikTok-hóa rút ngắn 20s, và Sức mạnh Hợp tác Collab vs Solo).
+* **Story Point 3 — Hồ sơ âm thanh (Hit Formula):** Ma trận nhiệt Z-score đối chiếu 9 đặc trưng âm học giữa các tầng thứ hạng (Top 1–10 vs. Top 101–200) kết hợp biểu đồ hộp (Boxplot) bóc tách cấu trúc âm thanh giữa các thể loại âm nhạc.
+* **Story Point 4 — Nghệ sĩ & hợp tác:** Khám phá độ phân tán tương quan giữa điểm nghệ sĩ và lượt nghe 8 tuần, Treemap phân cấp lượt stream của 80 nghệ sĩ dẫn đầu, và kiểm chứng sức mạnh Đơn ca (Solo) vs. Hợp tác (Collab).
+* **Story Point 5 — Bản sắc địa lý & ADN âm nhạc:** Bản đồ thế giới Choropleth trực quan hóa các đặc trưng âm học trên 73 quốc gia, đi kèm biểu đồ Radar Chart đối đầu văn hóa 180 độ giữa Việt Nam (Pop Ballad mộc mạc) và Nhật Bản (J-Pop/J-Rock dồn dập).
+* **Story Point 6 — Chu kỳ thời gian & đại dịch:** Biểu đồ đối chiếu hiện tượng "TikTok-hóa" sụt giảm thời lượng bài hát, tính mùa vụ âm nhạc tháng 12 (nhạc Giáng sinh), và tác động tâm lý trong đại dịch COVID-19 ("êm hơn nhưng không buồn hơn").
+* **Story Point 7 — Mô hình & Ngưỡng dự báo (Machine Learning):** Trực quan hóa không gian quyết định 2D, mô phỏng đánh đổi ngưỡng quyết định $\tau$ thời gian thực trên Ma trận nhầm lẫn (Confusion Matrix) và đường cong Precision – Recall.
 
 #### 2. Các tính năng tương tác đa chiều (Interactive Capabilities)
-* **Lọc chéo tức thời (Cross-filtering):** Click trực tiếp vào một thể loại trên Treemap hoặc một nhóm trên biểu đồ Donut để các biểu đồ liên quan tự động lọc và đồng bộ theo đối tượng vừa chọn.
+* **Lọc chéo tức thời (Cross-filtering):** Click trực tiếp vào một quốc gia trên Bản đồ, một thể loại trên Treemap hoặc một nhóm trên biểu đồ Donut để các biểu đồ liên quan tự động lọc và đồng bộ theo đối tượng vừa chọn.
 * **Bộ điều khiển chi tiết (Inspector Panel bên phải):** Cho phép người dùng tùy biến khoảng thời gian (2017–2022), thể loại nhạc, nghệ sĩ cụ thể, phân tầng thứ hạng, và phương pháp tính luồng nghe (Weighted vs. Mean).
-* **Mô phỏng ngưỡng dự báo động ($\tau$-tuning):** Tại Story Point 6, người dùng có thể kéo thanh trượt ngưỡng $\tau \in [0.0, 1.0]$ hoặc nhấn các nút chọn sẵn (Preset F1 tối ưu `0.79`, Cân bằng `0.50`, Ưu tiên độ chính xác `0.85`) để quan sát sự biến thiên tức thời của Ma trận nhầm lẫn và các chỉ số $F_1$, Precision, Recall.
+* **Mô phỏng ngưỡng dự báo động ($\tau$-tuning):** Tại Story Point 7, người dùng có thể kéo thanh trượt ngưỡng $\tau \in [0.0, 1.0]$ hoặc nhấn các nút chọn sẵn (Preset F1 tối ưu `0.79`, Cân bằng `0.50`, Ưu tiên độ chính xác `0.85`) để quan sát sự biến thiên tức thời của Ma trận nhầm lẫn và các chỉ số $F_1$, Precision, Recall.
 * **Xuất bản dữ liệu & Hình ảnh:** Mọi biểu đồ trên hệ thống đều tích hợp nút **PNG** (xuất ảnh đồ họa chất lượng cao) và **CSV** (tải bảng dữ liệu đã qua xử lý và lọc).
 
 ---

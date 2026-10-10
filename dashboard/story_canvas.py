@@ -53,6 +53,14 @@ def workbook():
             'Toàn bộ 5 biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200, đối chiếu tử vong COVID-19 và nhãn mục tiêu dự báo Top 50.'
         ),
         (
+            'main_dashboard',
+            'Main Dashboard',
+            'Toàn cảnh Xu hướng Âm thanh & Công thức Hit',
+            'Bảng điều khiển tổng hợp 4 trụ cột cốt lõi: Bản sắc địa lý, Đối đầu ADN âm nhạc, Hiện tượng TikTok và Đòn bẩy hợp tác.',
+            ['map', 'radar', 'duration', 'collab'],
+            'Tổng hợp đa chiều từ các data mart: Choropleth 73 quốc gia, Radar đối kháng chuẩn hóa, chuỗi thời lượng 2017–2022 và phân phối stream Solo vs Collab.'
+        ),
+        (
             'hits',
             'Hồ sơ âm thanh',
             'Bài hát thịnh hành có hồ sơ âm thanh như thế nào?',
