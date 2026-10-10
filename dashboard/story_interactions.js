@@ -14,11 +14,11 @@ const diverge=[[0,'#E07052'],[.32,'#F4B5A4'],[.5,'#FAF9F6'],[.68,'#9FD1D9'],[1,'
 const correlationScale=[[0,'#873953'],[.25,'#AE5676'],[.35,'#C77D97'],[.45,'#E2ADC0'],[.5,'#DBE2EA'],[.55,'#A5C7E6'],[.65,'#6497C1'],[.75,'#457BA8'],[1,'#254F79']];
 const mixHex=(a,b,t)=>'#'+[1,3,5].map(i=>Math.round(parseInt(a.slice(i,i+2),16)*(1-t)+parseInt(b.slice(i,i+2),16)*t).toString(16).padStart(2,'0')).join('');
 const featureScale=f=>{const hue=featureColors[f]||theme.accent;return [[0,theme.paper],[.35,mixHex(theme.paper,hue,.28)],[.7,mixHex(theme.paper,hue,.62)],[1,hue]]};
-const bands=['Top 1–10','11–50','51–100','101–200'],mapFeatures=['valence','danceability','acousticness','energy'],boxFeatures=['energy','danceability','valence','tempo'];
+const bands=['Top 1–10','11–50','51–100','101–200'],mapFeatures=['valence','danceability','acousticness','energy'],boxFeatures=bundle.features;
 const featureLabel=f=>f.charAt(0).toUpperCase()+f.slice(1),genreLabel=g=>g==='k-pop'?'K-Pop':g.split(' ').map(featureLabel).join(' ');
-const boxLabel={energy:'Năng lượng',danceability:'Độ dễ nhảy',valence:'Sắc thái tích cực',tempo:'Nhịp độ'};
+const boxLabel={energy:'Năng lượng',danceability:'Độ dễ nhảy',valence:'Sắc thái tích cực',acousticness:'Độ mộc mạc',speechiness:'Mức hiện diện lời nói',instrumentalness:'Khả năng không có giọng hát',liveness:'Dấu hiệu diễn trực tiếp',loudness:'Âm lượng trung bình',tempo:'Nhịp độ'};
 function chartTitle(key){
- if(key==='genre_box')return `${boxLabel[state.boxfeature]||featureLabel(state.boxfeature)} giữa các thể loại`;
+ if(key==='genre_box')return `${boxLabel[state.feature]||boxLabel[state.boxfeature]||featureLabel(state.feature||state.boxfeature)} giữa các thể loại`;
  if(key==='artist_tree')return `Lượt nghe ghi nhận cho ${treeRows().length} nghệ sĩ dẫn đầu`;
  if(key==='radar'){const name=code=>{const value=current.allCountries.find(r=>r[0]===code)?.[1]||code;return ({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[value]||value};return `So sánh âm thanh: ${name(state.country)} và ${name(state.compare)}`}
  if(key==='covid')return `${featureLabel(state.feature)} và tử vong COVID-19 theo tuần`;
@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v14-main';
+const storageKey='spotify-workbook-v15-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -256,7 +256,7 @@ function figure(key){
    if(state.band!=='')fig.layout.shapes.push({type:'rect',xref:'paper',yref:'y',x0:0,x1:1,y0:+state.band-.48,y1:+state.band+.48,line:{color:theme.accent,width:2}});
  }
  else if(key==='genre_box'){
-   const feature=state.boxfeature,genres=['pop','latin','k-pop','rap','dance pop'];
+   const feature=state.feature||state.boxfeature||'energy',genres=['pop','latin','k-pop','rap','dance pop'];
    fig.data=genres.map(g=>{const ts=current.tracks.filter(({t})=>t[2]===g&&Number.isFinite(tv(t,feature)));return {type:'box',name:g,y:ts.map(({t})=>tv(t,feature)),customdata:ts.map(({t})=>t[1]),boxmean:true,boxpoints:'outliers',fillcolor:genreBoxColors[g],marker:{color:genreLines[g],size:5},line:{color:genreLines[g],width:2.2},hovertemplate:genreLabel(g)+'<br>'+featureLabel(feature)+': %{y:.4f}<br>%{customdata}<br>'+ts.length+' bài trong nhóm<extra></extra>'}}).filter(t=>t.y.length);
    fig.layout={margin:{l:44,r:12,t:14,b:42},showlegend:false,xaxis:{categoryorder:'array',categoryarray:genres,tickvals:genres,ticktext:['Pop','Latin','K-Pop','Rap','Dance Pop'],tickfont:{size:13,family:"'Segoe UI', sans-serif"}},yaxis:{title:{text:unit(feature),font:{size:13,family:"'Segoe UI', sans-serif"}},tickfont:{size:13,family:"'Segoe UI', sans-serif"}}};
  }
@@ -409,7 +409,7 @@ function figure(key){
 }
 
 function link(key,p){if(!p)return;
- if(key==='hit_heatmap'){state.feature=p.x;state.band=String(bands.indexOf(p.y));if(boxFeatures.includes(p.x))state.boxfeature=p.x}
+ if(key==='hit_heatmap'){state.feature=p.x;state.boxfeature=p.x;state.band=String(bands.indexOf(p.y));}
  else if(key==='genre_box'){state.genre=p.data.name;state.artist=''}
  else if(key==='artist_tree'){const id=p.id||p.data.ids?.[p.pointNumber];if(id==='root'){state.genre='';state.artist=''}else if(id?.startsWith('g:')){state.genre=id.slice(2);state.artist=''}else if(bundle.artists[id]){state.artist=id;state.genre=bundle.artists[id][1]}else return}
  else if(key==='collab'){const label=p.label||p.x;state.collab=label==='Collab'?'1':label==='Solo'?'0':''}
@@ -462,7 +462,7 @@ async function render(){
    host.append(panel);
    continue;
   }
-  if(key==='genre_box'){const select=document.createElement('select');select.setAttribute('aria-label','Chỉ số boxplot');options(select,boxFeatures.map(f=>[f,featureLabel(f)]));select.value=state.boxfeature;select.onchange=()=>{state.boxfeature=select.value;render()};tools.append(select)}
+  if(key==='genre_box'){const select=document.createElement('select');select.setAttribute('aria-label','Chỉ số boxplot');options(select,bundle.features.map(f=>[f,featureLabel(f)]));select.value=state.feature||state.boxfeature;select.onchange=()=>{state.feature=select.value;state.boxfeature=select.value;render()};tools.append(select)}
   if(key==='artist_tree'&&(state.genre||state.artist)){const up=document.createElement('button');up.textContent='↑ Gốc';up.title='Quay về toàn bộ thể loại/nghệ sĩ';up.onclick=()=>{state.genre='';state.artist='';render()};tools.append(up)}
   if(key==='decision_boundary'){
     const select=document.createElement('select');select.setAttribute('aria-label','Trục Y');
@@ -486,7 +486,7 @@ async function render(){
 
 function chartRows(key){
  if(key==='hit_heatmap'){const a=hitStats();return bands.flatMap((band,i)=>bundle.features.map((f,j)=>({rank_band:band,feature:f,mean:a.raw[i][j],z_score:a.z[i][j],slots:a.counts[i]})))}
- if(key==='genre_box')return current.tracks.filter(({t})=>['pop','latin','k-pop','rap','dance pop'].includes(t[2])).map(({t})=>({track_id:t[0],track_name:t[1],genre:t[2],feature:state.boxfeature,value:tv(t,state.boxfeature)}));
+ if(key==='genre_box')return current.tracks.filter(({t})=>['pop','latin','k-pop','rap','dance pop'].includes(t[2])).map(({t})=>({track_id:t[0],track_name:t[1],genre:t[2],feature:state.feature||state.boxfeature,value:tv(t,state.feature||state.boxfeature)}));
  if(key==='artist_tree')return treeRows().map(([id,v])=>({artist:bundle.artists[id][0],genre:bundle.artists[id][1],credited_streams:v}));
  if(key==='collab')return collabStats().map(r=>({type:r.type,global_chart_tracks:r.count,tracks_with_streams:r.charted,median_global_streams:r.median,mean_global_streams:r.mean}));
  if(key==='duration'){const fig=figure(key);return fig.data[0].x.map((date,i)=>({date,duration_seconds:fig.data[0].y[i],rolling_4:fig.data[1].y[i]}))}
@@ -503,7 +503,7 @@ function exportCsv(rows,key){if(!rows.length){notify('Phạm vi này không có 
 function table(headers,rows){const host=$('detail'),t=document.createElement('table'),thead=document.createElement('thead'),h=document.createElement('tr');headers.forEach(text=>{const th=document.createElement('th');th.textContent=text;h.append(th)});thead.append(h);t.append(thead);const body=document.createElement('tbody');for(const values of rows){const tr=document.createElement('tr');for(const value of values){const td=document.createElement('td');if(value&&typeof value==='object'&&value.action){const b=document.createElement('button');b.textContent=value.label;b.onclick=value.action;td.append(b)}else td.textContent=value??'—';tr.append(td)}body.append(tr)}t.append(body);host.append(t)}
 
 function audioStory(){
- const stats=hitStats(),band=state.band===''?0:Number(state.band),z=stats.z[band],metric=state.boxfeature;
+ const stats=hitStats(),band=state.band===''?0:Number(state.band),z=stats.z[band],metric=state.feature||state.boxfeature;
  const group=band===0?'Top 10':'nhóm hạng '+bands[band],signed=v=>Math.abs(v)<.005?'0.00':(v>0?'+':'')+v.toFixed(2);
  const direction=(f,high,low)=>{const v=z[fi(f)];return Number.isFinite(v)?`${Math.abs(v)<.005?'tương đương mức nền ở '+featureLabel(f):v>0?high:low} (${featureLabel(f)} ${signed(v)} SD)`:`${featureLabel(f)} chưa đủ dữ liệu`};
  const focus=['tempo','danceability','energy','acousticness'];
@@ -837,6 +837,7 @@ for(const id of ['year','fromyear','toyear','genre','artist','band','collab','re
     el.onchange=()=>{
       state[id]=['year','fromyear','toyear'].includes(id)?Number($(id).value):$(id).value;
       if(id==='genre')state.artist='';
+      if(id==='feature')state.boxfeature=state.feature;
       if(id==='fromyear'&&state.fromyear>state.toyear)state.toyear=state.fromyear;
       if(id==='toyear'&&state.toyear<state.fromyear)state.fromyear=state.toyear;
       if(['month','fromyear','toyear'].includes(id))state.weeks=[];

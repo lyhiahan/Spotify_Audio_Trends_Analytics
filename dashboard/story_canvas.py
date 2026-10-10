@@ -114,7 +114,7 @@ def workbook():
                 fromyear=2020 if key == 'hits' else 2017,
                 toyear=2022,
                 feature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',
-                boxfeature='energy',
+                boxfeature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',
                 region='Tất cả',
                 country='VNM',
                 compare='JPN',
