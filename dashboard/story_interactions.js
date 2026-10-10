@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v9-main';
+const storageKey='spotify-workbook-v10-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -441,7 +441,7 @@ async function render(){
  $('counter').textContent=`${position+1} / ${book.story_points.length}`;
  document.querySelector('.workspace').classList.toggle('overview-workspace',kind()==='overview');
  document.body.classList.toggle('overview-screen',kind()==='overview');
- if(kind()==='overview')$('caption').textContent='Cái nhìn về dữ liệu';
+ if(kind()==='overview')$('caption').textContent='CÁI NHÌN VỀ DỮ LIỆU';
  inspector();
  const host=$('dashboard');host.querySelectorAll('.plot').forEach(el=>Plotly.purge(el));host.replaceChildren();host.className='dashboard '+(kind()==='geography'?'geo':kind());
  for(const key of dash().worksheets){

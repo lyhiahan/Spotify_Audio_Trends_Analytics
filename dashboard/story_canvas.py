@@ -46,55 +46,56 @@ def workbook():
     specs = [
         (
             'overview',
-            'Cái nhìn về dữ liệu',
-            'Cái nhìn về dữ liệu',
+            'CÁI NHÌN VỀ DỮ LIỆU',
+            'CÁI NHÌN VỀ DỮ LIỆU',
             'Năm biểu đồ tĩnh từ EDA: phân phối âm thanh, tương quan Spearman, xu hướng dài hạn, đại dịch COVID-19 và nhãn mục tiêu Train.',
             ['eda_static_distribution', 'eda_static_correlation', 'eda_static_trend', 'eda_static_covid', 'eda_static_labels'],
             'Toàn bộ 5 biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200, đối chiếu tử vong COVID-19 và nhãn mục tiêu dự báo Top 50.'
         ),
         (
             'main_dashboard',
-            'Main Dashboard',
-            'Toàn cảnh Xu hướng Âm thanh & Công thức Hit',
+            'MAIN DASHBOARD',
+            'TOÀN CẢNH XU HƯỚNG ÂM THANH & CÔNG THỨC HIT',
             'Bảng điều khiển tổng hợp 4 trụ cột cốt lõi: Bản sắc địa lý, Đối đầu ADN âm nhạc, Hiện tượng TikTok và Đòn bẩy hợp tác.',
             ['map', 'radar', 'duration', 'collab'],
             'Tổng hợp đa chiều từ các data mart: Choropleth 73 quốc gia, Radar đối kháng chuẩn hóa, chuỗi thời lượng 2017–2022 và phân phối stream Solo vs Collab.'
         ),
         (
             'hits',
-            'Hồ sơ âm thanh',
-            'Bài hát thịnh hành có hồ sơ âm thanh như thế nào?',
+            'HỒ SƠ ÂM THANH',
+            'BÀI HÁT THỊNH HÀNH CÓ HỒ SƠ ÂM THANH NHƯ THẾ NÀO?',
             'Đối chiếu 9 đặc trưng theo tầng thứ hạng, rồi khám phá sự khác biệt giữa các thể loại.',
             ['hit_heatmap', 'genre_box'],
             'Z-score đo độ lệch trung bình nhóm so với toàn BXH. Stream bài hát không đếm lặp nghệ sĩ; Treemap tính lượt stream được ghi công.'
         ),
         (
-            'artists', 'Nghệ sĩ & hợp tác',
-            'Tên tuổi nghệ sĩ và hợp tác liên hệ với thành tích ra sao?',
+            'artists',
+            'NGHỆ SĨ & HỢP TÁC',
+            'TÊN TUỔI NGHỆ SĨ VÀ HỢP TÁC LIÊN HỆ VỚI THÀNH TÍCH RA SAO?',
             'So sánh tên tuổi trước khi vào BXH với stream 8 tuần đầu; đối chiếu Solo và Collab trên cùng mẫu bài hát.',
             ['correlation', 'artist_tree', 'collab'],
             'Spearman trên mỗi bài một dòng. Điểm nghệ sĩ chỉ dùng lịch sử trước tuần vào Global. Stream 8 tuần đầu là stream ghi nhận trên BXH, không phải toàn bộ Spotify. Treemap dùng stream ghi công toàn giai đoạn chọn.'
         ),
         (
             'geography',
-            'Bản sắc địa lý và ADN âm nhạc',
-            'Hồ sơ âm thanh khác nhau thế nào giữa các quốc gia?',
+            'BẢN SẮC ĐỊA LÝ VÀ ADN ÂM NHẠC',
+            'HỒ SƠ ÂM THANH KHÁC NHAU THẾ NÀO GIỮA CÁC QUỐC GIA?',
             'Mỹ Latinh sôi động và giàu năng lượng; Đông Nam Á ưa chuộng giai điệu mộc mạc; Việt Nam và Nhật Bản thể hiện hai bản sắc âm học đối lập.',
             ['map', 'radar'],
             'Bản đồ và Radar đồng bộ phương pháp tính: theo luồng nghe hoặc trung bình thường. Năm phân tích chuẩn: 2021.'
         ),
         (
             'time',
-            'Chu kỳ thời gian và đại dịch',
-            'Xu hướng dài hạn, mùa vụ và biến động trong đại dịch',
+            'CHU KỲ THỜI GIAN VÀ ĐẠI DỊCH',
+            'XU HƯỚNG DÀI HẠN, MÙA VỤ VÀ BIẾN ĐỘNG TRONG ĐẠI DỊCH',
             'Tháng 12 tăng vọt tính mộc mạc theo mùa lễ hội; trong đại dịch, âm nhạc có xu hướng êm dịu hơn nhưng vẫn giữ sắc thái tích cực.',
             ['duration', 'seasonal', 'covid'],
             'Phân biệt xu hướng thời lượng, mùa vụ và đồng biến động COVID. Số tử vong không trực tiếp đo phong tỏa hay tâm lý người nghe.'
         ),
         (
             'forecast',
-            'Mô hình & Ngưỡng dự báo',
-            'Làm sao chuyển điểm số xác suất thành quyết định hành động?',
+            'MÔ HÌNH & NGƯỠNG DỰ BÁO',
+            'LÀM SAO CHUYỂN ĐIỂM SỐ XÁC SUẤT THÀNH QUYẾT ĐỊNH HÀNH ĐỘNG?',
             'Khám phá không gian quyết định 2D, điều chỉnh ngưỡng τ và quan sát biến động tức thời trên ma trận nhầm lẫn cùng đường trade-off.',
             ['decision_boundary', 'confusion_heatmap', 'tradeoff_curve', 'model_coefficients'],
             'Hồi quy Logistic 12 biến tuần đầu. Ngưỡng tối ưu F1 = 0.79 chọn trên Validation; đánh giá độc lập trên Test (2021–2022). Lưu ý cảnh báo nhóm hạng 51–200 và hiệu chuẩn xác suất.'
