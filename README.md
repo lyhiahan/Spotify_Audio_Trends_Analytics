@@ -188,5 +188,5 @@ Chi tiết bảng kế hoạch thực hiện và ma trận đóng góp được 
 * 📚 [Từ điển Dữ liệu Toàn diện (Data Dictionary)](docs/data_dictionary.md): Đặc tả chi tiết các bảng thô, Data Marts và công thức tính toán.
 * 🔄 [Kiến trúc Luồng Xử lý Dữ liệu (Data Processing Flow)](docs/data_processing_flow.md): Sơ đồ Mermaid, quy trình ETL và luồng dữ liệu hợp nhất.
 * 📋 [Kế hoạch Phân công Công việc (Team Tasks Assignment)](docs/team_tasks_assignment.md): Barem chấm điểm chi tiết và tiến độ phân công nhiệm vụ.
-* 📹 **Link Video Demo:** *(Cập nhật tại buổi báo cáo)*
-* 🖼️ **Link Slide Thuyết trình:** *(Cập nhật tại buổi báo cáo)*
+* 📹 **Link Video Demo:** [Tương tác dữ liệu - Google Drive](https://drive.google.com/drive/folders/1ttJSjk3i06sDNxpmJU_lnPtD53x3RrWT)
+* 🖼️ **Link Slide Thuyết trình:** [Spotify Audio Trends - Bài thuyết trình (Canva)](https://www.canva.com/design/DAHXiNXrNuY/sUuBjqmujc7qDIBR4OlZLA/edit)
