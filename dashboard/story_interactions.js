@@ -5,7 +5,7 @@ const featureColors={danceability:'#D58AA0',energy:'#5686B3',valence:'#D1B638',a
 const genreColors={'pop':'#B3D2EF','canadian pop':'#BFE3EA','k-pop':'#D7C3ED','rap':'#8FA5CB','dance pop':'#FAE7A0','latin':'#F0BBCC','trap latino':'#CE8EA9'};
 const genreLines={'pop':'#659ACC','canadian pop':'#4C99A8','k-pop':'#9172B5','rap':'#304F82','dance pop':'#BBA02B','latin':'#C35D7D','trap latino':'#963E66'};
 const genreBoxColors={'pop':'#D5E6F7','canadian pop':'#D5EDF2','k-pop':'#E6D9F5','rap':'#B4C4DF','dance pop':'#FCF1C4','latin':'#F6D4E0','trap latino':'#E4BED0'};
-const countryColors=['#5686B3','#C7748F'];
+const countryColors=['#2563EB','#E11D48'],countryBorders=['#1D4ED8','#BE123C'],countryFills=['#3B82F6','#F43F5E'];
 const colors=Object.values(featureColors);
 const softInk=theme.ink,softGenreColors=genreColors,softPair=['#9FBFE0','#E4A3B3'];
 const mapLevels=['#8ABDDD','#66A6D1','#498BBC','#3370A3','#235682','#173D65'];
@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v17-main';
+const storageKey='spotify-workbook-v18-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -219,6 +219,8 @@ function controls(){
   if(!all.some(r=>r[0]===state.compare))state.compare=all[0]?.[0]||'';
   options($('country'),local.slice().sort((a,b)=>a[1].localeCompare(b[1])).map(r=>[r[0],r[1]]));
   options($('compare'),all.slice().sort((a,b)=>a[1].localeCompare(b[1])).map(r=>[r[0],r[1]]));
+  $('country')?.classList.add('country-a-select');$('country')?.closest('label')?.classList.add('country-a-label');
+  $('compare')?.classList.add('country-b-select');$('compare')?.closest('label')?.classList.add('country-b-label');
   const artists=Object.entries(bundle.artists).filter(([id,a])=>!state.genre||a[1]===state.genre).sort((a,b)=>a[1][0].localeCompare(b[1][0]));
   if(state.artist&&!artists.some(([id])=>id===state.artist))state.artist='';
   options($('artist'),[['','Tất cả nghệ sĩ'],...artists.map(([id,a])=>[id,a[0]])]);
@@ -302,22 +304,25 @@ function figure(key){
  else if(key==='map'){
    const rows=current.countries,all=current.allCountries.map(r=>cv(r,f)).filter(Number.isFinite);
    fig.data=[{type:'choropleth',locations:rows.map(r=>r[0]),z:rows.map(r=>cv(r,f)),customdata:rows.map(r=>[r[1],r[3],r[5]]),colorscale:[[0,'#FCE4EC'],[.2,'#F8BBD0'],[.4,'#F06292'],[.6,'#E2738E'],[.8,'#880E4F'],[1,'#4A148C']],zmin:Math.min(...all),zmax:Math.max(...all),marker:{line:{color:theme.panel,width:.5}},colorbar:{thickness:8,len:.65,title:{text:f}},hovertemplate:'<b>%{customdata[0]}</b><br>'+f+': %{z:.4f}<br>%{customdata[1]}<br>%{customdata[2]} tuần<extra></extra>'}];
-   for(const [code,color] of [[state.country,countryColors[0]],[state.compare,countryColors[1]]]){
-     if(rows.some(r=>r[0]===code)){
-       fig.data.push({type:'choropleth',locations:[code],z:[1],showscale:false,colorscale:[[0,color],[1,color]],marker:{line:{color:theme.ink,width:1.5}},customdata:[[current.allCountries.find(r=>r[0]===code)?.[1],cv(current.allCountries.find(r=>r[0]===code),f)]],hovertemplate:'%{customdata[0]}<br>'+f+': %{customdata[1]:.4f}<extra></extra>'});
-     }
-   }
-   fig.layout={margin:{l:0,r:10,t:5,b:0},geo:{projection:{type:'natural earth'},showframe:false,showland:true,landcolor:'#E8E5DE',showcoastlines:true,coastlinecolor:'#C7C6BF',bgcolor:theme.panel}};
- }
+    const highlighted=[[state.country,countryFills[0],countryBorders[0],'Quốc gia A'],[state.compare,countryFills[1],countryBorders[1],'Quốc gia B']];
+    for(const [code,fillColor,borderColor,role] of highlighted){
+      if(rows.some(r=>r[0]===code)){
+        const cRow=current.allCountries.find(r=>r[0]===code);
+        fig.data.push({type:'choropleth',locations:[code],z:[1],showscale:false,colorscale:[[0,fillColor],[1,fillColor]],marker:{line:{color:borderColor,width:3.5}},customdata:[[cRow?.[1]||code,cv(cRow,f),role]],hovertemplate:'<b>%{customdata[2]}: %{customdata[0]}</b><br>'+f+': %{customdata[1]:.4f}<extra></extra>'});
+      }
+    }
+    fig.layout={margin:{l:0,r:10,t:5,b:0},geo:{projection:{type:'natural earth'},showframe:false,showland:true,landcolor:'#E8E5DE',showcoastlines:true,coastlinecolor:'#C7C6BF',bgcolor:theme.panel}};
+  }
  else if(key==='radar'){
    const features=['acousticness','danceability','energy','valence','speechiness','liveness'];
-   for(const [i,code] of [state.country,state.compare].entries()){
-     const row=current.allCountries.find(r=>r[0]===code);
-     if(!row)continue;
-     const values=features.map(feat=>cv(row,feat));
-     fig.data.push({type:'scatterpolar',r:[...values,values[0]],theta:[...features,features[0]],name:row[1],fill:'toself',line:{color:countryColors[i],width:2},fillcolor:i?'rgba(83,109,254,0.22)':'rgba(226,115,142,0.22)',customdata:[...features,features[0]],hovertemplate:row[1]+'<br>%{theta}: %{r:.4f}<extra></extra>'});
-   }
-   fig.layout={margin:{l:65,r:65,t:40,b:35},polar:{radialaxis:{range:[0,1],tickfont:{size:9}},angularaxis:{tickfont:{size:10}}},legend:{orientation:'h',x:.3,y:1.12}};
+    for(const [i,code] of [state.country,state.compare].entries()){
+      const row=current.allCountries.find(r=>r[0]===code);
+      if(!row)continue;
+      const values=features.map(feat=>cv(row,feat));
+      const role=i===0?'Quốc gia A':'Quốc gia B';
+      fig.data.push({type:'scatterpolar',r:[...values,values[0]],theta:[...features,features[0]],name:`${role}: ${row[1]}`,fill:'toself',line:{color:countryColors[i],width:2.8},fillcolor:i?'rgba(225,29,72,0.18)':'rgba(37,99,235,0.18)',customdata:[...features,features[0]],hovertemplate:role+': '+row[1]+'<br>%{theta}: %{r:.4f}<extra></extra>'});
+    }
+    fig.layout={margin:{l:65,r:65,t:40,b:35},polar:{radialaxis:{range:[0,1],tickfont:{size:9}},angularaxis:{tickfont:{size:10}}},legend:{orientation:'h',x:.15,y:1.15,font:{size:12}}};
  }
  else if(key==='seasonal'){
    fig.data=['danceability','acousticness'].map(feat=>({type:'bar',x:Array.from({length:12},(_,i)=>i+1),y:Array.from({length:12},(_,m)=>mean(current.weeks.filter(r=>+r[0].slice(5,7)===m+1).map(r=>r[4+fi(feat)]))),name:feat,customdata:Array.from({length:12},(_,m)=>current.weeks.filter(r=>+r[0].slice(5,7)===m+1).length),marker:{color:featureColors[feat],opacity:Array.from({length:12},(_,m)=>!state.month||+state.month===m+1?1:.25)},hovertemplate:'Tháng %{x}<br>'+feat+': %{y:.4f}<br>%{customdata} tuần<extra></extra>'}));
@@ -722,6 +727,7 @@ function inspector(){
  document.querySelector('.inspector').classList.toggle('inspector-no-filters',k==='main_dashboard');
  document.querySelector('.inspector h2').textContent=k==='main_dashboard'?'Chỉ số cốt lõi & diễn giải':'Bộ lọc & diễn giải';
  document.querySelector('.inspector').classList.toggle('inspector-hits',k==='hits');
+ document.querySelector('.inspector').classList.toggle('inspector-geo',k==='geography');
  $('metrics').replaceChildren();
  
  const kpis=getMetrics();
