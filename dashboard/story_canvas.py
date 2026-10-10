@@ -44,14 +44,6 @@ LABELS = {
 def workbook():
     specs = [
         (
-            'overview',
-            'CÁI NHÌN VỀ DỮ LIỆU',
-            'CÁI NHÌN VỀ DỮ LIỆU',
-            'Bốn biểu đồ tĩnh từ EDA: phân phối âm thanh, tương quan Spearman, xu hướng dài hạn và nhãn mục tiêu Train.',
-            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_trend', 'eda_static_labels'],
-            'Bốn biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200 và nhãn mục tiêu dự báo Top 50.'
-        ),
-        (
             'main_dashboard',
             'MAIN DASHBOARD',
             'TOÀN CẢNH XU HƯỚNG ÂM THANH & CÔNG THỨC HIT',
@@ -133,11 +125,8 @@ def workbook():
     return dict(version=6, title='Spotify Audio Trends & Analytics', worksheets=LABELS, dashboards=dashboards, story_points=points)
 
 def data_bundle():
-    import eda_data
-    figures = importlib.reload(eda_data).notebook_figures()
     book = workbook()
-    book['worksheets'].update({key: value['title'] for key, value in figures.items()})
-    return dict(workbook=book, region_short=REGION_SHORT, eda_figures=figures, **importlib.reload(story_data).load_bundle())
+    return dict(workbook=book, region_short=REGION_SHORT, **importlib.reload(story_data).load_bundle())
 
 def canvas_html():
     encoded = json.dumps(data_bundle(), ensure_ascii=False, allow_nan=False).replace('</', '<\\/')

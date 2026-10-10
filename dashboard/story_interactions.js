@@ -20,6 +20,7 @@ const boxLabel={energy:'Năng lượng',danceability:'Độ dễ nhảy',valence
 function chartTitle(key){
  if(key==='genre_box')return `${boxLabel[state.feature]||boxLabel[state.boxfeature]||featureLabel(state.feature||state.boxfeature)} giữa các thể loại`;
  if(key==='artist_tree')return `Lượt nghe ghi nhận cho ${treeRows().length} nghệ sĩ dẫn đầu`;
+ if(key==='hit_heatmap'&&kind()==='main_dashboard')return 'Âm thanh theo thứ hạng · 2020–2022';
  if(key==='radar'){const name=code=>{const value=current.allCountries.find(r=>r[0]===code)?.[1]||code;return ({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[value]||value};return `So sánh âm thanh: ${name(state.country)} và ${name(state.compare)}`}
  if(key==='covid')return `${featureLabel(state.feature)} và tử vong COVID-19 theo tuần`;
  if(key==='decision_boundary')return `Không gian quyết định 2D: Log Streams vs ${state.boundary_y==='rank_first_week'?'Thứ hạng tuần đầu':featureLabel(state.boundary_y)}`;
@@ -40,6 +41,9 @@ const point=()=>book.story_points[position],dash=()=>book.dashboards[point().das
 
 function validate(b){
   if(!b || !Array.isArray(b.story_points) || !b.dashboards) throw Error('Cần workbook hợp lệ');
+  b.story_points=b.story_points.filter(p=>p.dashboard_id!=='overview');
+  delete b.dashboards.overview;
+  if(!b.story_points.length) throw Error('Workbook không có dashboard đang được hỗ trợ');
   for(const p of b.story_points){
     const d=b.dashboards[p.dashboard_id];
     if(!d || !['overview','main_dashboard','hits','artists','geography','time','forecast'].includes(d.id)) throw Error('Dashboard không hợp lệ');
@@ -236,6 +240,8 @@ function hitStats(rows=current.context){const accum=Array.from({length:4},()=>bu
   const raw=accum.map(a=>a.map(x=>x.n?x.s/x.n:null));const z=raw.map(a=>a.map((m,j)=>m!==null&&baseline[j].std>0?(m-baseline[j].mean)/baseline[j].std:null));return {raw,z,baseline,counts:accum.map(a=>a[0].n)};
 }
 
+function heatmapStats(){return hitStats(kind()==='main_dashboard'?bundle.global_rows.filter(r=>r[1]>=2020&&r[1]<=2022):current.context)}
+
 function collabStats(){
   if(kind()==='artists')return [0,1].map(c=>{const rows=current.analysis.filter(r=>Number(bundle.tracks[r[0]][3]>1)===c),values=rows.map(r=>r[3]);return {type:c?'Collab':'Solo',count:rows.length,charted:rows.length,median:median(values),mean:mean(values)}});
   const streamsByTrack=new Map();
@@ -252,7 +258,7 @@ function treeRows(){const sums=new Map();for(const r of bundle.credits){const a=
 function figure(key){
  const f=state.feature,fig={data:[],layout:{}};
  if(key==='hit_heatmap'){
-   const a=hitStats();
+   const a=heatmapStats();
    fig.data=[{type:'heatmap',x:bundle.features,y:bands,z:a.z,text:a.z.map(r=>r.map(v=>v===null?'':Math.abs(v)<.005?'<span style="color:#64748B">0.00</span>':Math.abs(v)>=.11?`<span style="color:#FFFFFF">${v>0?'+':''}${v.toFixed(2)}</span>`:`<span style="color:#1E293B">${v>0?'+':''}${v.toFixed(2)}</span>`)),texttemplate:'%{text}',textfont:{size:14,family:"'Segoe UI', sans-serif"},customdata:a.raw,colorscale:diverge,zmid:0,zmin:-.15,zmax:.15,colorbar:{thickness:12,len:.75,title:{text:'Độ lệch chuẩn hóa',font:{size:12,family:"'Segoe UI', sans-serif"}},tickvals:[-.15,0,.15],ticktext:['Thấp hơn TB','Bằng TB','Cao hơn TB'],tickfont:{size:11,family:"'Segoe UI', sans-serif"}},hovertemplate:'%{y}<br>%{x}<br>Giá trị thực tế: %{customdata:.2f}<br>Độ lệch chuẩn hóa: %{z:+.2f}<extra></extra>'}];
    fig.layout={margin:{l:85,r:20,t:12,b:72},xaxis:{tickangle:-28,tickfont:{size:13,family:"'Segoe UI', sans-serif"}},yaxis:{autorange:'reversed',tickfont:{size:13,family:"'Segoe UI', sans-serif"}},shapes:[{type:'rect',xref:'paper',yref:'paper',x0:fi(f)/bundle.features.length,x1:(fi(f)+1)/bundle.features.length,y0:0,y1:1,line:{color:'#3A98A8',width:2}}]};
    if(state.band!=='')fig.layout.shapes.push({type:'rect',xref:'paper',yref:'y',x0:0,x1:1,y0:+state.band-.48,y1:+state.band+.48,line:{color:theme.accent,width:2}});
@@ -413,7 +419,7 @@ function figure(key){
  return fig;
 }
 
-function link(key,p){if(!p)return;
+function link(key,p){if(!p||kind()==='main_dashboard')return;
  if(key==='hit_heatmap'){state.feature=p.x;state.boxfeature=p.x;state.band=String(bands.indexOf(p.y));}
  else if(key==='genre_box'){state.genre=p.data.name;state.artist=''}
  else if(key==='artist_tree'){const id=p.id||p.data.ids?.[p.pointNumber];if(id==='root'){state.genre='';state.artist=''}else if(id?.startsWith('g:')){state.genre=id.slice(2);state.artist=''}else if(bundle.artists[id]){state.artist=id;state.genre=bundle.artists[id][1]}else return}
@@ -447,9 +453,18 @@ async function render(){
  document.querySelector('.workspace').classList.toggle('overview-workspace',kind()==='overview');
   document.querySelector('.workspace').classList.toggle('main-workspace',kind()==='main_dashboard');
  document.body.classList.toggle('overview-screen',kind()==='overview');
+ document.body.classList.toggle('main-screen',kind()==='main_dashboard');
  if(kind()==='overview')$('caption').textContent='CÁI NHÌN VỀ DỮ LIỆU';
  inspector();
  const host=$('dashboard');host.querySelectorAll('.plot').forEach(el=>Plotly.purge(el));host.replaceChildren();host.className='dashboard '+(kind()==='geography'?'geo':kind());
+ const mainGroups=new Map();
+ if(kind()==='main_dashboard'){
+  for(const [label,keys] of [['Địa lý & bản sắc',['map','radar']],['Âm thanh & thời gian',['hit_heatmap','duration']],['Nghệ sĩ & hợp tác',['collab','artist_tree']]]){
+   const group=document.createElement('section');group.className='main-story-group';group.setAttribute('aria-label',label);
+   const heading=document.createElement('h2');heading.textContent=label;group.append(heading);host.append(group);
+   keys.forEach(key=>mainGroups.set(key,group));
+  }
+ }
  for(const key of dash().worksheets){
   const panel=document.createElement('article');panel.className='panel panel-'+key;
   const head=document.createElement('div');head.className='panel-head';
@@ -464,7 +479,6 @@ async function render(){
    const el=document.createElement('div');el.className='eda-image-wrap';
    const image=document.createElement('img');image.src=asset.image;image.alt=asset.title;image.width=asset.width;image.height=asset.height;image.onclick=()=>showEdaImage(asset);
    el.append(image);panel.append(el);
-   const caption=document.createElement('p');caption.className='eda-caption';caption.textContent=asset.caption;caption.title=asset.caption;panel.append(caption);
    host.append(panel);
    continue;
   }
@@ -476,11 +490,19 @@ async function render(){
     select.value=state.boundary_y;select.onchange=()=>{state.boundary_y=select.value;render()};tools.append(select);
   }
   const png=document.createElement('button'),csv=document.createElement('button');png.textContent='PNG';png.title='Tải ảnh biểu đồ';csv.textContent='CSV';csv.title='Tải dữ liệu biểu đồ';tools.append(png,csv);head.append(title,tools);
-  const el=document.createElement('div');el.className='plot';panel.append(head,el);host.append(panel);
+  const el=document.createElement('div');el.className='plot';panel.append(head,el);(mainGroups.get(key)||host).append(panel);
   const fig=figure(key);
   if(key==='artist_tree'){const tree=fig.data[0];tree.labels=tree.labels.map((label,i)=>tree.ids[i].startsWith('g:')?genreLabel(label):label);tree.text=tree.text.map((label,i)=>tree.ids[i].startsWith('g:')?genreLabel(label):label);if(el.clientWidth<420&&!state.genre&&!state.artist)tree.maxdepth=2}
   fig.layout={paper_bgcolor:theme.panel,plot_bgcolor:theme.panel,colorway:colors,font:{family:"'Segoe UI', sans-serif",size:el.clientWidth<350?11:13,color:theme.ink},legend:{orientation:'h',x:0,y:1.13,font:{size:13,family:"'Segoe UI', sans-serif"}},hoverlabel:{bgcolor:theme.ink,font:{color:'#FFFEFB',size:13,family:"'Segoe UI', sans-serif"}},...fig.layout,height:el.clientHeight,width:el.clientWidth};
   if(key==='hit_heatmap'){fig.layout.xaxis.tickvals=bundle.features;fig.layout.xaxis.tickangle=-28;fig.layout.xaxis.ticktext=['Danceability','Energy','Valence','Acousticness','Speechiness','Instrumentalness','Liveness','Loudness','Tempo'];fig.layout.xaxis.tickfont={size:13,family:"'Segoe UI', sans-serif"};fig.layout.margin.b=72;if(el.clientWidth<580){fig.layout.xaxis.tickfont.size=11;fig.data[0].textfont.size=12}if(el.clientWidth<400){fig.layout.margin.l=65;fig.layout.margin.b=50;fig.data[0].textfont.size=10}}
+  if(key==='hit_heatmap'&&kind()==='main_dashboard'){
+   fig.layout.margin={l:78,r:12,t:42,b:72};fig.layout.shapes=[];
+   fig.layout.xaxis.tickfont.size=11;fig.layout.yaxis.tickfont.size=12;
+   Object.assign(fig.data[0],mainHeatmapText(el.clientWidth),{xgap:2,ygap:2});
+   const limit=Math.max(.01,...fig.data[0].z.flat().filter(Number.isFinite).map(Math.abs));
+   fig.data[0].zmin=-limit;fig.data[0].zmax=limit;
+   fig.data[0].colorbar={orientation:'h',x:1,xanchor:'right',y:1.02,yanchor:'bottom',len:.3,thickness:7,xpad:0,ypad:0,outlinewidth:0,tickvals:[-limit,0,limit],ticktext:['−'+limit.toFixed(2),'0','+'+limit.toFixed(2)],tickfont:{size:9},title:{text:'z-score · SD',side:'top',font:{size:10}}};
+  }
   if(!fig.data.length){el.className+=' empty';el.textContent='Không có dữ liệu trong phạm vi chọn';continue}
   await Plotly.newPlot(el,fig.data,fig.layout,{responsive:true,displaylogo:false,displayModeBar:'hover',modeBarButtonsToRemove:['toImage']});if(token!==generation)return;
   if(key==='artist_tree')el.on('plotly_treemapclick',e=>{setTimeout(()=>link(key,e.points?.[0]),0);return false});else el.on('plotly_click',e=>link(key,e.points?.[0]));
@@ -491,7 +513,7 @@ async function render(){
 }
 
 function chartRows(key){
- if(key==='hit_heatmap'){const a=hitStats();return bands.flatMap((band,i)=>bundle.features.map((f,j)=>({rank_band:band,feature:f,mean:a.raw[i][j],z_score:a.z[i][j],slots:a.counts[i]})))}
+ if(key==='hit_heatmap'){const a=heatmapStats();return bands.flatMap((band,i)=>bundle.features.map((f,j)=>({rank_band:band,feature:f,mean:a.raw[i][j],z_score:a.z[i][j],slots:a.counts[i]})))}
  if(key==='genre_box')return current.tracks.filter(({t})=>['pop','latin','k-pop','rap','dance pop'].includes(t[2])).map(({t})=>({track_id:t[0],track_name:t[1],genre:t[2],feature:state.feature||state.boxfeature,value:tv(t,state.feature||state.boxfeature)}));
  if(key==='artist_tree')return treeRows().map(([id,v])=>({artist:bundle.artists[id][0],genre:bundle.artists[id][1],credited_streams:v}));
  if(key==='collab')return collabStats().map(r=>({type:r.type,global_chart_tracks:r.count,tracks_with_streams:r.charted,median_global_streams:r.median,mean_global_streams:r.mean}));
@@ -821,10 +843,20 @@ figure=function(key){
    result.data[0].colorbar={orientation:'h',x:.5,xanchor:'center',y:0,yanchor:'top',len:.8,thickness:18,outlinewidth:0,tickmode:'array',tickvals:ticks,ticktext:ticks.map(v=>v.toFixed(2)),tickfont:{size:12,color:'#334155'},title:{text:featureLabel(state.feature)+' · 6 mức từ thấp → cao',side:'bottom',font:{size:13,color:'#334155'}}};
    result.layout.margin={l:8,r:8,t:5,b:110};
    result.layout.annotations=[{xref:'paper',yref:'paper',x:.5,y:0,yshift:-78,xanchor:'center',yanchor:'top',showarrow:false,text:'■ Không có dữ liệu trong phạm vi chọn',font:{color:'#536170',size:12},bgcolor:'#DEE2E7',borderpad:3}];
+   if(kind()==='main_dashboard'){
+     result.layout.margin={l:4,r:4,t:4,b:30};result.layout.annotations=[];
+     const compactTicks=[low,(low+high)/2,high];
+     result.data[0].colorbar={orientation:'h',x:1,xanchor:'right',y:0,yanchor:'top',len:.32,thickness:7,xpad:0,ypad:2,outlinewidth:0,tickmode:'array',tickvals:compactTicks,ticktext:compactTicks.map(v=>v.toFixed(2)),tickfont:{size:10,color:'#334155'}};
+   }
    result.data.slice(1).forEach(trace=>{trace.z=[trace.customdata[0][1]];trace.zmin=result.data[0].zmin;trace.zmax=result.data[0].zmax;trace.colorscale=result.data[0].colorscale;trace.marker.line={color:countryColors[trace.locations[0]===state.compare?1:0],width:1.2}});
  }
  if(key==='collab'){result.data[0].textfont.color='#0F172A'}
- if(key==='radar'){result.layout.polar.angularaxis.tickfont.size=12;result.layout.polar.radialaxis.tickfont.size=11;result.data.forEach((trace,i)=>trace.fillcolor=i?'rgba(228,163,179,0.22)':'rgba(159,191,224,0.22)')}
+ if(key==='radar'){
+   result.layout.polar.angularaxis.tickfont.size=12;result.layout.polar.radialaxis.tickfont.size=11;
+   result.layout.margin={l:80,r:90,t:65,b:40};
+   result.layout.legend={orientation:'h',x:.5,xanchor:'center',y:1,yref:'container',yanchor:'top',font:{size:12}};
+   result.data.forEach((trace,i)=>trace.fillcolor=i?'rgba(228,163,179,0.22)':'rgba(159,191,224,0.22)');
+ }
  if(key==='duration'){result.data[0].line.color='#C3D6EA';result.data[1].line.color='#416E9B'}
  if(key==='covid'){result.data[0].marker.color=['valence','liveness'].includes(state.feature)?'rgba(159,191,224,0.70)':'rgba(241,215,124,0.58)';result.data[1].line.width=3.2}
  if(key==='artist_tree'){
@@ -837,7 +869,15 @@ figure=function(key){
 const baseLink=link;
 link=function(key,p){if(key==='correlation'){const f=bundle.features.includes(p?.x)?p.x:bundle.features.includes(p?.y)?p.y:null;if(f){state.feature=f;render();notify('Đã chọn đặc trưng để đọc tương quan và chi tiết')}return}if(key==='collab_box')return baseLink('collab',{x:p?.data?.name});return baseLink(key,p)};
 
-function resize(){document.querySelectorAll('.plot').forEach(el=>{if(el.data)Plotly.relayout(el,{width:el.clientWidth,height:el.clientHeight})})}new ResizeObserver(resize).observe($('dashboard'));
+function mainHeatmapText(width){
+ const cellWidth=Math.max(0,(width-90)/bundle.features.length);
+ return {textfont:{size:Math.max(10,Math.min(13,Math.floor((cellWidth-6)/3.2))),family:"'Segoe UI', sans-serif"},texttemplate:cellWidth>=38?'%{text}':''};
+}
+function resize(){document.querySelectorAll('.plot').forEach(el=>{
+ if(!el.data)return;
+ Plotly.relayout(el,{width:el.clientWidth,height:el.clientHeight});
+ if(kind()==='main_dashboard'&&el.closest('.panel-hit_heatmap'))Plotly.restyle(el,mainHeatmapText(el.clientWidth),[0]);
+})}new ResizeObserver(resize).observe($('dashboard'));
 
 for(const id of ['year','fromyear','toyear','genre','artist','band','collab','region','country','compare','weight','month','feature','split','boundary_y']){
   const el=$(id);
