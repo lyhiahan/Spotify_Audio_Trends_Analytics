@@ -25,7 +25,7 @@ function chartTitle(key){
  if(key==='decision_boundary')return `Không gian quyết định 2D: Log Streams vs ${state.boundary_y==='rank_first_week'?'Thứ hạng tuần đầu':featureLabel(state.boundary_y)}`;
  if(key==='confusion_heatmap')return `Ma trận nhầm lẫn tại ngưỡng τ = ${Number(state.threshold||0.79).toFixed(2)}`;
  if(key==='tradeoff_curve')return `Đánh đổi Precision – Recall theo ngưỡng quyết định (τ)`;
- if(key==='model_coefficients')return `Hệ số hồi quy (Odds Ratio) của 12 biến tuần đầu`;
+ if(key==='model_coefficients')return `Hệ số Logistic chuẩn hóa (β) và tỷ số chênh (OR) của 12 biến đầu vào`;
  return book.worksheets[key]||key;
 }
 const meta={danceability:'Độ dễ nhảy',energy:'Cường độ năng lượng',valence:'Sắc thái tích cực',acousticness:'Khả năng âm học mộc',speechiness:'Mức hiện diện lời nói',instrumentalness:'Khả năng không có giọng hát',liveness:'Dấu hiệu biểu diễn trực tiếp',loudness:'Âm lượng trung bình · dB',tempo:'Nhịp độ · BPM'};
@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v11-main';
+const storageKey='spotify-workbook-v12-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){

@@ -34,7 +34,7 @@ LABELS = {
     'decision_boundary': 'Không gian quyết định 2D & Ranh giới phân loại',
     'confusion_heatmap': 'Ma trận nhầm lẫn tương tác (Confusion Matrix)',
     'tradeoff_curve': 'Đánh đổi Precision – Recall theo ngưỡng τ',
-    'model_coefficients': 'Hệ số hồi quy (Odds Ratio) của 12 biến',
+    'model_coefficients': 'Hệ số Logistic chuẩn hóa (β) và tỷ số chênh (OR) của 12 biến đầu vào',
     'eda_static_distribution': 'Phân phối năm đặc trưng âm thanh',
     'eda_static_correlation': 'Tương quan giữa các đặc trưng âm thanh',
     'eda_static_trend': 'Xu hướng âm thanh trên Global Top 200',
