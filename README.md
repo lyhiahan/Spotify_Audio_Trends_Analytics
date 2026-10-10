@@ -85,15 +85,6 @@ Spotify_Audio_Trends_Analytics/
 ├── models/                             # Metrics & kết quả mô hình Machine Learning
 │   └── model_metrics.json              # Chỉ số đánh giá mô hình Logistic Regression
 │
-├── reports/                            # Báo cáo kết quả & mô hình đã huấn luyện
-│   ├── Bao_cao_Spotify_Chuong_1_3_4.docx   # Báo cáo Word đồ án môn học
-│   └── global_top50_first_week/        # Mô hình dự báo Global Top 50 tuần đầu
-│       ├── selected_logistic.joblib    # Mô hình Logistic Regression đã huấn luyện
-│       ├── model_metrics.json          # AUC=0.811, Accuracy=83.7% trên tập kiểm thử
-│       ├── first_week_forecast.parquet # Bảng dự báo xác suất cho từng bài hát
-│       ├── tableau_coefficients.csv    # Hệ số hồi quy dùng trực quan hóa
-│       └── tableau_threshold_validation.csv  # Bảng đánh đổi ngưỡng quyết định
-│
 └── tests/                              # Bộ kiểm thử tự động
     ├── run_story_notebook.py           # Kiểm tra thực thi notebook story
     ├── test_story_analysis.py          # Kiểm tra logic phân tích và xếp hạng nghệ sĩ
@@ -186,7 +177,7 @@ Chi tiết bảng kế hoạch thực hiện và ma trận đóng góp được 
 | :---: | :--- | :---: | :--- | :--- |
 | 1 | **Đinh Quốc Anh** | **24133003** | Data Engineer & Data Analyst | • Xây dựng Kiến trúc Master Pipeline (`src/data_loader.py`).<br>• Làm sạch và tích hợp 5 bảng dữ liệu (>1.9 triệu bản ghi).<br>• Xây dựng 9 Calculated Fields và soạn thảo `notebooks/01_preprocess.ipynb`.<br>• Thực hiện phân tích EDA tĩnh chuyên sâu đa biến trong `notebooks/02_eda.ipynb`. |
 | 2 | **Lý Gia Hân** | **24133016** | Visualization & Dashboard Lead | • Xây dựng và hoàn thiện hệ thống **biểu đồ phân tích chuyên sâu** trong `notebooks/04_story.ipynb` bao phủ toàn diện 3 trụ cột cốt truyện.<br>• Thiết kế toàn bộ kiến trúc giao diện tương tác Tableau Story Canvas (`dashboard/story_app.py`, `story_canvas.py`, `story_interactions.js`).<br>• Xây dựng cơ chế lọc chéo (cross-filtering) và chuẩn hóa thiết kế no-scroll fixed-viewport. |
-| 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu cấp bài hát không rò rỉ (`notebooks/03_model.ipynb`).<br>• Tích hợp trực quan hóa mô hình (Boundary, Confusion Matrix, Precision-Recall) lên Dashboard.<br>• Soạn thảo Báo cáo tổng kết đồ án (`reports/Bao_cao_Spotify_Chuong_1_3_4.docx`) và phụ trách Video Demo thuyết trình. |
+| 3 | **Đỗ Thanh Thành Tài** | **24133050** | ML Engineer & Report Lead | • Huấn luyện mô hình Logistic Regression dự báo Top Hit trên tập dữ liệu cấp bài hát không rò rỉ (`notebooks/03_model.ipynb`).<br>• Tích hợp trực quan hóa mô hình (Boundary, Confusion Matrix, Precision-Recall) lên Dashboard.<br>• Soạn thảo Báo cáo tổng kết đồ án môn học và phụ trách Video Demo thuyết trình. |
 
 ---
 
