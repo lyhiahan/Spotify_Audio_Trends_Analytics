@@ -4012,6 +4012,15 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
 .dashboard.main_dashboard>.panel-duration{grid-column:1;grid-row:2}
 .dashboard.main_dashboard>.panel-collab{grid-column:2;grid-row:2}
 .dashboard.main_dashboard>.panel-artist_tree{grid-column:3;grid-row:2}
+.workspace.main-workspace{grid-template-columns:minmax(0,1fr) 340px}
+.inspector.inspector-no-filters .filters,
+.inspector.inspector-no-filters .reset-line{display:none !important}
+.inspector.inspector-no-filters{display:flex;flex-direction:column;gap:10px;padding:14px;overflow-y:auto}
+.inspector.inspector-no-filters .metrics{margin:0;gap:8px;flex-shrink:0}
+.inspector.inspector-no-filters .metric{padding:10px 12px}
+.inspector.inspector-no-filters .metric strong{font-size:22px}
+.inspector.inspector-no-filters .insight{flex:1;min-height:0;overflow-y:auto;margin-top:2px;line-height:1.55;padding:12px 14px}
+@media(max-width:1150px){.workspace.main-workspace{grid-template-columns:minmax(0,1fr) 290px}}
 /* Four story pages retain the existing typography, palette and card shell. */
 .dashboard.hits{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .dashboard.hits>.panel-hit_heatmap:first-child{grid-column:1;grid-row:1}
@@ -4257,7 +4266,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v15-main';
+const storageKey='spotify-workbook-v16-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -4368,7 +4377,7 @@ function controls(){
   $('hit-flow').hidden=true;
   const visible={
     overview:[],
-    main_dashboard:['year','country','compare','feature'],
+    main_dashboard:[],
     hits:['fromyear','toyear','genre','band','feature'],
     artists:['fromyear','toyear','genre','feature'],
     geography:['year','weight','region','country','compare','feature'],
@@ -4647,6 +4656,7 @@ async function render(){
  $('dashboard-name').textContent=dash().title;$('caption').textContent=point().caption;$('description').textContent=dash().description;$('note').textContent=dash().note;$('note').title=dash().note;
  $('counter').textContent=`${position+1} / ${book.story_points.length}`;
  document.querySelector('.workspace').classList.toggle('overview-workspace',kind()==='overview');
+  document.querySelector('.workspace').classList.toggle('main-workspace',kind()==='main_dashboard');
  document.body.classList.toggle('overview-screen',kind()==='overview');
  if(kind()==='overview')$('caption').textContent='CÁI NHÌN VỀ DỮ LIỆU';
  inspector();
@@ -4925,7 +4935,8 @@ function inspector(){
  const k=kind();
  if(k==='overview'){openingInspector();return}
  document.querySelector('.inspector').classList.toggle('inspector-overview',false);
- document.querySelector('.inspector h2').textContent='Bộ lọc & diễn giải';
+ document.querySelector('.inspector').classList.toggle('inspector-no-filters',k==='main_dashboard');
+ document.querySelector('.inspector h2').textContent=k==='main_dashboard'?'Chỉ số cốt lõi & diễn giải':'Bộ lọc & diễn giải';
  document.querySelector('.inspector').classList.toggle('inspector-hits',k==='hits');
  $('metrics').replaceChildren();
  

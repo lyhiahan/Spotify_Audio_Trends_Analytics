@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v15-main';
+const storageKey='spotify-workbook-v16-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -161,7 +161,7 @@ function controls(){
   $('hit-flow').hidden=true;
   const visible={
     overview:[],
-    main_dashboard:['year','country','compare','feature'],
+    main_dashboard:[],
     hits:['fromyear','toyear','genre','band','feature'],
     artists:['fromyear','toyear','genre','feature'],
     geography:['year','weight','region','country','compare','feature'],
@@ -440,6 +440,7 @@ async function render(){
  $('dashboard-name').textContent=dash().title;$('caption').textContent=point().caption;$('description').textContent=dash().description;$('note').textContent=dash().note;$('note').title=dash().note;
  $('counter').textContent=`${position+1} / ${book.story_points.length}`;
  document.querySelector('.workspace').classList.toggle('overview-workspace',kind()==='overview');
+  document.querySelector('.workspace').classList.toggle('main-workspace',kind()==='main_dashboard');
  document.body.classList.toggle('overview-screen',kind()==='overview');
  if(kind()==='overview')$('caption').textContent='CÁI NHÌN VỀ DỮ LIỆU';
  inspector();
@@ -718,7 +719,8 @@ function inspector(){
  const k=kind();
  if(k==='overview'){openingInspector();return}
  document.querySelector('.inspector').classList.toggle('inspector-overview',false);
- document.querySelector('.inspector h2').textContent='Bộ lọc & diễn giải';
+ document.querySelector('.inspector').classList.toggle('inspector-no-filters',k==='main_dashboard');
+ document.querySelector('.inspector h2').textContent=k==='main_dashboard'?'Chỉ số cốt lõi & diễn giải':'Bộ lọc & diễn giải';
  document.querySelector('.inspector').classList.toggle('inspector-hits',k==='hits');
  $('metrics').replaceChildren();
  
