@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v12-main';
+const storageKey='spotify-workbook-v13-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -737,7 +737,8 @@ function mainStory(){
   return [
     ['1. Bản sắc địa lý & Đối đầu ADN', 'Bản đồ thế giới và Radar đối đầu bóc tách sự phân hóa rõ nét: ' + name(a) + ' có ' + featureLabel(state.feature) + ' đạt ' + (a?fmt(cv(a,state.feature),state.feature):'—') + ', đối lập với ' + name(b) + ' (' + (b?fmt(cv(b,state.feature),state.feature):'—') + '). Click trực tiếp trên bản đồ để chọn lại quốc gia A.'],
     ['2. Đòn bẩy hợp tác (Collab vs Solo)', 'Đơn ca chiếm đa số (~59% số bài phát hành), nhưng các dự án Hợp tác (Collab) có trung vị lượt stream cao hơn hẳn (~28.5 triệu so với ~23.5 triệu lượt stream), chứng minh Collab là đòn bẩy tối ưu đưa bài hát vào bảng xếp hạng.'],
-    ['3. Hiện tượng \"TikTok-hóa\" âm nhạc', 'Thời lượng bài hát trung bình sụt giảm mạnh từ 218 giây (2017) xuống còn 198.5 giây (2020) — mất đúng 20 giây chỉ sau 3 năm dưới tác động của cơ chế trả bản quyền 30 giây và văn hóa video ngắn.']
+    ['3. Hiện tượng \"TikTok-hóa\" âm nhạc', 'Thời lượng bài hát trung bình sụt giảm mạnh từ 218 giây (2017) xuống còn 198.5 giây (2020) — mất đúng 20 giây chỉ sau 3 năm dưới tác động của cơ chế trả bản quyền 30 giây và văn hóa video ngắn.'],
+    ['4. Công thức bài Hit & 80 Siêu sao', 'Heatmap chứng minh Top 10 luôn có mức năng lượng và độ dễ nhảy cao vượt trội; Treemap bóc tách thị phần lượt nghe khổng lồ thuộc về các nghệ sĩ dẫn đầu thế giới.']
   ];
 }
 

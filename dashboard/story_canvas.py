@@ -56,9 +56,9 @@ def workbook():
             'main_dashboard',
             'MAIN DASHBOARD',
             'TOÀN CẢNH XU HƯỚNG ÂM THANH & CÔNG THỨC HIT',
-            'Bảng điều khiển tổng hợp 4 trụ cột cốt lõi: Bản sắc địa lý, Đối đầu ADN âm nhạc, Hiện tượng TikTok và Đòn bẩy hợp tác.',
-            ['map', 'radar', 'duration', 'collab'],
-            'Tổng hợp đa chiều từ các data mart: Choropleth 73 quốc gia, Radar đối kháng chuẩn hóa, chuỗi thời lượng 2017–2022 và phân phối stream Solo vs Collab.'
+            'Bảng điều khiển tổng hợp 6 trụ cột cốt lõi: Bản sắc địa lý, Đối đầu ADN âm nhạc, Công thức bài Hit, Hiện tượng TikTok, Đòn bẩy hợp tác và Phân bổ 80 nghệ sĩ.',
+            ['map', 'radar', 'hit_heatmap', 'duration', 'collab', 'artist_tree'],
+            'Tổng hợp đa chiều từ các data mart: Choropleth 73 quốc gia, Radar đối kháng chuẩn hóa, Heatmap bài hit theo tầng hạng, chuỗi thời lượng 2017–2022, phân phối stream Solo vs Collab và Treemap 80 nghệ sĩ.'
         ),
         (
             'hits',
