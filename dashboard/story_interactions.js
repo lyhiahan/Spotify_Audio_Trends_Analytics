@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v10-main';
+const storageKey='spotify-workbook-v11-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -618,27 +618,37 @@ function getMetrics(){
     return [
       [name(a)+' · '+featureLabel(f), a?fmt(cv(a,f),f):'—'],
       [name(b)+' · '+featureLabel(f), b?fmt(cv(b,f),f):'—'],
-      ['Collab stream trung vị', '28.5M / bài'],
-      ['Thời lượng TB (TikTok)', '198.5 giây']
+      ['Collab vs Solo stream', '+21.5% vượt trội'],
+      ['Thời lượng TB (TikTok)', '198.5s (-20s)']
     ];
   }
   if(k==='forecast'){
     const m=current.fcMetrics||{acc:0.837,prec:0.656,rec:0.598,f1:0.626};
+    const tau=Number(state.threshold)||0.79;
     return [
-      ['Accuracy', (m.acc*100).toFixed(1)+'%'],
-      ['Precision', (m.prec*100).toFixed(1)+'%'],
-      ['Recall', (m.rec*100).toFixed(1)+'%'],
-      ['F1-Score', (m.f1*100).toFixed(1)+'%']
+      ['Ngưỡng quyết định (τ)', 'τ = ' + tau.toFixed(2)],
+      ['F1-Score tối ưu', (m.f1*100).toFixed(1)+'%'],
+      ['Precision (Độ chuẩn)', (m.prec*100).toFixed(1)+'%'],
+      ['Recall (Độ bao phủ)', (m.rec*100).toFixed(1)+'%']
     ];
   }
   if(k==='hits'){
-    return [];
+    const hs=hitStats(), j=fi(state.feature);
+    const zTop10=hs?.z?.[0]?.[j];
+    return [
+      ['Đặc trưng âm học', featureLabel(f)],
+      ['Z-score Top 1–10', Number.isFinite(zTop10)?(zTop10>0?'+':'')+zTop10.toFixed(2)+' σ':'—'],
+      ['Số bài Top 200', num(current.tracks.length)],
+      ['Tầng hạng chọn', state.band?bands[+state.band]:'Toàn bộ Top 200']
+    ];
   }
   if(k==='artists'){
     const a=correlationStats(), rho=a.z[9][10];
     return [
-      ['Tên tuổi nghệ sĩ (ρ)', Number.isFinite(rho)?rho.toFixed(2):'—'],
-      ['Số bài khảo sát', num(current.analysis.length)]
+      ['Tên tuổi nghệ sĩ (ρ)', Number.isFinite(rho)?(rho>0?'+':'')+rho.toFixed(2):'—'],
+      ['Số bài phân tích', num(current.analysis.length)],
+      ['Nghệ sĩ drill-down', state.artist?(bundle.artists[state.artist]?.[0]||'Đã chọn'):'Toàn bộ 80 nghệ sĩ'],
+      ['Thể loại đang lọc', state.genre||'Tất cả thể loại']
     ];
   }
   if(k==='geography'){
@@ -646,18 +656,25 @@ function getMetrics(){
     if(a&&b){
       const va=cv(a,f), vb=cv(b,f);
       const name=r=>({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[r[1]]||r[1];
+      const diff=(va!==null&&vb!==null)?(va-vb):null;
       return [
         [name(a)+' · '+featureLabel(f), fmt(va,f)],
-        [name(b)+' · '+featureLabel(f), fmt(vb,f)]
+        [name(b)+' · '+featureLabel(f), fmt(vb,f)],
+        ['Chênh lệch (A − B)', diff!==null?(diff>0?'+':'')+fmt(diff,f):'—'],
+        ['Năm bản đồ', String(state.year||2021)]
       ];
     }
-    return [['Quốc gia A', '—'], ['Quốc gia B', '—']];
+    return [['Quốc gia A', '—'], ['Quốc gia B', '—'], ['Chênh lệch', '—'], ['Năm bản đồ', String(state.year||2021)]];
   }
   if(k==='time'){
     const selected=current.covid.filter(r=>state.weeks.includes(r[0]));
+    const cov=selected.length?selected:current.covid;
+    const avgFeat=mean(cov.map(r=>r[4+fi(f)]));
     return [
-      ['Tuần COVID có dữ liệu', num(current.covid.length)],
-      [featureLabel(f)+(selected.length?' · tuần chọn':' · trung bình'), fmt(mean((selected.length?selected:current.covid).map(r=>r[4+fi(f)])),f)]
+      ['Đặc trưng âm học', featureLabel(f)],
+      [featureLabel(f)+(selected.length?' · tuần chọn':' · trung bình'), fmt(avgFeat,f)],
+      ['Số tuần quan sát', num(cov.length)+' tuần'],
+      ['Tổng tử vong tuần', num(cov.reduce((s,r)=>s+r[2],0))+' ca']
     ];
   }
   return [];
