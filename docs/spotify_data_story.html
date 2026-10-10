@@ -4063,28 +4063,51 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
 /* Opening EDA uses the same card shell and feature hues as the existing story. */
 /* Keep all 5 notebook figures on one screen without scrolling for the opening point. */
 .workspace.overview-workspace{grid-template-columns:minmax(0,1fr);height:100%;min-height:0;overflow:hidden!important}
+.workspace.overview-scroll-workspace{height:auto!important;overflow-y:auto!important}
 .overview-workspace>.inspector{display:none!important}
 .overview-screen #filters-toggle{display:none!important}
-.overview-screen .frame{grid-template-rows:48px 46px minmax(0,1fr);gap:6px;padding-bottom:6px}
-.overview-screen .intro{padding:6px 14px;min-height:0}
-.overview-screen .intro h1{font-size:18px;line-height:1.2}
+.overview-screen .intro{display:none!important}
+.overview-screen .frame{grid-template-rows:38px 40px minmax(0,1fr)!important;gap:4px!important;padding:4px 8px!important}
 .dashboard.overview{
   display:grid;
   grid-template-columns:repeat(12, minmax(0, 1fr));
   grid-template-rows:minmax(0, 1fr) minmax(0, 1fr);
-  gap:8px;
+  gap:6px;
   padding:0;
   height:100%;
   max-height:100%;
   min-height:0;
   overflow:hidden !important;
 }
+.dashboard.overview.overview-scroll-mode{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+  overflow-y:auto !important;
+  height:auto !important;
+  max-height:100% !important;
+  padding-right:4px !important;
+}
+.overview-scroll-mode .static-panel{
+  height:auto !important;
+  min-height:380px !important;
+  flex-shrink:0 !important;
+}
+.overview-scroll-mode .eda-image-wrap{
+  min-height:340px !important;
+  padding:8px !important;
+}
+.overview-scroll-mode .eda-image-wrap img{
+  max-height:480px !important;
+  width:auto !important;
+  max-width:100% !important;
+}
 .dashboard.overview>.panel-eda_static_distribution{
-  grid-column:1 / span 7;
+  grid-column:1 / span 8;
   grid-row:1;
 }
 .dashboard.overview>.panel-eda_static_correlation{
-  grid-column:8 / span 5;
+  grid-column:9 / span 4;
   grid-row:1;
 }
 .dashboard.overview>.panel-eda_static_trend{
@@ -4110,8 +4133,8 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
 }
 .dashboard.overview .panel-head{
   flex-shrink:0;
-  height:32px;
-  padding:0 10px;
+  height:26px;
+  padding:0 8px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -4119,18 +4142,19 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
   background:#FAFCFE;
 }
 .dashboard.overview .static-panel .panel-head h2{
-  font-size:12.5px;
-  font-weight:600;
+  font-size:12px;
+  font-weight:700;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
   margin:0;
-  color:#1E293B;
+  color:#0F172A;
 }
 .dashboard.overview .panel-head button{
   font-size:10px;
-  padding:2px 6px;
-  height:22px;
+  font-weight:600;
+  padding:1px 6px;
+  height:20px;
   line-height:1;
   border-radius:3px;
 }
@@ -4139,33 +4163,34 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
   min-height:0;
   min-width:0;
   height:100%;
+  width:100%;
   background:#FFFFFF;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:4px 6px;
+  padding:2px 4px;
   overflow:hidden;
 }
 .dashboard.overview .eda-image-wrap img{
   display:block;
   max-width:100%;
   max-height:100%;
-  width:auto;
-  height:auto;
+  width:100%;
+  height:100%;
   object-fit:contain;
   cursor:zoom-in;
   transition:transform 0.15s ease;
 }
 .dashboard.overview .eda-image-wrap img:hover{
-  transform:scale(1.015);
+  transform:scale(1.02);
 }
 .dashboard.overview .eda-caption{
   flex-shrink:0;
-  font-size:11px;
-  line-height:1.3;
+  font-size:10px;
+  line-height:1.2;
   color:var(--muted);
   margin:0;
-  padding:4px 10px;
+  padding:2px 8px;
   background:#F8FAFC;
   border-top:1px solid var(--line);
   white-space:nowrap;
@@ -4189,7 +4214,7 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
   }
 }
 </style></head><body><main class="frame">
-<header class="top"><div class="brand">♫ SPOTIFY AUDIO ATLAS<small>GIA HÂN · DATA VISUALIZATION & STORYTELLING</small></div><div class="tools"><button id="help">Hướng dẫn</button><button id="edit">Biên tập</button><button id="save">Lưu</button><button id="export">JSON ↓</button><button id="open">Mở</button><button id="export-html" title="Tải story tương tác dùng độc lập">HTML ↓</button><button id="print" title="In dashboard hiện tại hoặc lưu PDF">PDF</button><button id="fullscreen" title="Toàn màn hình">⛶</button><span class="avatar">GH</span><input id="file" type="file" accept=".json" hidden></div></header>
+<header class="top"><div class="brand">♫ SPOTIFY AUDIO ATLAS<small>GIA HÂN · DATA VISUALIZATION & STORYTELLING</small></div><div class="tools"><button id="help">Hướng dẫn</button><button id="edit">Biên tập</button><button id="save">Lưu</button><button id="export">JSON ↓</button><button id="open">Mở</button><button id="export-html" title="Tải story tương tác dùng độc lập">HTML ↓</button><button id="print" title="In dashboard hiện tại hoặc lưu PDF">PDF</button><button id="toggle-zoom" style="display:none;background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;font-weight:700;" title="Chuyển đổi: Vừa 1 màn hình ↔ Phóng to cuộn tự do">🔍 Phóng to</button><button id="fullscreen" title="Toàn màn hình">⛶</button><span class="avatar">GH</span><input id="file" type="file" accept=".json" hidden></div></header>
 <div class="navigation"><button id="prev" aria-label="Story point trước">‹</button><nav class="points" id="navigator" aria-label="Story points"></nav><button id="next" aria-label="Story point sau">›</button><button id="filters-toggle">Bộ lọc</button></div>
 <section class="intro"><div><p class="dashboard-name" id="dashboard-name"></p><h1 id="caption"></h1><p id="description"></p></div><span id="scope" class="scope"></span></section>
 <div class="workspace"><section id="dashboard" class="dashboard" aria-label="Dashboard của story point"></section><aside class="inspector"><h2>Bộ lọc & diễn giải</h2><div id="hit-flow" class="hit-flow" aria-label="Trình tự khám phá Dashboard 1" hidden><button type="button" data-focus="fromyear">1 Giai đoạn</button><span>→</span><button type="button" data-focus="genre">2 Thể loại</button><span>→</span><button type="button" data-focus="artist">3 Nghệ sĩ</button></div><section class="filters">
@@ -4273,7 +4298,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v18-main';
+const storageKey='spotify-workbook-v19-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -5096,6 +5121,8 @@ document.querySelectorAll('#hit-flow button').forEach(button=>button.onclick=()=
 $('prev').onclick=()=>go(position-1);$('next').onclick=$('explore-next').onclick=()=>go(position+1);$('restore').onclick=$('clear').onclick=()=>go(position);
 for(const [id,mode] of [['tab-data','data'],['tab-method','method']])$(id).onclick=()=>{detailMode=mode;$('tab-data').className=mode==='data'?'active':'';$('tab-method').className=mode==='method'?'active':'';inspector()};
 $('filters-toggle').onclick=()=>{document.body.classList.toggle('inspector-open');resize()};
+let isOverviewZoomed=false;
+if($('toggle-zoom')){$('toggle-zoom').onclick=()=>{isOverviewZoomed=!isOverviewZoomed;document.querySelector('.dashboard.overview')?.classList.toggle('overview-scroll-mode',isOverviewZoomed);document.querySelector('.workspace.overview-workspace')?.classList.toggle('overview-scroll-workspace',isOverviewZoomed);$('toggle-zoom').textContent=isOverviewZoomed?'⊞ Vừa màn':'🔍 Phóng to';notify(isOverviewZoomed?'Đã bật chế độ Phóng to (cuộn tự do để xem ảnh to rõ nét)':'Đã chuyển về chế độ Vừa 1 màn hình')};}
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){notify('Hãy dùng chế độ toàn màn hình của trình duyệt')}};
 $('print').onclick=()=>window.print();
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)||$('editor').open||$('guide').open)return;if(e.key==='ArrowRight')go(position+1);if(e.key==='ArrowLeft')go(position-1)});

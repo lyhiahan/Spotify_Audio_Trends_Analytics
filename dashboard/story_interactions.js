@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v18-main';
+const storageKey='spotify-workbook-v19-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){
@@ -873,6 +873,8 @@ document.querySelectorAll('#hit-flow button').forEach(button=>button.onclick=()=
 $('prev').onclick=()=>go(position-1);$('next').onclick=$('explore-next').onclick=()=>go(position+1);$('restore').onclick=$('clear').onclick=()=>go(position);
 for(const [id,mode] of [['tab-data','data'],['tab-method','method']])$(id).onclick=()=>{detailMode=mode;$('tab-data').className=mode==='data'?'active':'';$('tab-method').className=mode==='method'?'active':'';inspector()};
 $('filters-toggle').onclick=()=>{document.body.classList.toggle('inspector-open');resize()};
+let isOverviewZoomed=false;
+if($('toggle-zoom')){$('toggle-zoom').onclick=()=>{isOverviewZoomed=!isOverviewZoomed;document.querySelector('.dashboard.overview')?.classList.toggle('overview-scroll-mode',isOverviewZoomed);document.querySelector('.workspace.overview-workspace')?.classList.toggle('overview-scroll-workspace',isOverviewZoomed);$('toggle-zoom').textContent=isOverviewZoomed?'⊞ Vừa màn':'🔍 Phóng to';notify(isOverviewZoomed?'Đã bật chế độ Phóng to (cuộn tự do để xem ảnh to rõ nét)':'Đã chuyển về chế độ Vừa 1 màn hình')};}
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){notify('Hãy dùng chế độ toàn màn hình của trình duyệt')}};
 $('print').onclick=()=>window.print();
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)||$('editor').open||$('guide').open)return;if(e.key==='ArrowRight')go(position+1);if(e.key==='ArrowLeft')go(position-1)});
