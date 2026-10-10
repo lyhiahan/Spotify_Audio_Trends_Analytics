@@ -439,6 +439,6 @@ Tổng credit nghệ sĩ không bằng tổng lượt nghe độc lập: bài h�
 ## 7. Tài liệu đang dùng
 
 - [Luồng xử lý](data_processing_flow.md): sơ đồ và quy trình.
-- [Hướng dẫn dashboard](story_studio.md): chạy và thao tác.
+- [Hướng dẫn dashboard](HUONG_DAN_CAI_DAT_VA_SU_DUNG.md): chạy và thao tác.
 - [Phân công nhóm](team_tasks_assignment.md): nhiệm vụ theo barem.
 - [HTML story](spotify_data_story.html): bản demo độc lập.

@@ -103,7 +103,7 @@ def workbook():
             annotation='',
             saved_state=dict(
                 year=2021,
-                fromyear=2020 if key == 'hits' else 2017,
+                fromyear=2020 if key in ['hits', 'main_dashboard'] else 2017,
                 toyear=2022,
                 feature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',
                 boxfeature='energy' if key == 'overview' else 'danceability' if key in ['hits', 'artists'] else 'acousticness',

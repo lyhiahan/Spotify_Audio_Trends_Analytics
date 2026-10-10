@@ -20,7 +20,7 @@ const boxLabel={energy:'Năng lượng',danceability:'Độ dễ nhảy',valence
 function chartTitle(key){
  if(key==='genre_box')return `${boxLabel[state.feature]||boxLabel[state.boxfeature]||featureLabel(state.feature||state.boxfeature)} giữa các thể loại`;
  if(key==='artist_tree')return `Lượt nghe ghi nhận cho ${treeRows().length} nghệ sĩ dẫn đầu`;
- if(key==='hit_heatmap'&&kind()==='main_dashboard')return 'Âm thanh theo thứ hạng · 2020–2022';
+ if(key==='hit_heatmap'&&kind()==='main_dashboard')return `Âm thanh theo thứ hạng · ${state.fromyear}–${state.toyear}`;
  if(key==='radar'){const name=code=>{const value=current.allCountries.find(r=>r[0]===code)?.[1]||code;return ({Vietnam:'Việt Nam',Japan:'Nhật Bản'})[value]||value};return `So sánh âm thanh: ${name(state.country)} và ${name(state.compare)}`}
  if(key==='covid')return `${featureLabel(state.feature)} và tử vong COVID-19 theo tuần`;
  if(key==='decision_boundary')return `Không gian quyết định 2D: Log Streams vs ${state.boundary_y==='rank_first_week'?'Thứ hạng tuần đầu':featureLabel(state.boundary_y)}`;
@@ -190,7 +190,7 @@ function controls(){
   if(k==='overview'){
     state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='main_dashboard'){
-    state.genre='';state.artist='';state.band='';state.collab='';state.month='';state.weeks=[];
+    state.month='';state.weeks=[];
   } else if(k==='hits'){
     state.artist='';state.collab='';state.month='';state.weeks=[];
   } else if(k==='artists'){
@@ -215,7 +215,7 @@ function controls(){
   $('genre').closest('label').firstChild.nodeValue=k==='artists'?'Thể loại → nghệ sĩ':'Thể loại';
   $('band').closest('label').classList.toggle('wide',k==='hits');
   $('collab').closest('label').classList.toggle('wide',k==='artists');
-  const choices=k==='overview'?(bundle.eda?.features||bundle.features):['geography','main_dashboard'].includes(k)?mapFeatures:bundle.features;
+  const choices=k==='overview'?(bundle.eda?.features||bundle.features):k==='geography'?mapFeatures:bundle.features;
   options($('feature'),choices.map(f=>[f,f==='duration_min'?'Duration · phút':featureLabel(f)]));
   if(!choices.includes(state.feature))state.feature=choices[0];
   const all=bundle.countries.filter(r=>r[2]===state.year),local=all.filter(r=>state.region==='Tất cả'||r[3]===state.region);
@@ -233,6 +233,24 @@ function controls(){
     if(el)el.value=state[id];
   }
   $('scope').textContent=k==='overview'?'Toàn bộ mẫu chart & Train Global':k==='main_dashboard'?'Toàn cảnh 4 trụ cột cốt lõi':k==='hits'?`${state.fromyear}–${state.toyear} · BXH Global`:k==='artists'?`${state.fromyear}–${state.toyear} · Phân tích nghệ sĩ & collab`:k==='geography'?`${local.length} quốc gia · ${state.year} · ${state.weight==='weighted'?'theo stream':'trung bình thường'}`:`${state.fromyear}–${state.toyear} · ${current?.covid?.length||0} tuần COVID`;
+  if(k==='main_dashboard')mainControls();
+}
+
+function mainControls(){
+ const years=Array.from({length:6},(_,i)=>[2017+i,2017+i]);
+ const items={fromyear:years,toyear:years,genre:[['','Tất cả thể loại'],...bundle.genres.map(g=>[g,genreLabel(g)])],collab:[['','Solo & Collab'],['0','Solo'],['1','Collab']],band:[['','Toàn bộ Top 200'],...bands.map((b,i)=>[String(i),b])],feature:bundle.features.map(f=>[f,featureLabel(f)]),year:[...new Set(bundle.countries.map(r=>r[2]))].sort().map(y=>[y,y])};
+ for(const [id,values] of Object.entries(items)){options($('main-'+id),values);$('main-'+id).value=state[id]}
+ const selected=[state.artist?bundle.artists[state.artist]?.[0]:null,state.genre?genreLabel(state.genre):null,state.band!==''?bands[+state.band]:null,state.collab!==''?(state.collab==='1'?'Collab':'Solo'):null].filter(Boolean);
+ $('main-selection').textContent=(selected.length?'Đang chọn: '+selected.join(' · ')+'. ':'')+'Thể loại / hạng / biểu diễn lọc BXH Global; bản đồ & radar theo năm riêng.';
+}
+
+function mainFilter(id,value){
+ state[id]=['year','fromyear','toyear'].includes(id)?Number(value):value;
+ if(id==='genre')state.artist='';
+ if(id==='feature')state.boxfeature=state.feature;
+ if(id==='fromyear'&&state.fromyear>state.toyear)state.toyear=state.fromyear;
+ if(id==='toyear'&&state.toyear<state.fromyear)state.fromyear=state.toyear;
+ render();
 }
 
 function hitStats(rows=current.context){const accum=Array.from({length:4},()=>bundle.features.map(()=>({n:0,s:0,q:0})));for(const r of rows){const t=bundle.tracks[r[0]];bundle.features.forEach((f,j)=>{const x=tv(t,f);if(Number.isFinite(x)){const a=accum[r[3]][j];a.n+=r[4];a.s+=x*r[4];a.q+=x*x*r[4]}})}
@@ -240,7 +258,7 @@ function hitStats(rows=current.context){const accum=Array.from({length:4},()=>bu
   const raw=accum.map(a=>a.map(x=>x.n?x.s/x.n:null));const z=raw.map(a=>a.map((m,j)=>m!==null&&baseline[j].std>0?(m-baseline[j].mean)/baseline[j].std:null));return {raw,z,baseline,counts:accum.map(a=>a[0].n)};
 }
 
-function heatmapStats(){return hitStats(kind()==='main_dashboard'?bundle.global_rows.filter(r=>r[1]>=2020&&r[1]<=2022):current.context)}
+function heatmapStats(){return hitStats(current.context)}
 
 function collabStats(){
   if(kind()==='artists')return [0,1].map(c=>{const rows=current.analysis.filter(r=>Number(bundle.tracks[r[0]][3]>1)===c),values=rows.map(r=>r[3]);return {type:c?'Collab':'Solo',count:rows.length,charted:rows.length,median:median(values),mean:mean(values)}});
@@ -419,14 +437,14 @@ function figure(key){
  return fig;
 }
 
-function link(key,p){if(!p||kind()==='main_dashboard')return;
- if(key==='hit_heatmap'){state.feature=p.x;state.boxfeature=p.x;state.band=String(bands.indexOf(p.y));}
+function link(key,p){if(!p)return;
+ if(key==='hit_heatmap'){state.feature=p.x;state.boxfeature=p.x;const band=String(bands.indexOf(p.y));state.band=kind()==='main_dashboard'&&state.band===band?'':band;}
  else if(key==='genre_box'){state.genre=p.data.name;state.artist=''}
  else if(key==='artist_tree'){const id=p.id||p.data.ids?.[p.pointNumber];if(id==='root'){state.genre='';state.artist=''}else if(id?.startsWith('g:')){state.genre=id.slice(2);state.artist=''}else if(bundle.artists[id]){state.artist=id;state.genre=bundle.artists[id][1]}else return}
- else if(key==='collab'){const label=p.label||p.x;state.collab=label==='Collab'?'1':label==='Solo'?'0':''}
- else if(key==='duration'){const yr=Number(String(p.x).slice(0,4));if(yr>=2017&&yr<=2022)state.fromyear=state.toyear=yr}
+ else if(key==='collab'){const label=p.label||p.x,selected=label==='Collab'?'1':label==='Solo'?'0':'';state.collab=kind()==='main_dashboard'&&state.collab===selected?'':selected}
+ else if(key==='duration'){const yr=Number(String(p.x).slice(0,4));if(yr>=2017&&yr<=2022){state.fromyear=state.toyear=yr;if(kind()==='main_dashboard')state.year=yr}}
  else if(key==='map'){state.country=p.location}
- else if(key==='radar'){if(!mapFeatures.includes(p.theta))return;state.feature=p.theta}
+ else if(key==='radar'){if(!(kind()==='main_dashboard'?bundle.features:mapFeatures).includes(p.theta))return;state.feature=p.theta;state.boxfeature=p.theta}
  else if(key==='seasonal'){state.month=String(p.x);state.weeks=[]}
  else if(key==='covid'){state.weeks=[String(p.x).slice(0,10)]}
  else if(key==='tradeoff_curve'){
@@ -496,7 +514,7 @@ async function render(){
   fig.layout={paper_bgcolor:theme.panel,plot_bgcolor:theme.panel,colorway:colors,font:{family:"'Segoe UI', sans-serif",size:el.clientWidth<350?11:13,color:theme.ink},legend:{orientation:'h',x:0,y:1.13,font:{size:13,family:"'Segoe UI', sans-serif"}},hoverlabel:{bgcolor:theme.ink,font:{color:'#FFFEFB',size:13,family:"'Segoe UI', sans-serif"}},...fig.layout,height:el.clientHeight,width:el.clientWidth};
   if(key==='hit_heatmap'){fig.layout.xaxis.tickvals=bundle.features;fig.layout.xaxis.tickangle=-28;fig.layout.xaxis.ticktext=['Danceability','Energy','Valence','Acousticness','Speechiness','Instrumentalness','Liveness','Loudness','Tempo'];fig.layout.xaxis.tickfont={size:13,family:"'Segoe UI', sans-serif"};fig.layout.margin.b=72;if(el.clientWidth<580){fig.layout.xaxis.tickfont.size=11;fig.data[0].textfont.size=12}if(el.clientWidth<400){fig.layout.margin.l=65;fig.layout.margin.b=50;fig.data[0].textfont.size=10}}
   if(key==='hit_heatmap'&&kind()==='main_dashboard'){
-   fig.layout.margin={l:78,r:12,t:42,b:72};fig.layout.shapes=[];
+   fig.layout.margin={l:78,r:12,t:42,b:72};
    fig.layout.xaxis.tickfont.size=11;fig.layout.yaxis.tickfont.size=12;
    Object.assign(fig.data[0],mainHeatmapText(el.clientWidth),{xgap:2,ygap:2});
    const limit=Math.max(.01,...fig.data[0].z.flat().filter(Number.isFinite).map(Math.abs));
@@ -509,7 +527,6 @@ async function render(){
   png.onclick=async()=>{try{const url=await Plotly.toImage(el,{format:'png',width:1200,height:800});download(key+'.png',await fetch(url).then(r=>r.blob()),'image/png')}catch(e){notify('Không xuất được PNG: '+e.message)}};
   csv.onclick=()=>exportCsv(chartRows(key),key);
  }
- if(kind()==='artists'){const panel=document.querySelector('.panel-collab,.panel-collab_box');if(panel){const toggle=document.createElement('select');toggle.setAttribute('aria-label','Cách xem Solo và Collab');options(toggle,[['collab','Cơ cấu & trung vị'],['collab_box','Phân phối chi tiết']]);toggle.value=dash().worksheets[2];toggle.onchange=()=>{dash().worksheets[2]=toggle.value;render()};panel.querySelector('.panel-head>div').prepend(toggle)}}
 }
 
 function chartRows(key){
@@ -893,6 +910,13 @@ for(const id of ['year','fromyear','toyear','genre','artist','band','collab','re
     };
   }
 }
+
+for(const id of ['fromyear','toyear','genre','collab','band','feature','year']){
+ const el=$('main-'+id);if(el)el.onchange=()=>mainFilter(id,el.value);
+}
+if($('main-clear'))$('main-clear').onclick=()=>{
+ state=defaults({fromyear:2020,toyear:2022,feature:'acousticness',year:2021});render();
+};
 
 $('tau-slider').oninput=(e)=>{
   state.threshold=Number(e.target.value);

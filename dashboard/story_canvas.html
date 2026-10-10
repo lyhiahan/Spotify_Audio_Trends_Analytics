@@ -130,6 +130,13 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
 .workspace.main-workspace{grid-template-columns:minmax(0,1fr)}
 .main-workspace>.inspector{display:none!important}
 .main-screen #filters-toggle{display:none!important}
+.main-toolbar{display:none}
+.main-screen .frame{grid-template-rows:49px 58px auto minmax(0,1fr)}
+.main-screen .main-toolbar{display:flex;align-items:end;flex-wrap:wrap;gap:8px;padding:6px 10px;background:#FFFFFF;border:1px solid var(--line);border-radius:4px;min-width:0}
+.main-toolbar label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#475569;min-width:85px}
+.main-toolbar select{height:29px;max-width:150px;padding:3px 6px;background:#FFFFFF;border:1px solid #CBD5E1;border-radius:4px;font-size:12px}
+.main-toolbar button{height:29px;font-size:12px}
+.main-toolbar #main-selection{flex:1;min-width:140px;font-size:11px;line-height:1.4;color:#475569;align-self:center}
 .inspector.inspector-no-filters .filters,
 .inspector.inspector-no-filters .reset-line{display:none !important}
 .inspector.inspector-no-filters{display:flex;flex-direction:column;gap:10px;padding:14px;overflow-y:auto}
@@ -326,6 +333,13 @@ body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;b
 <header class="top"><div class="brand">♫ SPOTIFY AUDIO ATLAS<small>GIA HÂN · DATA VISUALIZATION & STORYTELLING</small></div><div class="tools"><button id="help">Hướng dẫn</button><button id="edit">Biên tập</button><button id="save">Lưu</button><button id="export">JSON ↓</button><button id="open">Mở</button><button id="export-html" title="Tải story tương tác dùng độc lập">HTML ↓</button><button id="print" title="In dashboard hiện tại hoặc lưu PDF">PDF</button><button id="toggle-zoom" style="display:none;background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;font-weight:700;" title="Chuyển đổi: Vừa 1 màn hình ↔ Phóng to cuộn tự do">🔍 Phóng to</button><button id="fullscreen" title="Toàn màn hình">⛶</button><span class="avatar">GH</span><input id="file" type="file" accept=".json" hidden></div></header>
 <div class="navigation"><button id="prev" aria-label="Story point trước">‹</button><nav class="points" id="navigator" aria-label="Story points"></nav><button id="next" aria-label="Story point sau">›</button><button id="filters-toggle">Bộ lọc</button></div>
 <section class="intro"><div><p class="dashboard-name" id="dashboard-name"></p><h1 id="caption"></h1><p id="description"></p></div><span id="scope" class="scope"></span></section>
+<section class="main-toolbar" aria-label="Bộ lọc cơ bản Main Dashboard">
+<label>BXH Global từ<select id="main-fromyear"></select></label><label>Đến năm<select id="main-toyear"></select></label>
+<label>Thể loại<select id="main-genre"></select></label><label>Biểu diễn<select id="main-collab"></select></label>
+<label>Tầng hạng<select id="main-band"></select></label><label>Đặc trưng<select id="main-feature"></select></label>
+<label>Năm bản đồ / radar<select id="main-year"></select></label><button id="main-clear">Bỏ lựa chọn</button>
+<span id="main-selection" aria-live="polite"></span>
+</section>
 <div class="workspace"><section id="dashboard" class="dashboard" aria-label="Dashboard của story point"></section><aside class="inspector"><h2>Bộ lọc & diễn giải</h2><div id="hit-flow" class="hit-flow" aria-label="Trình tự khám phá Dashboard 1" hidden><button type="button" data-focus="fromyear">1 Giai đoạn</button><span>→</span><button type="button" data-focus="genre">2 Thể loại</button><span>→</span><button type="button" data-focus="artist">3 Nghệ sĩ</button></div><section class="filters">
 <label class="hit-control time-control">Năm BXH từ<select id="fromyear"></select></label><label class="hit-control time-control">Đến năm<select id="toyear"></select></label>
 <label class="geo-control">Năm bản đồ<select id="year"><option>2021</option><option>2022</option></select></label><label class="geo-control">Cách tính<select id="weight"><option value="weighted">Theo luồng nghe</option><option value="mean">Trung bình thường</option></select></label>

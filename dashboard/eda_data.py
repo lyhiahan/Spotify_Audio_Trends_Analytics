@@ -36,7 +36,7 @@ def opening_summary(tracks, charts):
     for offset in range(1, 9):
         future = first[['track_id', 'week']].copy()
         future['week'] += pd.Timedelta(weeks=offset)
-        valid &= complete.reindex(future.week).fillna(False).to_numpy(dtype=bool)
+        valid &= complete.reindex(future.week, fill_value=False).to_numpy(dtype=bool)
         ranks = lookup.reindex(pd.MultiIndex.from_frame(future)).to_numpy()
         hit |= (ranks >= 1) & (ranks <= 50)
     first['hit'] = hit
