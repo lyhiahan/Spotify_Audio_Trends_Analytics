@@ -50,7 +50,7 @@ function validate(b){
   return b;
 }
 
-const storageKey='spotify-workbook-v13-main';
+const storageKey='spotify-workbook-v14-main';
 try{
   const old=localStorage.getItem(storageKey);
   if(old){

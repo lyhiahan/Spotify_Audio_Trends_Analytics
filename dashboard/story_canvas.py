@@ -38,7 +38,6 @@ LABELS = {
     'eda_static_distribution': 'Phân phối năm đặc trưng âm thanh',
     'eda_static_correlation': 'Tương quan giữa các đặc trưng âm thanh',
     'eda_static_trend': 'Xu hướng âm thanh trên Global Top 200',
-    'eda_static_covid': 'Đối chiếu tử vong COVID-19 và âm thanh',
     'eda_static_labels': 'Phân phối nhãn Top 50 trên Train'
 }
 
@@ -48,9 +47,9 @@ def workbook():
             'overview',
             'CÁI NHÌN VỀ DỮ LIỆU',
             'CÁI NHÌN VỀ DỮ LIỆU',
-            'Năm biểu đồ tĩnh từ EDA: phân phối âm thanh, tương quan Spearman, xu hướng dài hạn, đại dịch COVID-19 và nhãn mục tiêu Train.',
-            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_trend', 'eda_static_covid', 'eda_static_labels'],
-            'Toàn bộ 5 biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200, đối chiếu tử vong COVID-19 và nhãn mục tiêu dự báo Top 50.'
+            'Bốn biểu đồ tĩnh từ EDA: phân phối âm thanh, tương quan Spearman, xu hướng dài hạn và nhãn mục tiêu Train.',
+            ['eda_static_distribution', 'eda_static_correlation', 'eda_static_trend', 'eda_static_labels'],
+            'Bốn biểu đồ trích xuất từ 02_eda.ipynb: phân phối âm thanh toàn kho nhạc, ma trận tương quan Spearman, xu hướng Global Top 200 và nhãn mục tiêu dự báo Top 50.'
         ),
         (
             'main_dashboard',
